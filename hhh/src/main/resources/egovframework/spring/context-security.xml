@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- 정적파일들은 security 적용하지 말자 -->
-	<security:http pattern="/images/**" security="none" />
+	<!-- <security:http pattern="/images/**" security="none" />
 	<security:http pattern="/css/**" security="none" />
 	
 	<security:http authentication-manager-ref="userDetail">
@@ -25,6 +25,6 @@
 	</security:authentication-manager>
 	
 	<bean id="customUserDetail" class="egovframework.example.user.sevice.CustomUserDetailsService" />
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" /> -->
 	
 </beans>

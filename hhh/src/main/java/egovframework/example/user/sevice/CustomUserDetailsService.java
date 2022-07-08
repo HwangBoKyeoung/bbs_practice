@@ -2,15 +2,12 @@ package egovframework.example.user.sevice;
 
 import javax.annotation.Resource;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService/* implements UserDetailsService*/ {
 	
-	@Resource(name="userService")
+	/*@Resource(name="userService")
 	private UserService userService;
 	
 //	단건조회 리턴
@@ -31,6 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 		
 		return userVO;
-	}
+	}*/
 
 }

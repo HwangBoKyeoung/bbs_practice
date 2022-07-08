@@ -19,14 +19,6 @@
     		<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
     	</mvc:message-converters>
     </mvc:annotation-driven>
-    
-    <!-- DispatcherSerlvet이 처리하지 못한 요청을 DefaultSerlvet에게 넘겨주는 역할 -->
-<!--     <MVC :default-servlet-handler /> -->
-    
-    <!-- 정적파일 경로 추가 -->
-    <mvc:resources location="/css/**" mapping="/css/" />
-    <mvc:resources location="/images/**" mapping="/images/" />
-    <mvc:resources location="/js/**" mapping="/js/" />
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="webBindingInitializer">

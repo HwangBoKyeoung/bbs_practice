@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserVO implements UserDetails {
+public class UserVO /*implements UserDetails*/ {
 
 	private String userName;
 	private String userId;
@@ -72,7 +69,7 @@ public class UserVO implements UserDetails {
 	}
 	
 //	security 관련 설정
-	@Override
+	/*@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> auth = new ArrayList<>(); 
 		auth.add(new SimpleGrantedAuthority(this.userRole));
@@ -107,6 +104,6 @@ public class UserVO implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}
+	}*/
 
 }

@@ -12,7 +12,7 @@ import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("costService")
-public class CostServiceImpl extends EgovAbstractServiceImpl implements CostService {
+public class CostServiceImpl/* extends EgovAbstractServiceImpl*/ implements CostService {
 	
 	@Resource(name="costDAO")
 	private CostDAO costDAO;

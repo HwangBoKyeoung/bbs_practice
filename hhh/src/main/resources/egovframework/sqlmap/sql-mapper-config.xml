@@ -11,5 +11,6 @@
 		<typeAlias alias="costVO" type="egovframework.example.cost.sevice.CostVO"/>
 		<typeAlias alias="costMapper" type="egovframework.example.cost.sevice.impl.CostMapper"/>
 		<typeAlias alias="costReplyVO" type="egovframework.example.cost.sevice.CostReplyVO"/>
+		<typeAlias alias="userVO" type="egovframework.example.user.sevice.UserVO"/>
     </typeAliases>
 </configuration>

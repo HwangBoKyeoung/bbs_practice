@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+
+	<select id="userSelectList" resultType="userVO">
+		SELECT USER_NAME
+			 , USER_ID
+			 , USER_PWD
+			 , 'ROLE_' || UPPER(USER_ROLE) ROLE
+			 , USER_GENDER
+			 , USER_TEL
+		  FROM USERS
+		 ORDER BY USER_NAME
+	</select>
+	
+	<select id="userSelect" resultType="userVO" parameterType="userVO">
+		SELECT USER_NAME
+			 , USER_ID
+			 , USER_PWD
+			 , 'ROLE_' || UPPER(USER_ROLE) ROLE
+			 , USER_GENDER
+			 , USER_TEL
+		  FROM USERS
+		 WHERE USER_ID = #{userId}
+		 <if test="userPwd != '' or userPwd != null">
+			AND USER_PWD = #{userPwd}
+		 </if>
+	</select>
+	
+	<insert id="userInsert" parameterType="userVO">
+		INSERT INTO USERS(USER_NAME
+						, USER_ID
+						, USER_PWD
+						, USER_ROLE
+						, USER_GENDER
+						, USER_TEL)
+		VALUES(#{userName}
+			 , #{userId}
+			 , #{userPwd}
+			 , 'user'
+			 , #{userGender}
+			 , #{userTel})
+	</insert>
+	
+	<delete id="userDelete" parameterType="userVO">
+		DELETE FROM USERS
+		WHERE USER_ID = #{userId}
+		<if test="userPwd != '' or userPwd != null">
+			AND USER_PWD = #{userPwd}
+		</if>
+	</delete>
+	
+	<update id="userUpdate" parameterType="userVO">
+		UPDATE USERS
+		<set>
+			<if test="userPwd != '' or userPwd != null">
+				USER_PWD = #{userPwd},
+			</if>
+			<if test="userName != '' or userName != null">
+				USER_NAME = #{userName},
+			</if>
+			<if test="userTel != '' or userTel != null">
+				USER_TEL = #{userTel},
+			</if>
+		</set>
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<select id="userIdChk" parameterType="userVO" resultType="int">
+		SELECT CASE COUNT(*) WHEN 1 THEN 0
+			   ELSE 1 END AS "idNo"
+		  FROM USERS
+		 WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="userSelectLogin" resultType="userVO" parameterType="userVO">
+		SELECT USER_NAME
+			 , USER_ID
+			 , USER_PWD
+			 , 'ROLE_' || UPPER(USER_ROLE) ROLE
+			 , USER_GENDER
+			 , USER_TEL
+		  FROM USERS
+		 WHERE USER_ID = #{userId}
+	</select>
+	
+</mapper>

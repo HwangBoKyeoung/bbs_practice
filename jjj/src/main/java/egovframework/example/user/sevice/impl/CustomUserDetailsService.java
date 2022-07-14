@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import egovframework.example.user.sevice.SampleUser;
 import egovframework.example.user.sevice.UserService;
 import egovframework.example.user.sevice.UserVO;
 
@@ -34,8 +35,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		List<GrantedAuthority> auth = new ArrayList<>();
 		auth.add(new SimpleGrantedAuthority(vo.getRole()));
 		
-//		return new SampleUser(username, vo.getUserPwd(), auth);
-		return vo;
+		return new SampleUser(username, vo.getUserPwd(), auth);
+//		return vo;
 	}
 
 }

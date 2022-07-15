@@ -2,6 +2,7 @@ package egovframework.example.cost.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,8 @@ import egovframework.example.cost.sevice.CostService;
 import egovframework.example.cost.sevice.CostVO;
 import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.example.cost.sevice.PageVO;
+import egovframework.example.user.sevice.UserService;
+import egovframework.example.user.sevice.UserVO;
 
 @Controller
 public class CostController {
@@ -33,6 +36,9 @@ public class CostController {
 
 	@Resource(name = "costReplyService")
 	private CostReplyService costReplyService;
+	
+	@Resource(name = "userService")
+	private UserService userService;
 
 	@Autowired
 	private String uploadPath;
@@ -49,17 +55,24 @@ public class CostController {
 	}
 
 	@PostMapping("/costSelect.do")
-	public String costSelect(CostVO vo, Model model, CostReplyVO rvo) {
+	public String costSelect(CostVO vo, Model model, CostReplyVO rvo, Principal principal, UserVO uvo) {
 		System.out.println("uploadPath: ======================================" + uploadPath);
 		vo = costService.costSelect(vo);
 		rvo.setCostNo(vo.getCostNo());
 		List<CostReplyVO> replys = costReplyService.selectCostReply(rvo);
-
+		
+		String userId = principal.getName();
+		uvo.setUserId(userId);
+		uvo = userService.userSelectLogin(uvo);
+		
+		System.out.println("=================================userId : "+userId);
+		System.out.println("=================================uvo : "+uvo);
+		
 //		if (vo != null) {
 			model.addAttribute("replys", replys);
 			model.addAttribute("uploadPath", uploadPath);
 			model.addAttribute("cost", vo);
-			
+			model.addAttribute("user", uvo);
 //		}
 		
 		return "cost/costSelect";

@@ -16,6 +16,7 @@
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
 		<h5>${cost}</h5>
+		<h3>${user}</h3>
 		<table border="1">
 			<tbody>
 				<tr>
@@ -120,7 +121,11 @@
 									<td>${reply.replyWriter}&nbsp;&nbsp;</td>
 									<td>${reply.replyDate}&nbsp;&nbsp;</td>
 									<td>${reply.replyContent}&nbsp;</td>
-									<td><input type="button" value="삭제" onclick="deleteReply('${reply.replyNo}');" /></td>
+									<c:if test="${user.userId eq reply.replyWriter}">
+										<td>
+											<input type="button" value="삭제" onclick="deleteReply('${reply.replyNo}');" />
+										</td>
+									</c:if>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -129,6 +134,7 @@
 			</c:otherwise>
 			</c:choose>
 		</div>
+		<input type="hidden" value="${user.userId}" id="userName" />
 	<script>
 		function insertReply() {
 			$.ajax({
@@ -137,7 +143,7 @@
 				type : "post",
 				data : {
 					"costNo" : $("#costNo").val(),
-					"replyWriter" : "hong",
+					"replyWriter" : $("#userName").val(),
 					"replyContent" : $("#replyContent").val()
 				},
 				success : function(result) {

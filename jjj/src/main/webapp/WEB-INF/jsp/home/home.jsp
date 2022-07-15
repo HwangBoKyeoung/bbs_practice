@@ -16,11 +16,13 @@
 	<sec:authorize access="isAnonymous()">
 		<input type="button" value="로그인" onclick="location.href='userLoginForm.do'" />
 		<input type="button" value="회원가입" onclick="location.href='userRegisterForm.do'" />
+		<input type="button" value="영화리스트" onclick="location.href='movieSelectList.do'" />
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
 		<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<input type="button" value="경비전체리스트보기" onclick="location.href='costSelectList.do'" />
 		</sec:authorize>
+		<input type="button" value="영화리스트" onclick="location.href='movieSelectList.do'" />
 		<input type="button" value="일정보기" onclick="location.href='costCalendar.do'" />
 		<input type="button" value="로그아웃" onclick="location.href='logout'" />
 	</sec:authorize>

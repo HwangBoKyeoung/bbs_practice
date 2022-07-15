@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="movieMapper">
+	
+	<resultMap type="movieVO" id="movieVO">
+		<result property="movieNo" column="movie_no" />
+		<result property="movieName" column="movie_name" />
+		<result property="movieConent" column="movie_conent" />
+		<result property="movieHit" column="movie_hit" />
+		<result property="movieDirector" column="movie_director" />
+		<result property="movieActor" column="movie_actor" />
+		<result property="moviePrice" column="movie_price" />
+		<result property="movieNo" column="movie_no" />
+	</resultMap>
+	
+	<resultMap type="movieCdVO" id="movieCdVO">
+		<result property="" column="" />
+	</resultMap>
+	
+	<select id="selectListMovie" resultType="movieVO">
+		SELECT MOVIE_NO
+			 , MOVIE_NAME
+			 , MOVIE_CONENT
+			 , MOVIE_HIT
+			 , MOVIE_DIRECTOR
+			 , MOVIE_ACTOR
+			 , MOVIE_PRICE
+		  FROM MOVIES
+	</select>
+	
+	<select id="selectMovie" resultType="movieVO" parameterType="movieVO">
+		SELECT MOVIE_NO
+			 , MOVIE_NAME
+			 , MOVIE_CONENT
+			 , MOVIE_HIT
+			 , MOVIE_DIRECTOR
+			 , MOVIE_ACTOR
+			 , MOVIE_PRICE
+		  FROM MOVIES
+		 WHERE MOVIE_NO=#{movieNo}
+	</select>
+	
+	<insert id="insertMovie" parameterType="movieVO">
+		<selectKey keyProperty="movieNo" order="BEFORE" resultType="int">
+			SELECT NVL(MAX(MOVIE_NO),0) + 1
+			  FROM MOVIES
+		</selectKey>
+		INSERT INTO MOVIES (MOVIE_NO
+						  , MOVIE_NAME
+						  , MOVIE_CONENT
+						  , MOVIE_HIT
+						  , MOVIE_DIRECTOR
+						  , MOVIE_ACTOR
+						  , MOVIE_PRICE)
+		VALUES (#{movieNo}
+			  , #{movieName}
+			  , #{movieConent}
+			  , 0
+			  , #{movieDirector}
+			  , #{movieActor}
+			  , #{moviePrice})
+	</insert>
+	
+	<update id="updateMovie" parameterType="movieVO">
+		UPDATE MOVIES
+		<set>
+			<if test="movieContent != null or movieContent != ''">
+				MOVIE_CONENT = #{movieConent},
+			</if>		
+		</set>
+		 WHERE MOVIE_NO = #{movieNo}
+	</update>
+	
+	<delete id="deleteMovie" parameterType="movieVO">
+		DELETE FROM MOVIES
+		 WHERE MOVIE_NO = #{movieNo}
+	</delete>
+	
+	<select id="updateMovieHit" parameterType="movieVO">
+		UPDATE MOVIES
+		   SET MOVIE_HIT = NVL(MOVIE_HIT,0) + 1
+		 WHERE MOVIE_NO = #{movieNo}
+	</select>
+	
+	<select id="getList" resultType="movieVO">
+		<![CDATA[
+		SELECT MOVIE_NO
+			 , MOVIE_NAME
+			 , MOVIE_CONENT
+			 , MOVIE_HIT
+			 , MOVIE_DIRECTOR
+			 , MOVIE_ACTOR
+			 , MOVIE_PRICE
+		FROM (
+			  SELECT ROWNUM RN
+			  	   , A.*
+			  FROM (
+			  		SELECT MOVIE_NO
+						 , MOVIE_NAME
+						 , MOVIE_CONENT
+						 , MOVIE_HIT
+						 , MOVIE_DIRECTOR
+						 , MOVIE_ACTOR
+						 , MOVIE_PRICE
+					FROM MOVIES
+					WHERE
+					]]>
+						<if test="searchType == 'all'">
+							(MOVIE_NAME LIKE '%'||#{searchName}||'%' 
+							 OR MOVIE_CONENT LIKE '%'||#{searchName}||'%')
+						</if>
+						<if test="searchType == 'name'">
+							MOVIE_NAME LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == 'content'">
+							MOVIE_CONENT LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == '' or searchType == null">
+							1=1
+						</if>
+		<![CDATA[
+					ORDER BY 1
+				)A
+			)
+		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+    	]]>
+	</select>
+	
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*)
+		  FROM MOVIES
+		 WHERE 
+				<if test="searchType == 'all'">
+					(MOVIE_NAME LIKE '%'||#{searchName}||'%' 
+					 OR MOVIE_CONENT LIKE '%'||#{searchName}||'%')
+				</if>
+				<if test="searchType == 'name'">
+					MOVIE_NAME LIKE '%'||#{searchName}||'%'
+				</if>
+				<if test="searchType == 'content'">
+					MOVIE_CONENT LIKE '%'||#{searchName}||'%'
+				</if>
+				<if test="searchType == '' or searchType == null">
+					1=1
+				</if>
+	</select>
+	
+</mapper>

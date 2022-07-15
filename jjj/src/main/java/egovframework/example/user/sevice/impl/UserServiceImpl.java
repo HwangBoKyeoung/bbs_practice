@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import egovframework.example.user.sevice.UserService;
 import egovframework.example.user.sevice.UserVO;
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("userService")
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends EgovAbstractServiceImpl implements UserService {
 
 	@Resource(name = "userDAO")
 	private UserDAO userDAO;

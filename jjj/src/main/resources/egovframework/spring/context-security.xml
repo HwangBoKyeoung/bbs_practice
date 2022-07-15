@@ -10,6 +10,7 @@
 	<bean class="egovframework.example.user.sevice.impl.CustomLoginSuccessHandler" id="customLoginSuccessHandler" />
 	
 	<security:http auto-config="true">
+		<security:intercept-url pattern="/movieInsertForm.do" access="hasAuthority('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/**" access="permitAll" />
 		<security:form-login login-page="/userLoginForm.do"
 							 default-target-url="/"

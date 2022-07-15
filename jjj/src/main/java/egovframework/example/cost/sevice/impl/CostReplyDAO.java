@@ -15,20 +15,22 @@ public class CostReplyDAO {
 	@Resource(name="sqlSession")
 	private SqlSession query;
 	
+	private static final String namespace = "costReplyMapper.";
+	
 	List<CostReplyVO> selectCostReply(CostReplyVO vo) {
-		return query.selectList("selectCostReply", vo);
+		return query.selectList(namespace+"selectCostReply", vo);
 	}
 
 	int insertCostReply(CostReplyVO vo) {
-		return query.insert("insertCostReply", vo);
+		return query.insert(namespace+"insertCostReply", vo);
 	}
 
 	int updateCostReply(CostReplyVO vo) {
-		return query.update("updateCostReply", vo);
+		return query.update(namespace+"updateCostReply", vo);
 	}
 
 	int deleteCostReply(CostReplyVO vo) {
-		return query.delete("deleteCostReply", vo);
+		return query.delete(namespace+"deleteCostReply", vo);
 	}
 	
 }

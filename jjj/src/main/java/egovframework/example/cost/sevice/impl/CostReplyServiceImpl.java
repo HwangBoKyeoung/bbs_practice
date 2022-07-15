@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import egovframework.example.cost.sevice.CostReplyService;
 import egovframework.example.cost.sevice.CostReplyVO;
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("costReplyService")
-public class CostReplyServiceImpl implements CostReplyService {
+public class CostReplyServiceImpl extends EgovAbstractServiceImpl  implements CostReplyService {
 	
 	@Resource(name="costReplyDAO")
 	private CostReplyDAO costReplyDAO;

@@ -14,35 +14,37 @@ public class UserDAO {
 	
 	@Resource(name="sqlSession")
 	private SqlSession query;
+	
+	private static final String namespace = "userMapper.";
 
 	List<UserVO> userSelectList() {
-		return query.selectList("userSelectList");
+		return query.selectList(namespace+"userSelectList");
 	}
 
 	UserVO userSelect(UserVO vo) {
-		return query.selectOne("userSelect", vo);
+		return query.selectOne(namespace+"userSelect", vo);
 	}
 
 	int userInsert(UserVO vo) {
-		return query.insert("userInsert", vo);
+		return query.insert(namespace+"userInsert", vo);
 	}
 
 	int userDelete(UserVO vo) {
-		return query.delete("userDelete", vo);
+		return query.delete(namespace+"userDelete", vo);
 	}
 
 	int userUpdate(UserVO vo) {
-		return query.update("userUpdate", vo);
+		return query.update(namespace+"userUpdate", vo);
 	}
 	
 //	아이디중복체크 : 0=> 아이디생성가능, 1=> 아이디중복, else=> 아이디입력
 	int userIdChk(UserVO vo) {
-		return query.selectOne("userIdChk", vo);
+		return query.selectOne(namespace+"userIdChk", vo);
 	}
 
 //	아이디를 통해 비밀번호 찾기
 	UserVO userSelectLogin(UserVO vo) {
-		return query.selectOne("userSelectLogin", vo);
+		return query.selectOne(namespace+"userSelectLogin", vo);
 	}
 
 }

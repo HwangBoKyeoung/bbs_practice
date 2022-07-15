@@ -15,15 +15,16 @@
 	<br />
 	<div align="center">
 		<form action="login" method="post">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<table>
 				<tbody>
 					<tr>
 						<th>아이디</th>
-						<td><input type="text" name="userId" id="userId" placeholder="ex. 홍길동" required /></td>
+						<td><input type="text" name="username" id="username" required /></td>
 					</tr>
 					<tr>
 						<th>비밀번호</th>
-						<td><input type="password" name="userPwd" id="userPwd" required /></td>
+						<td><input type="password" name="password" id="password" required /></td>
 					</tr>
 				</tbody>
 			</table><br />

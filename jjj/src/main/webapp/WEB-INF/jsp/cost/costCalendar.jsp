@@ -84,6 +84,9 @@ body {
 </style>
 </head>
 <body>
-	<div id='calendar'></div>
+	<div id='calendar'></div><br/>
+	<div align="center">
+		<button onclick="location.href='home.do'" style="background-color: red; width: 800px; height: 100px;">목록으로</button>
+	</div>
 </body>
 </html>

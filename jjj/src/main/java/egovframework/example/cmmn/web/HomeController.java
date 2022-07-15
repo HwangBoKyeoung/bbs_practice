@@ -1,7 +1,5 @@
 package egovframework.example.cmmn.web;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 	
 	@RequestMapping(value="/")
-	public String home(@AuthenticationPrincipal UserDetails user) {
-		
+	public String home() {
 		return "home/home";
 	}
 	

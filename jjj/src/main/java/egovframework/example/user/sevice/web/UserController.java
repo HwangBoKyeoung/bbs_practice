@@ -3,7 +3,6 @@ package egovframework.example.user.sevice.web;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +19,8 @@ public class UserController {
 	@Resource(name="userService")
 	private UserService userService;
 	
-	@Autowired
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	/*@Autowired
+	private BCryptPasswordEncoder bcrypt;*/
 	
 	@RequestMapping("/userLoginForm.do")
 	public String userLoginForm() {
@@ -44,9 +43,14 @@ public class UserController {
 	
 	@PostMapping("/userRegister.do")
 	public String userRegister(UserVO vo, HttpSession session, Model model) {
+		/*String userPwd = vo.getUserPwd();
+		String encPwd = bcrypt.encode(userPwd);
+		vo.setUserPwd(encPwd);*/
+		
 		String userPwd = vo.getUserPwd();
-		String encPwd = bcryptPasswordEncoder.encode(userPwd);
-		vo.setUserPwd(encPwd);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+		String result = encoder.encode(userPwd);
+		vo.setUserPwd(result);
 		
 		int insert = userService.userInsert(vo);
 		if(insert == 0) {
@@ -58,7 +62,7 @@ public class UserController {
 		return "cmmn/success";
 	}
 	
-	@PostMapping("/login.do")
+/*	@PostMapping("/login.do")
 	public String login(HttpSession session, UserVO vo, Model model) {
 		String userPwd = vo.getUserPwd();
 		String encPwd = bcryptPasswordEncoder.encode(userPwd);
@@ -92,6 +96,6 @@ public class UserController {
 		session.invalidate();
 		model.addAttribute("message", "로그아웃이 완료되었습니다.");
 		return "cmmn/success";
-	}
+	}*/
 	
 }

@@ -7,11 +7,13 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.egovframe.go.kr/schema/egov-security http://www.egovframe.go.kr/schema/egov-security/egov-security-3.7.xsd">
 	
+	<bean class="egovframework.example.user.sevice.impl.CustomLoginSuccessHandler" id="customLoginSuccessHandler" />
+	
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/**" access="permitAll" />
 		<security:form-login login-page="/userLoginForm.do"
 							 default-target-url="/"
-							 login-processing-url="/login" />
+							 authentication-success-handler-ref="customLoginSuccessHandler" />
 		<security:logout invalidate-session="true"
 						 logout-url="/logout"
 						 logout-success-url="/" />
@@ -20,10 +22,10 @@
 	
 	<security:authentication-manager>
 		<security:authentication-provider user-service-ref="userDetailsService">
-			<security:password-encoder ref="bcryptPasswordEncoder" />
+			<security:password-encoder hash="bcrypt" />
 		</security:authentication-provider>
 	</security:authentication-manager>
 	
-	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bcryptPasswordEncoder" />
+	<!-- <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bcryptPasswordEncoder" /> -->
 	<bean class="egovframework.example.user.sevice.impl.CustomUserDetailsService" id="userDetailsService" />
 </beans>

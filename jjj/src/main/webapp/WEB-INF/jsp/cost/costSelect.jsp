@@ -92,39 +92,43 @@
 		<input type="hidden" value="${cost.costNo}" name="costNo" id="costNo" />
 		<input type="submit" value="삭제하기" />
 	</form>
-
-	<div align="center">
-		<hr />
-		<h2>=============댓글=============</h2>
-		<div>
-			<textarea rows="30" cols="50" placeholder="댓글작성해주세요"
-				name="replyContent" id="replyContent"></textarea>
-			<input type="submit" value="댓글입력" onclick="insertReply();" />
+		<div align="center">
+			<hr />
+			<h2>=============댓글=============</h2>
+			<div>
+				<textarea rows="30" cols="50" placeholder="댓글작성해주세요"
+					name="replyContent" id="replyContent"></textarea>
+				<input type="submit" value="댓글입력" onclick="insertReply();" />
+			</div>
+			<hr />
+			<c:choose>
+			<c:when test="${empty replys}">
+				<h2>아직 입력된 댓글이 없습니다.</h2>
+			</c:when>
+			<c:otherwise>
+				<div id="replyShow">
+					<table>
+						<tbody id="replyTbody">
+							<tr>
+								<td>작성자&nbsp;&nbsp;</td>
+								<td>작성일자&nbsp;&nbsp;</td>
+								<td>댓글내용&nbsp;&nbsp;</td>
+								<td>삭제&nbsp;</td>
+							</tr>
+							<c:forEach items="${replys}" var="reply">
+								<tr>
+									<td>${reply.replyWriter}&nbsp;&nbsp;</td>
+									<td>${reply.replyDate}&nbsp;&nbsp;</td>
+									<td>${reply.replyContent}&nbsp;</td>
+									<td><input type="button" value="삭제" onclick="deleteReply('${reply.replyNo}');" /></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</c:otherwise>
+			</c:choose>
 		</div>
-		<hr />
-		<div id="replyShow">
-			<table>
-				<tbody id="replyTbody">
-					<tr>
-						<td>작성자&nbsp;&nbsp;</td>
-						<td>작성일자&nbsp;&nbsp;</td>
-						<td>댓글내용&nbsp;&nbsp;</td>
-						<td>삭제&nbsp;</td>
-					</tr>
-					<c:forEach items="${replys}" var="reply">
-						<tr>
-							<td>${reply.replyWriter}&nbsp;&nbsp;</td>
-							<td>${reply.replyDate}&nbsp;&nbsp;</td>
-							<td>${reply.replyContent}&nbsp;</td>
-							<td><input type="button" value="삭제" onclick="deleteReply('${reply.replyNo}');" /></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-
-		</div>
-	</div>
-
 	<script>
 		function insertReply() {
 			$.ajax({

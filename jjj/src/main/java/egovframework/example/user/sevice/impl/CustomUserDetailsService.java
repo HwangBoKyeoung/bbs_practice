@@ -26,17 +26,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserVO vo = new UserVO();
 		vo.setUserId(username);
-		vo = userService.userSelectLogin(vo);
+		UserVO user = userService.userSelectLogin(vo);
 		
-		if(vo == null) {
+		if(user == null) {
 			throw new UsernameNotFoundException(username);
 		}
 		
 		List<GrantedAuthority> auth = new ArrayList<>();
-		auth.add(new SimpleGrantedAuthority(vo.getRole()));
+		auth.add(new SimpleGrantedAuthority(user.getRole()));
 		
-		return new SampleUser(username, vo.getUserPwd(), auth);
-//		return vo;
+		return new SampleUser(username, user.getUserPwd(), auth);
 	}
 
 }

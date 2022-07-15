@@ -31,37 +31,44 @@
 			</form>
 		</div>
 		<h5>${costs}</h5>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>순번</th>
-					<th>날짜</th>
-					<th>결제방식</th>
-					<th>결제분류</th>
-					<th>상세내용</th>
-					<th>결제자</th>
-					<th>금액</th>
-					<th>파일명</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${costs}" var="cost">
-					<tr onmouseover="this.style.backgroundColor='gray'"
-						onmouseout="this.style.backgroundColor='transparent'"
-						onclick="costSelect('${cost.costNo}')">
-						<td>${cost.costNo}</td>
-						<td><fmt:formatDate value="${cost.costDate}"
-								pattern="yyyy-MM-dd" /></td>
-						<td>${cost.costMethod}</td>
-						<td>${cost.costCategory}</td>
-						<td>${cost.costDetail}</td>
-						<td>${cost.costBuyer}</td>
-						<td><fmt:formatNumber value="${cost.costSum}" pattern="#,###" /></td>
-						<td>${cost.fileName}</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+		<c:choose>
+			<c:when test="${empty costs}">
+				<h2>게시글이 존재하지 않습니다.</h2>
+			</c:when>
+			<c:otherwise>
+				<table border="1">
+					<thead>
+						<tr>
+							<th>순번</th>
+							<th>날짜</th>
+							<th>결제방식</th>
+							<th>결제분류</th>
+							<th>상세내용</th>
+							<th>결제자</th>
+							<th>금액</th>
+							<th>파일명</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${costs}" var="cost">
+							<tr onmouseover="this.style.backgroundColor='gray'"
+								onmouseout="this.style.backgroundColor='transparent'"
+								onclick="costSelect('${cost.costNo}')">
+								<td>${cost.costNo}</td>
+								<td><fmt:formatDate value="${cost.costDate}"
+										pattern="yyyy-MM-dd" /></td>
+								<td>${cost.costMethod}</td>
+								<td>${cost.costCategory}</td>
+								<td>${cost.costDetail}</td>
+								<td>${cost.costBuyer}</td>
+								<td><fmt:formatNumber value="${cost.costSum}" pattern="#,###" /></td>
+								<td>${cost.fileName}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</c:otherwise>
+		</c:choose>
 	</div>
 	<br />
 	<div id="content" align="center">
@@ -98,6 +105,10 @@
 		<input type="hidden" name="searchName"
 			value="${pageVO.cri.searchName }" />
 	</form>
+	
+	<div align="center">
+		<button onclick="location.href='home.do'" style="background-color: red; width: 800px; height: 100px;">홈으로</button>
+	</div>
 
 	<script>
 		console.log(typeof (parseInt($("#pageNum").val())));

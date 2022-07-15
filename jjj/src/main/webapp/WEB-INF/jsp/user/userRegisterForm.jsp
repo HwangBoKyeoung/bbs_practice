@@ -19,7 +19,7 @@
 	<br />
 	<div align="center">
 		<form action="userRegister.do" method="post" onsubmit="return registerFnc();">
-			<sec:csrfInput />
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<table>
 				<tbody>
 					<tr>

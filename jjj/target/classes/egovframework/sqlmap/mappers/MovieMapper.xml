@@ -11,6 +11,7 @@
 		<result property="movieActor" column="movie_actor" />
 		<result property="moviePrice" column="movie_price" />
 		<result property="movieNo" column="movie_no" />
+		<collection property="movieCdVO" resultMap="movieCdVO" />
 	</resultMap>
 	
 	<resultMap type="movieCdVO" id="movieCdVO">

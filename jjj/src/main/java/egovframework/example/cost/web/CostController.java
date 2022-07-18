@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,7 +56,9 @@ public class CostController {
 	}
 
 	@PostMapping("/costSelect.do")
-	public String costSelect(CostVO vo, Model model, CostReplyVO rvo, Principal principal, UserVO uvo) {
+	public String costSelect(CostVO vo, Model model, CostReplyVO rvo, Principal principal, UserVO uvo,
+							@RequestParam("pageNum") int pageNum, @RequestParam("amount") int amount, 
+							@RequestParam("searchType") String searchType, @RequestParam("searchName") String searchName) {
 		System.out.println("uploadPath: ======================================" + uploadPath);
 		vo = costService.costSelect(vo);
 		rvo.setCostNo(vo.getCostNo());
@@ -69,10 +72,15 @@ public class CostController {
 		System.out.println("=================================uvo : "+uvo);
 		
 //		if (vo != null) {
-			model.addAttribute("replys", replys);
-			model.addAttribute("uploadPath", uploadPath);
-			model.addAttribute("cost", vo);
-			model.addAttribute("user", uvo);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("amount", amount);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchName", searchName);
+		
+		model.addAttribute("replys", replys);
+		model.addAttribute("uploadPath", uploadPath);
+		model.addAttribute("cost", vo);
+		model.addAttribute("user", uvo);
 //		}
 		
 		return "cost/costSelect";

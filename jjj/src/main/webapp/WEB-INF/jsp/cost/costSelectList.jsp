@@ -95,6 +95,11 @@
 
 	<form action="costSelect.do" method="post" name="frm" id="frm">
 		<input type="hidden" id="costNo" name="costNo" />
+		<input type="hidden" name="pageNum" value="${pageVO.pageNum }" /> <input
+			type="hidden" name="amount" value="${pageVO.amount }" /> <input
+			type="hidden" name="searchType" value="${pageVO.cri.searchType }" />
+		<input type="hidden" name="searchName"
+			value="${pageVO.cri.searchName }" />
 	</form>
 
 	<!-- 검색할 때마다 유지되길 원하는 값 -->

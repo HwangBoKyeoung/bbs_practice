@@ -1,6 +1,5 @@
 package egovframework.example.movie.service.web;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;

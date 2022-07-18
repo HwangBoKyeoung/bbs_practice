@@ -70,7 +70,14 @@
 		</div>
 		
 		<br />
-		<input type="button" style="width: 200px; height: 100px; background-color: red; color: white;" value="목록으로" onclick="location.href='costSelectList.do'" />
+		<form action="costSelectList.do" method="post">
+			<input type="hidden" value="${pageNum}" name="pageNum" />
+			<input type="hidden" value="${amount}" name="amount" />
+			<input type="hidden" value="${searchType}" name="searchType" />
+			<input type="hidden" value="${searchName}" name="searchName" />
+			<input type="submit" style="width: 200px; height: 100px; background-color: red; color: white;" value="목록으로" />
+		</form>
+		
 	</div>
 
 	<form action="costUpdateForm.do" method="post">

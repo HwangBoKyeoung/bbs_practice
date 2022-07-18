@@ -1,12 +1,14 @@
 package egovframework.example.movie.sevice.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import egovframework.example.cost.sevice.CriteriaVO;
+import egovframework.example.movie.sevice.MovieCodeVO;
 import egovframework.example.movie.sevice.MovieService;
 import egovframework.example.movie.sevice.MovieVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -21,9 +23,16 @@ public class MovieServiceImpl extends EgovAbstractServiceImpl implements MovieSe
 	public List<MovieVO> selectListMovie() {
 		return movieDAO.selectListMovie();
 	}
-
+	
+//	영화정보 1건조회
 	@Override
-	public MovieVO selectMovie(MovieVO vo) {
+	public MovieVO selectMovieOne(MovieVO vo) {
+		return movieDAO.selectMovieOne(vo);
+	}
+	
+//	영화 1건에 들어가는 첨부이미지 list 조회
+	@Override
+	public List<MovieVO> selectMovie(MovieVO vo) {
 		return movieDAO.selectMovie(vo);
 	}
 
@@ -55,6 +64,26 @@ public class MovieServiceImpl extends EgovAbstractServiceImpl implements MovieSe
 	@Override
 	public int getTotal(CriteriaVO cri) {
 		return movieDAO.getTotal(cri);
+	}
+
+	@Override
+	public int procedureCall(Map<String, Object> map) {
+		return movieDAO.procedureCall(map);
+	}
+
+	@Override
+	public int selectMovieCdNo() {
+		return movieDAO.selectMovieCdNo();
+	}
+
+	@Override
+	public int insertMovieCode(MovieCodeVO cvo) {
+		return movieDAO.insertMovieCode(cvo);
+	}
+
+	@Override
+	public int deleteMovieCode(MovieVO cvo) {
+		return movieDAO.deleteMovieCode(cvo);
 	}
 
 }

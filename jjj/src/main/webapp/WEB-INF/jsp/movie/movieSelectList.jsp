@@ -98,11 +98,10 @@
 
 	<!-- 검색할 때마다 유지되길 원하는 값 -->
 	<form id="actionForm" action="movieSelectList.do" method="get">
-		<input type="hidden" name="pageNum" value="${pageVO.pageNum }" /> <input
-			type="hidden" name="amount" value="${pageVO.amount }" /> <input
-			type="hidden" name="searchType" value="${pageVO.cri.searchType }" />
-		<input type="hidden" name="searchName"
-			value="${pageVO.cri.searchName }" />
+		<input type="hidden" name="pageNum" value="${pageVO.pageNum }" /> 
+		<input type="hidden" name="amount" value="${pageVO.amount }" /> 
+		<input type="hidden" name="searchType" value="${pageVO.cri.searchType }" />
+		<input type="hidden" name="searchName" value="${pageVO.cri.searchName }" />
 	</form>
 	
 	<div align="center">

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="movieMapper">
 	
-	<resultMap type="movieVO" id="movieVO">
+	<resultMap type="movieVO" id="movieResultMap">
 		<result property="movieNo" column="movie_no" />
 		<result property="movieName" column="movie_name" />
 		<result property="movieConent" column="movie_conent" />
@@ -10,13 +10,18 @@
 		<result property="movieDirector" column="movie_director" />
 		<result property="movieActor" column="movie_actor" />
 		<result property="moviePrice" column="movie_price" />
-		<result property="movieNo" column="movie_no" />
-		<collection property="movieCdVO" resultMap="movieCdVO" />
+		<result property="movieCd" column="movie_cd" />
+		<collection property="movieCodeVO" resultMap="movieCdResultMap" />
 	</resultMap>
 	
-	<resultMap type="movieCdVO" id="movieCdVO">
-		<result property="" column="" />
+	<resultMap type="movieCodeVO" id="movieCdResultMap">
+		<result property="movieCdNo" column="movie_cd_no" />
+		<result property="movieCd" column="movie_cd" />
+		<result property="movieCdDetail" column="movie_cd_detail" />
+		<result property="movieCdRename" column="movie_cd_rename" />
 	</resultMap>
+	
+	<resultMap id="procedureCall" type="hashmap" />
 	
 	<select id="selectListMovie" resultType="movieVO">
 		SELECT MOVIE_NO
@@ -26,10 +31,19 @@
 			 , MOVIE_DIRECTOR
 			 , MOVIE_ACTOR
 			 , MOVIE_PRICE
+			 , MOVIE_CD
 		  FROM MOVIES
 	</select>
 	
-	<select id="selectMovie" resultType="movieVO" parameterType="movieVO">
+	<select id="selectMovie" resultMap="movieResultMap" parameterType="movieVO">
+		   SELECT C.MOVIE_CD_DETAIL
+			 	, C.MOVIE_CD_RENAME
+		  FROM MOVIES M, MOVIE_CODE C
+		 WHERE M.MOVIE_NO = C.MOVIE_CD
+		   AND M.MOVIE_NO=#{movieNo}
+	</select>
+	
+	<select id="selectMovieOne" resultType="movieVO" parameterType="movieVO">
 		SELECT MOVIE_NO
 			 , MOVIE_NAME
 			 , MOVIE_CONENT
@@ -42,10 +56,6 @@
 	</select>
 	
 	<insert id="insertMovie" parameterType="movieVO">
-		<selectKey keyProperty="movieNo" order="BEFORE" resultType="int">
-			SELECT NVL(MAX(MOVIE_NO),0) + 1
-			  FROM MOVIES
-		</selectKey>
 		INSERT INTO MOVIES (MOVIE_NO
 						  , MOVIE_NAME
 						  , MOVIE_CONENT
@@ -53,13 +63,24 @@
 						  , MOVIE_DIRECTOR
 						  , MOVIE_ACTOR
 						  , MOVIE_PRICE)
-		VALUES (#{movieNo}
+		VALUES (MOVIES_SEQ.NEXTVAL
 			  , #{movieName}
 			  , #{movieConent}
 			  , 0
 			  , #{movieDirector}
 			  , #{movieActor}
 			  , #{moviePrice})
+	</insert>
+	
+	<insert id="insertMovieCode" parameterType="movieCodeVO">
+		INSERT INTO MOVIE_CODE(MOVIE_CD_NO
+							 , MOVIE_CD
+							 , MOVIE_CD_DETAIL
+							 , MOVIE_CD_RENAME)
+		VALUES (MOVIE_CODE_SEQ.NEXTVAL
+			  , MOVIES_SEQ.CURRVAL
+			  , #{movieCdDetail}
+			  , #{movieCdRename})
 	</insert>
 	
 	<update id="updateMovie" parameterType="movieVO">
@@ -75,6 +96,11 @@
 	<delete id="deleteMovie" parameterType="movieVO">
 		DELETE FROM MOVIES
 		 WHERE MOVIE_NO = #{movieNo}
+	</delete>
+	
+	<delete id="deleteMovieCode" parameterType="movieVO">
+		DELETE FROM MOVIE_CODE
+		 WHERE MOVIE_CD = #{movieNo}
 	</delete>
 	
 	<select id="updateMovieHit" parameterType="movieVO">
@@ -94,7 +120,13 @@
 			 , MOVIE_PRICE
 		FROM (
 			  SELECT ROWNUM RN
-			  	   , A.*
+			  	   , A.MOVIE_NO
+			  	   , A.MOVIE_NAME
+			  	   , A.MOVIE_CONENT
+			  	   , A.MOVIE_HIT
+			  	   , A.MOVIE_DIRECTOR
+			  	   , A.MOVIE_ACTOR
+			  	   , A.MOVIE_PRICE
 			  FROM (
 			  		SELECT MOVIE_NO
 						 , MOVIE_NAME
@@ -144,6 +176,23 @@
 				<if test="searchType == '' or searchType == null">
 					1=1
 				</if>
+	</select>
+	
+	<!-- 프로시저는 사용하지 말기.  -->
+	<insert id="procedureCall" statementType="CALLABLE">
+		{CALL FORWIZ_PCD(#{v_name,        mode=IN,    jdbcType=VARCHAR,    javaType=STRING},
+						 #{v_conent,      mode=IN,    jdbcType=VARCHAR,    javaType=STRING},
+						 #{v_director,    mode=IN,    jdbcType=VARCHAR,    javaType=STRING},
+						 #{v_actor,       mode=IN,    jdbcType=VARCHAR,    javaType=STRING},
+						 #{v_price,       mode=IN,    jdbcType=INTEGER,    javaType=INT},
+						 #{v_cd,          mode=IN,    jdbcType=VARCHAR,    javaType=STRING},
+						 #{v_cd_detail,   mode=IN,    jdbcType=VARCHAR,    javaType=STRING},
+						 #{v_cd_rename,   mode=IN,    jdbcType=VARCHAR,    javaType=STRING})}
+	</insert>
+	
+	<select id="selectMovieCdNo" resultType="int">
+		SELECT NVL(MAX(MOVIE_NO), 0) "MOVIE_NO"
+		  FROM MOVIES
 	</select>
 	
 </mapper>

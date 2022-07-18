@@ -9,9 +9,9 @@
     <typeAliases>
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 		<typeAlias alias="costVO" type="egovframework.example.cost.sevice.CostVO"/>
-		<typeAlias alias="costMapper" type="egovframework.example.cost.sevice.impl.CostMapper"/>
 		<typeAlias alias="costReplyVO" type="egovframework.example.cost.sevice.CostReplyVO"/>
 		<typeAlias alias="userVO" type="egovframework.example.user.sevice.UserVO"/>
 		<typeAlias alias="movieVO" type="egovframework.example.movie.sevice.MovieVO"/>
+		<typeAlias alias="movieCodeVO" type="egovframework.example.movie.sevice.MovieCodeVO"/>
     </typeAliases>
 </configuration>

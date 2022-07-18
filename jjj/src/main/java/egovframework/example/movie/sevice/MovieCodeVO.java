@@ -5,6 +5,7 @@ public class MovieCodeVO {
 	private int movieCdNo;
 	private String movieCd;
 	private String movieCdDetail;
+	private String movieCdRename;
 
 	public int getMovieCdNo() {
 		return movieCdNo;
@@ -30,10 +31,18 @@ public class MovieCodeVO {
 		this.movieCdDetail = movieCdDetail;
 	}
 
+	public String getMovieCdRename() {
+		return movieCdRename;
+	}
+
+	public void setMovieCdRename(String movieCdRename) {
+		this.movieCdRename = movieCdRename;
+	}
+
 	@Override
 	public String toString() {
 		return "MovieCodeVO [movieCdNo=" + movieCdNo + ", movieCd=" + movieCd + ", movieCdDetail=" + movieCdDetail
-				+ "]";
+				+ ", movieCdRename=" + movieCdRename + "]";
 	}
 
 }

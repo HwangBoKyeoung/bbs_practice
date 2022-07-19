@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.example.movie.sevice.MovieCodeVO;
+import egovframework.example.movie.sevice.MovieReplyVO;
 import egovframework.example.movie.sevice.MovieService;
 import egovframework.example.movie.sevice.MovieVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -84,6 +85,27 @@ public class MovieServiceImpl extends EgovAbstractServiceImpl implements MovieSe
 	@Override
 	public int deleteMovieCode(MovieVO cvo) {
 		return movieDAO.deleteMovieCode(cvo);
+	}
+
+//	영화댓글 기능
+	@Override
+	public List<MovieReplyVO> selectListReply(MovieVO vo) {
+		return movieDAO.selectListReply(vo);
+	}
+
+	@Override
+	public int deleteReply(MovieReplyVO rvo) {
+		return movieDAO.deleteReply(rvo);
+	}
+
+	@Override
+	public int insertReply(MovieReplyVO rvo) {
+		return movieDAO.insertReply(rvo);
+	}
+
+	@Override
+	public float avgReplyStar(MovieVO vo) {
+		return movieDAO.avgReplyStar(vo);
 	}
 
 }

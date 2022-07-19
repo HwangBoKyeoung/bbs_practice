@@ -30,7 +30,7 @@
 					type="hidden" name="amount" value="${pageVO.cri.amount}" />
 			</form>
 		</div>
-		<h5>${movies}</h5>
+		
 		<c:choose>
 			<c:when test="${empty movies}">
 				<h2>영화리스트가 존재하지 않습니다.</h2>

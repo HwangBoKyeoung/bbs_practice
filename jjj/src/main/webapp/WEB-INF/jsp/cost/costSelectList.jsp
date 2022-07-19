@@ -11,8 +11,6 @@
 <title>WELCOME HOME</title>
 </head>
 <body>
-	<input type="text" value="${pageVO.cri.pageNum}" id="pageNum" />
-	<input type="text" value="${pageVO.cri.amount}" id="amount" />
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
 		<div align="right">
@@ -30,7 +28,6 @@
 					type="hidden" name="amount" value="${pageVO.cri.amount}" />
 			</form>
 		</div>
-		<h5>${costs}</h5>
 		<c:choose>
 			<c:when test="${empty costs}">
 				<h2>게시글이 존재하지 않습니다.</h2>

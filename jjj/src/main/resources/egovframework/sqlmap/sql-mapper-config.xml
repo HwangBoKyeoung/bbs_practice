@@ -13,5 +13,6 @@
 		<typeAlias alias="userVO" type="egovframework.example.user.sevice.UserVO"/>
 		<typeAlias alias="movieVO" type="egovframework.example.movie.sevice.MovieVO"/>
 		<typeAlias alias="movieCodeVO" type="egovframework.example.movie.sevice.MovieCodeVO"/>
+		<typeAlias alias="movieReplyVO" type="egovframework.example.movie.sevice.MovieReplyVO"/>
     </typeAliases>
 </configuration>

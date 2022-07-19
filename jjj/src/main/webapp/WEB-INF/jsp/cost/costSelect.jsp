@@ -7,8 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <title>WELCOME HOME</title>
 </head>
@@ -113,6 +112,7 @@
 			<c:when test="${empty replys}">
 				<h2>아직 입력된 댓글이 없습니다.</h2>
 			</c:when>
+			
 			<c:otherwise>
 				<div id="replyShow">
 					<table>

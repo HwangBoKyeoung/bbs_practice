@@ -11,6 +11,36 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <title>WELCOME HOME</title>
+<style>
+	#myform fieldset {
+	    display: inline-block;
+	    direction: rtl;
+	    border: 0;
+	}
+	
+	#myform input[type=radio] {
+	    display: none;
+	}
+	
+	#myform label {
+	    font-size: 3em;
+	    color: transparent;
+	    text-shadow: 0 0 0 #f0f0f0;
+	}
+	
+	#myform label:hover {
+	    text-shadow: 0 0 0 rgba(250,208,0,0.99);
+	}
+	
+	/* label에 마우스 오버했을 때 형제 label도 같이 효과 적용 */
+	#myform label:hover ~ label {
+	    text-shadow: 0 0 0 rgba(250,208,0,0.99);
+	}
+	
+	#myform input[type=radio]:checked ~ label {
+	    text-shadow: 0 0 0 rgba(250,208,0,0.99);
+	}
+</style>
 </head>
 <body>
 	<div align="center">
@@ -27,6 +57,8 @@
 			${movie.movieCodeVO.movieCdDetail}
 		</c:forEach>
 		<h3>${user}</h3>
+		<br />
+		<h1>평점 : ${avg}점 </h1>
 		<table border="1">
 			<tbody>
 				<tr>
@@ -76,29 +108,29 @@
 			value="목록으로" onclick="location.href='movieSelectList.do'" />
 	</div>
 
-	<%-- <form action="costUpdateForm.do" method="post">
-		<input type="hidden" value="${cost.costNo}" name="costNo" id="costNo" />
-		<fmt:formatDate value="${cost.costDate}" pattern="yyyy-MM-dd" var="costDt" />
-		<input type="hidden" value="${costDt}" name="costDate" id="costDate" />
-		<input type="hidden" value="${cost.costMethod}" name="costMethod" id="costMethod" /> 
-		<input type="hidden" value="${cost.costCategory}" name="costCategory" id="costCategory" /> 
-		<input type="hidden" value="${cost.costDetail}" name="costDetail" id="costDetail" /> 
-		<input type="hidden" value="${cost.costBuyer}" name="costBuyer" id="costBuyer" /> 
-		<input type="hidden" value="${cost.costSum}" name="costSum" id="costSum" /> 
-		<input type="hidden" value="${cost.fileName}" name="fileName" id="fileName" /> 
-		<input type="submit" value="수정하기" />
-	</form> --%>
-
 	<form action="movieDelete.do" method="post">
 		<input type="hidden" value="${movie.movieNo}" name="movieNo" id="movieNo" />
 		<input type="submit" value="삭제하기" />
 	</form>
-	<%-- <div align="center">
+	<div align="center">
 		<hr />
 		<h2>=============댓글=============</h2>
 		<div>
-			<textarea rows="30" cols="50" placeholder="댓글작성해주세요"
-				name="replyContent" id="replyContent"></textarea>
+			<form name="myform" id="myform" method="post">
+				<fieldset>
+					<input type="radio" name="movieReplyStar" value="5" id="rate1" />
+					<label for="rate1">★</label>
+					<input type="radio" name="movieReplyStar" value="4" id="rate2" />
+					<label for="rate2">★</label>
+					<input type="radio" name="movieReplyStar" value="3" id="rate3" />
+					<label for="rate3">★</label>
+					<input type="radio" name="movieReplyStar" value="2" id="rate4" />
+					<label for="rate4">★</label>
+					<input type="radio" name="movieReplyStar" value="1" id="rate5" />
+					<label for="rate5">★</label>
+				</fieldset>
+			</form>
+			<textarea rows="30" cols="50" placeholder="댓글작성해주세요" name="movieReplyConent" id="movieReplyConent"></textarea>
 			<input type="submit" value="댓글입력" onclick="insertReply();" />
 		</div>
 		<hr />
@@ -111,19 +143,28 @@
 					<table>
 						<tbody id="replyTbody">
 							<tr>
-								<td>작성자&nbsp;&nbsp;</td>
-								<td>작성일자&nbsp;&nbsp;</td>
+								<td>작 성  자&nbsp;&nbsp;</td>
 								<td>댓글내용&nbsp;&nbsp;</td>
-								<td>삭제&nbsp;</td>
+								<td>별      점&nbsp;&nbsp;</td>
+								<td>삭      제&nbsp;</td>
 							</tr>
 							<c:forEach items="${replys}" var="reply">
 								<tr>
-									<td>${reply.replyWriter}&nbsp;&nbsp;</td>
-									<td>${reply.replyDate}&nbsp;&nbsp;</td>
-									<td>${reply.replyContent}&nbsp;</td>
-									<c:if test="${user.userId eq reply.replyWriter}">
+									<td>${reply.movieReplyWriter}&nbsp;&nbsp;</td>
+									<td>${reply.movieReplyConent}&nbsp;</td>
+									<td>
+										<c:choose>
+											<c:when test="${reply.movieReplyStar == 1}">★☆☆☆☆</c:when>
+											<c:when test="${reply.movieReplyStar == 2}">★★☆☆☆</c:when>
+											<c:when test="${reply.movieReplyStar == 3}">★★★☆☆</c:when>
+											<c:when test="${reply.movieReplyStar == 4}">★★★★☆</c:when>
+											<c:when test="${reply.movieReplyStar == 5}">★★★★★</c:when>
+											<c:otherwise>☆☆☆☆☆</c:otherwise>
+										</c:choose>
+									</td>
+									<c:if test="${user.userId eq reply.movieReplyWriter}">
 										<td><input type="button" value="삭제"
-											onclick="deleteReply('${reply.replyNo}');" /></td>
+											onclick="deleteReply('${reply.movieReplyNo}');" /></td>
 									</c:if>
 								</tr>
 							</c:forEach>
@@ -132,22 +173,34 @@
 				</div>
 			</c:otherwise>
 		</c:choose>
-	</div> --%>
+	</div>
+	<input type="hidden" id="movieNo" value="${movie.movieNo}"/>
 	<input type="text" value="${user.userId}" id="userName" />
+	<input type="hidden" id="movieReplyStar" />
 	<script>
-		/* function insertReply() {
+		$("#myform input").on("click", function(){
+			let id = $(this).val();
+			$("#movieReplyStar").val(id);
+			let mv = $("#movieReplyStar").val();
+			console.log(mv);
+		});
+		
+		function insertReply() {
 			$.ajax({
-				url : "ajaxInsertReply.do",
+				url : "ajaxInsertMovieReply.do",
 				dataType : "json",
 				type : "post",
 				data : {
-					"costNo" : $("#costNo").val(),
-					"replyWriter" : $("#userName").val(),
-					"replyContent" : $("#replyContent").val()
+					"movieNo" : $("#movieNo").val(),
+					"movieReplyConent" : $("#movieReplyConent").val(),
+					"movieReplyWriter" : $("#userName").val(),
+					"movieReplyStar" : $("#movieReplyStar").val()
 				},
 				success : function(result) {
 					console.log(result);
-					ajaxReplyView(result);
+					if(result=="success"){
+						ajaxReplyView(result);
+					}
 				},
 				error : function(err) {
 					console.log(err);
@@ -164,10 +217,10 @@
 		
 		function deleteReply(id) {
 			$.ajax({
-				url: "ajaxDeleteReply.do",
+				url: "ajaxDeleteMovieReply.do",
 				dataType: "text",
 				type: "post",
-				data: {"replyNo":id},
+				data: {"movieReplyNo":id},
 				success: function(data){
 					if(data=='success'){
 						console.log(data);
@@ -178,7 +231,7 @@
 					}
 				}
 			});
-		} */
+		}
 	</script>
 </body>
 </html>

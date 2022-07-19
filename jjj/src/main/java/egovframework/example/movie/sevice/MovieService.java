@@ -31,4 +31,12 @@ public interface MovieService {
 //	movieCodeVO의 movie_cd_no 구하기
 	int selectMovieCdNo();
 	
+//	영화댓글 기능
+	List<MovieReplyVO> selectListReply(MovieVO vo);
+	int deleteReply(MovieReplyVO rvo);
+	int insertReply(MovieReplyVO rvo);
+	
+//	별점 평균 구하기 (영화)
+	float avgReplyStar(MovieVO vo);
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.example.movie.sevice.MovieCodeVO;
+import egovframework.example.movie.sevice.MovieReplyVO;
 import egovframework.example.movie.sevice.MovieVO;
 
 @Repository("movieDAO")
@@ -76,6 +77,24 @@ public class MovieDAO {
 	
 	int insertMovieCode(MovieCodeVO cvo) {
 		return query.insert(namespace+"insertMovieCode", cvo);
+	}
+	
+//	영화댓글 기능
+	List<MovieReplyVO> selectListReply(MovieVO vo){
+		return query.selectList("selectListReply", vo);
+	}
+	
+	int deleteReply(MovieReplyVO rvo) {
+		return query.delete("deleteReply", rvo);
+	}
+	
+	int insertReply(MovieReplyVO rvo) {
+		return query.insert("insertReply", rvo);
+	}
+	
+//	별점 평균 구하기 (영화)
+	float avgReplyStar(MovieVO vo) {
+		return query.selectOne("avgReplyStar", vo);
 	}
 
 }

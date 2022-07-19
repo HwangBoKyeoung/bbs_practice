@@ -17,7 +17,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.example.cost.sevice.CostReplyService;
@@ -182,36 +181,6 @@ public class CostController {
 	@RequestMapping("/costCalendar.do")
 	public String costCalendar() {
 		return "cost/costCalendar";
-	}
-
-	@ResponseBody
-	@RequestMapping("/ajaxCalendarInfo.do")
-	public List<CostVO> ajaxCalendarInfo() {
-		List<CostVO> cals = costService.costCalendarList();
-
-		return cals;
-	}
-	
-	@ResponseBody
-	@RequestMapping("/ajaxInsertReply.do")
-	public List<CostReplyVO> ajaxInsertReply(CostReplyVO vo) {
-		int insert = costReplyService.insertCostReply(vo);
-		if(insert == 0) {
-			return null;
-		}
-		
-		List<CostReplyVO> list = costReplyService.selectCostReply(vo);
-		return list;
-	}
-	
-	@ResponseBody
-	@RequestMapping("/ajaxDeleteReply.do")
-	public String ajaxDeleteReply(CostReplyVO vo) {
-		int delete = costReplyService.deleteCostReply(vo);
-		if(delete == 0) {
-			return null;
-		}
-		return "success";
 	}
 
 }

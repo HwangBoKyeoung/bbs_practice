@@ -195,4 +195,39 @@
 		  FROM MOVIES
 	</select>
 	
+	<!-- 영화댓글기능 -->
+	<select id="selectListReply" parameterType="movieVO" resultType="movieReplyVO">
+		SELECT MOVIE_REPLY_NO
+			 , MOVIE_REPLY_CONENT
+			 , MOVIE_REPLY_WRITER
+			 , MOVIE_NO
+			 , MOVIE_REPLY_STAR
+		  FROM MOVIE_REPLY
+		 WHERE MOVIE_NO = #{movieNo}
+	</select>
+	
+	<delete id="deleteReply" parameterType="movieReplyVO">
+		DELETE FROM MOVIE_REPLY
+		 WHERE MOVIE_REPLY_NO = #{movieReplyNo}
+	</delete>
+	
+	<insert id="insertReply" parameterType="movieReplyVO">
+		INSERT INTO MOVIE_REPLY(MOVIE_REPLY_NO
+							  , MOVIE_REPLY_CONENT
+							  , MOVIE_REPLY_WRITER
+							  , MOVIE_NO
+							  , MOVIE_REPLY_STAR)
+		VALUES (MV_RE_SEQ.NEXTVAL
+			  , #{movieReplyConent}
+			  , #{movieReplyWriter}
+			  , #{movieNo}
+			  , #{movieReplyStar})
+	</insert>
+	
+	<select id="avgReplyStar" parameterType="movieReplyVO" resultType="float">
+		SELECT AVG(MOVIE_REPLY_STAR) "REPLY_AVG"
+		  FROM MOVIE_REPLY
+		 WHERE MOVIE_NO = #{movieNo}
+	</select>
+	
 </mapper>

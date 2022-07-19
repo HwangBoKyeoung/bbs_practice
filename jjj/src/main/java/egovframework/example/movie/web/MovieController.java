@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.example.cost.sevice.PageVO;
 import egovframework.example.movie.sevice.MovieCodeVO;
+import egovframework.example.movie.sevice.MovieReplyVO;
 import egovframework.example.movie.sevice.MovieService;
 import egovframework.example.movie.sevice.MovieVO;
 import egovframework.example.user.sevice.UserService;
@@ -57,6 +58,8 @@ public class MovieController {
 		List<MovieVO> list = movieService.selectMovie(vo);
 		uvo = userService.userSelectLogin(uvo);
 		MovieVO movie = movieService.selectMovieOne(vo);
+		List<MovieReplyVO> replys = movieService.selectListReply(vo);
+		float avg = movieService.avgReplyStar(vo);
 		
 		if(vo == null) {
 			model.addAttribute("message", "영화 한 건 조회가 실패했습니다.");
@@ -66,6 +69,8 @@ public class MovieController {
 		model.addAttribute("movie", movie);
 		model.addAttribute("list", list);
 		model.addAttribute("user", uvo);
+		model.addAttribute("replys", replys);
+		model.addAttribute("avg", avg);
 		
 		return "movie/movieSelect";
 	}

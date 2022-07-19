@@ -45,18 +45,6 @@
 <body>
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
-		<h5>${movie}</h5>
-		<c:forEach items="${list}" var="movie">
-			<hr />
-			${movie}
-			<br />
-			${movie.movieCodeVO}
-			<br />
-			${movie.movieCodeVO.movieCdRename}
-			<br />
-			${movie.movieCodeVO.movieCdDetail}
-		</c:forEach>
-		<h3>${user}</h3>
 		<br />
 		<h1>평점 : ${avg}점 </h1>
 		<table border="1">

@@ -113,8 +113,6 @@
 	</div>
 
 	<script>
-		console.log(typeof (parseInt($("#pageNum").val())));
-		console.log(typeof ($("#amount").val()));
 		function costSelect(id) {
 			document.forms.frm.costNo.value = id;
 			document.forms.frm.submit();

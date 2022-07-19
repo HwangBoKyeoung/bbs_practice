@@ -14,8 +14,6 @@
 <body>
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
-		<h5>${cost}</h5>
-		<h3>${user}</h3>
 		<table border="1">
 			<tbody>
 				<tr>

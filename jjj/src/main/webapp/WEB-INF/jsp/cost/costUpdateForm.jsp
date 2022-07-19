@@ -13,7 +13,6 @@
 <body>
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
-		<h5>${cost}</h5>
 		<form action="costUpdate.do" method="post" enctype="multipart/form-data">
 			<table border="1">
 				<tbody>

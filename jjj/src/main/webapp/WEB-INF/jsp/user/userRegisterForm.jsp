@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set value="${pageContext.request.contextPath}/images" var="path" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
@@ -9,6 +10,38 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+	* {
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+	}
+	
+	html, body {
+		border: 0;
+	}
+
+    @media all and (min-width: 320px) {
+		body{
+			background: url(${path}/egovframework/background/cat.PNG) no-repeat;
+			background-size: cover;
+    	}
+	}
+
+    @media all and (min-width: 768px) {
+    	body{
+			background: url(${path}/egovframework/background/lion.PNG) no-repeat;
+			background-size: cover;
+    	}
+	}
+
+	@media all and (min-width: 1080px) {
+		body{
+			background: url(${path}/egovframework/background/fly.PNG) no-repeat;
+			background-size: cover;
+    	}
+	}
+</style>
 <title>WELCOME HOME</title>
 </head>
 <body>

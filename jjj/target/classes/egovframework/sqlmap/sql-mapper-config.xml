@@ -8,6 +8,7 @@
 	</settings>
     <typeAliases>
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="sysCodeVO" type="egovframework.example.common.SysCodeDtlVO"/>
 		<typeAlias alias="costVO" type="egovframework.example.cost.sevice.CostVO"/>
 		<typeAlias alias="costReplyVO" type="egovframework.example.cost.sevice.CostReplyVO"/>
 		<typeAlias alias="userVO" type="egovframework.example.user.sevice.UserVO"/>

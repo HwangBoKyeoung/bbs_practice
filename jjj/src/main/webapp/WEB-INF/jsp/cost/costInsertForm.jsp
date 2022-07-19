@@ -28,9 +28,9 @@
 						<th>결제분류</th>
 						<td>
 							<select name="costCategory" id="costCategory">
-								<option value="교통비" selected>교통비</option>
-								<option value="숙박비">숙박비</option>
-								<option value="일비">일비</option>
+								<option value="1" selected>교통비</option>
+								<option value="2">숙박비</option>
+								<option value="3">일비</option>
 							</select>
 						</td>
 					</tr>

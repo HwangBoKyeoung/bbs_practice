@@ -225,7 +225,7 @@
 	</insert>
 	
 	<select id="avgReplyStar" parameterType="movieReplyVO" resultType="float">
-		SELECT AVG(MOVIE_REPLY_STAR) "REPLY_AVG"
+		SELECT NVL(AVG(MOVIE_REPLY_STAR),0) "REPLY_AVG"
 		  FROM MOVIE_REPLY
 		 WHERE MOVIE_NO = #{movieNo}
 	</select>

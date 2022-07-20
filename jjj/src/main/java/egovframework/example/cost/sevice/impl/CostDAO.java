@@ -17,7 +17,6 @@ public class CostDAO {
 	private SqlSession query;
 	
 	private static final String namespace = "costMapper.";
-//	private static final String namespace = "costDAO.";
 	
 	public List<CostVO> costSelectList() {
 		return query.selectList(namespace+"costSelectList");

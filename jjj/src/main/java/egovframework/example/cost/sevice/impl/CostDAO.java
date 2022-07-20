@@ -11,12 +11,13 @@ import egovframework.example.cost.sevice.CostVO;
 import egovframework.example.cost.sevice.CriteriaVO;
 
 @Repository("costDAO")
-public class CostDAO/* extends EgovAbstractMapper*/ {
+public class CostDAO {
 	
 	@Resource(name="sqlSession")
 	private SqlSession query;
 	
 	private static final String namespace = "costMapper.";
+//	private static final String namespace = "costDAO.";
 	
 	public List<CostVO> costSelectList() {
 		return query.selectList(namespace+"costSelectList");

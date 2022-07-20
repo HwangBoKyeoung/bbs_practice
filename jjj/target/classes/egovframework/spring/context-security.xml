@@ -27,6 +27,5 @@
 		</security:authentication-provider>
 	</security:authentication-manager>
 	
-	<!-- <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bcryptPasswordEncoder" /> -->
 	<bean class="egovframework.example.user.sevice.impl.CustomUserDetailsService" id="userDetailsService" />
 </beans>

@@ -48,13 +48,11 @@
         .three {
             float: left;
             width: 70%;
-/*             height: 1000px; */
         }
         
         .four {
         	text-align: center;
             clear: both;
-            /* height: 100px; */
             background-color: grey;
             height: 200px;
             line-height: 200px;

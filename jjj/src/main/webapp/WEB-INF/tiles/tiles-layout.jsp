@@ -16,6 +16,20 @@
             overflow: hidden;
         }
 
+        /* .container2 {
+        	float: left;
+        	width: 100%;
+        	background: green;
+        }
+        
+        .container1 {
+        	float: left;
+        	width: 100%;
+        	background: blue;
+        	position: relative;
+        	right: 70%
+        } */
+        
         .one {
             text-align: center;
             height: 50px;
@@ -24,37 +38,47 @@
 
         .two {
             float: left;
-            height: 1000px;
             width: 30%;
             background-color: yellow;
+            height: 2000px;
+            text-align: center;
+            line-height: 2000px;
         }
 
         .three {
             float: left;
             width: 70%;
-            height: 1000px;
+/*             height: 1000px; */
         }
-
+        
         .four {
-            float: clear;
-            height: 100px;
+        	text-align: center;
+            clear: both;
+            /* height: 100px; */
             background-color: grey;
+            height: 200px;
+            line-height: 200px;
         }
+        
     </style>
 <title> <tiles:getAsString name="title" /> </title>
 </head>
 <body>
-	<div class="one">
-		<tiles:insertAttribute name="header" />
-	</div>
-	<div class="two">
-		<tiles:insertAttribute name="left" />
-	</div>
-	<div class="three">
-		<tiles:insertAttribute name="body" />
-	</div>
-	<div class="four">
-		<tiles:insertAttribute name="footer" />
-	</div>
+	<!-- <div class="container2">
+		<div class="container1"> -->
+			<div class="one">
+				<tiles:insertAttribute name="header" />
+			</div>
+			<div class="two">
+				<tiles:insertAttribute name="left" />
+			</div>
+			<div class="three">
+				<tiles:insertAttribute name="body" />
+			</div>
+			<div class="four">
+				<tiles:insertAttribute name="footer" />
+			</div>
+		<!-- </div>
+	</div> -->
 </body>
 </html>

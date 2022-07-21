@@ -5,11 +5,15 @@ import java.util.Scanner;
 public class MainTest1000 {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		System.out.println("숫자 두 개 입력하시오");
-		int a = scan.nextInt();
-		int b = scan.nextInt();
 		
-		System.out.println("숫자 2개는 : "+ a + ", " + b);
-		System.out.println("숫자 2개 합은 : "+ a + " + " + b + " = " + (a+b));
+		int result=0;
+		int A = scan.nextInt();
+		int B = scan.nextInt();
+		
+		if(A < 10 && B < 10) {
+			result = A+B;
+		}
+		
+		System.out.println(result);
 	}
 }

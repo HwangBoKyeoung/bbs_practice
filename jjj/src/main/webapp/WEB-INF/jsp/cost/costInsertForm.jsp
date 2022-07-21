@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
@@ -14,7 +15,7 @@
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
 		<form action="costInsert.do" method="post" enctype="multipart/form-data">
-			<table border="1">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 				<tbody>
 					<tr>
 						<th>날짜</th>
@@ -40,27 +41,29 @@
 					</tr>
 					<tr>
 						<th>상세내용</th>
-						<td><textarea rows="20" cols="30" name="costDetail" id="costDetail" placeholder="상세 내용을 입력해주세요."></textarea></td>
+						<td><textarea maxlength="1000" rows="20" cols="100" name="costDetail" id="costDetail" placeholder="상세 내용을 입력해주세요. 1000자 까지 입력가능합니다."></textarea></td>
 					</tr>
 					<tr>
 						<th>결제자</th>
-						<td><input type="text" name="costBuyer" id="costBuyer" required /></td>
+						<td><input type="text" value="${userName}" name="costBuyer" id="costBuyer"  readonly /></td>
 					</tr>
 					<tr>
 						<th>금액</th>
-						<td><input type="text" name="costSum" id="costSum" required /></td>
+						<td><input type="number" name="costSum" id="costSum" required /></td>
 					</tr>
 					<tr>
 						<th>파일</th>
-						<td><input type="file" name="files" id="files" onchange="setThumbNail(event)" required /></td>
+						<td><input type="file" name="files" id="files" onchange="setThumbNail(event)" /></td>
 					</tr>
 				</tbody>
 			</table><br />
 			<div id="imageView"></div>
-			<input type="submit" value="등록" />
+			<input type="submit" value="등록" class="btn btn-danger btn-icon-split" />
 		</form>
 	</div>
-	
+	<div align="center">
+		<button onclick="location.href='costSelectList.do'" class="btn btn-primary btn-icon-split btn-lg">목록으로</button>
+	</div><br/>
 	<script>
 		function setThumbNail(e){
 			let reader = new FileReader();

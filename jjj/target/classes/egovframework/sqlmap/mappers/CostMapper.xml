@@ -39,7 +39,7 @@
 		    ON (F.COST_CATEGORY = D1.CODE_DTL)
 		 WHERE D.CODE_MST = 'COST_METHOD'
 		   AND D1.CODE_MST = 'COST_CATEGORY'
-		 ORDER BY F.COST_NO
+		 ORDER BY F.COST_NO DESC
 	</select>
 	
 	<select id="getList" resultType="costVO">
@@ -97,7 +97,7 @@
 							1=1
 						</if>
 		<![CDATA[
-					ORDER BY F.COST_NO
+					ORDER BY F.COST_NO DESC
 				)A
 			)
 		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
@@ -214,7 +214,6 @@
 		 WHERE D.CODE_MST = 'COST_METHOD'
 		   AND D1.CODE_MST = 'COST_CATEGORY'
 		   AND F.COST_NO = #{costNo}
-		 ORDER BY F.COST_NO
 	</select>
 	
 	<insert id="costInsert" parameterType="costVO">

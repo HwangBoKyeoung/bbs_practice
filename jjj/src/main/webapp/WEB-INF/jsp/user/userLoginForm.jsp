@@ -12,153 +12,77 @@
 		box-sizing: border-box;
 		padding: 0;
 		margin: 0;
-		max-width: 1080px;
 	}
 	
-	html, body {
-		border: 0;
+	@media all and (min-width: 320px) {
+		.h4 {
+			font-size: 1.0rem;
+			white-space: nowrap;
+		}
 	}
 	
-	div {
-		display: inline-block;
-	}
-	
-	#div {
-		display: flex;
-		justify-content: center;
-        flex-wrap: wrap;
-        align-items: center;
-        height: 1000px;
-	}
-	
-	#firstDiv, #thirdDiv {
-		display: none;
-	}
-	
-    @media all and (min-width: 320px) {
-    	#myform {
-    		overflow: hidden;
-    	}
-    
-    	table {
-    		display: inline-block;
-    		float: left;
-    	}
-    	
-    	#myform input[type=submit] {
-			width: 20%;
-			height: 20%;
-			float: left;
-			background-color: orange;
-			margin-bottom: 20px;
-		}
-    	
-		#div {
-			display: flex;
-			width: 100%;
-			justify-content: center;
-            flex-wrap: wrap;
-            align-items: center;
-            height: 1000px;
-		}
-		
-		#myform>input {
-			width: 45%;
-			height: 100px;
-			background-color: orange;
-		}
-	
-		#myform>input:hover {
-			background-color: blue;
-            color: white;
-		}
-	}
-
-    @media all and (min-width: 768px) {
-        table {
-    		display: inline-block;
-    		text-align: center;
-    	}
-    	
-    	#myform input[type=submit] {
-    		width: 250px;
-			height: 100px;
-		}
-		
-		table input {
-			width: 300px;
-		}
-		
-		#myform>input:hover {
-			background-color: turquoise;
-		}
-		
-		#firstDiv, #thirdDiv {
-			display: inline-block;
-		}
-		
-		#firstDiv {
-			width: 20%;
-			height: 100%;
-		}
-		
-		#firstDiv img, #thirdDiv img {
-			width: 100%;
-			height: 100%;
-		}
-		
-		#secondDiv {
-			width: 59%;
-			text-align: center;
-		}
-		
-		#thirdDiv{
-			width: 20%;
-			height: 100%;
-		}
-	}
-
-	@media all and (min-width: 1080px) {
-		#myform>input:hover {
-			background-color: red;
-		}
-		
-		table input {
-			width: 580px;
+	@media all and (min-width: 768px) {
+		.h4 {
+			font-size: 1.5rem;
+			white-space: nowrap;
 		}
 	}
 </style>
 </head>
-<body>
-<div id="div">
-	<div id="firstDiv">
-		<img src="${path}/egovframework/background/cat.PNG" alt="..." />
-	</div>
-	<div id="secondDiv" align="center">
-		<h1>=====WELCOME=====</h1>
-		<h2>여기는 로그인 페이지입니다.</h2>
-		<br />
-		<form action="login" method="post" id="myform">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			<table>
-				<tbody>
-					<tr>
-						<th>아이디</th>
-						<td><input type="text" name="username" id="username" required /></td>
-					</tr>
-					<tr>
-						<th>비밀번호</th>
-						<td><input type="password" name="password" id="password" required /></td>
-					</tr>
-				</tbody>
-			</table><br />
-			<input type="submit" value="로그인" />
-			<input type="reset" value="초기화" />
-		</form>
-	</div>
-	<div id="thirdDiv">
-		<img src="${path}/egovframework/background/cat.PNG" alt="..." />
-	</div>
-</div>
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                    	<h1 class="h4 text-gray-900 mb-4">=====WELCOME=====</h1>
+										<h2 class="h4 text-gray-900 mb-4">여기는 로그인 페이지입니다.</h2>
+                                    </div>
+                                    <form class="user" action="login" method="post" id="myform">
+                                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="username" name="username" placeholder="Enter your Id" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="password" name="password" placeholder="Enter your Password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="remember-me" name="remember-me">
+                                                <label class="custom-control-label" for="remember-me">Remember
+                                                    Me</label>
+                                            </div>
+                                        </div>
+                                        <input type="submit" value="LOGIN" class="btn btn-primary btn-user btn-block" />
+                                        <hr>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="findUserPasswordForm.do">비밀번호 찾기</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="userRegisterForm.do">회원가입</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -8,16 +8,33 @@
 		http://www.egovframe.go.kr/schema/egov-security http://www.egovframe.go.kr/schema/egov-security/egov-security-3.7.xsd">
 	
 	<bean class="egovframework.example.user.sevice.impl.CustomLoginSuccessHandler" id="customLoginSuccessHandler" />
+	<bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl" id="accessDeniedHandler">
+		<property name="errorPage" value="/WEB-INF/jsp/security/error_403.jsp" />
+	</bean>
+	
+	<!-- 설정 안해주면 css 모두 이상해짐.. -->
+	<security:http pattern="/css/**" security="none" />
+	<security:http pattern="/file/**" security="none" />
+	<security:http pattern="/images/**" security="none" />
+	<security:http pattern="/sb-admin2/**" security="none" />
 	
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/movieInsertForm.do" access="hasAuthority('ROLE_ADMIN')" />
-		<security:intercept-url pattern="/**" access="permitAll" />
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/home.do" access="permitAll" />
+		<security:intercept-url pattern="/userLoginForm.do" access="permitAll" />
+		<security:intercept-url pattern="/userRegisterForm.do" access="permitAll" />
+		<security:intercept-url pattern="/findUserPasswordForm.do" access="permitAll" />
+		<!-- <security:intercept-url pattern="/login" filters="none" /> -->
+		<security:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
 		<security:form-login login-page="/userLoginForm.do"
 							 default-target-url="/"
 							 authentication-success-handler-ref="customLoginSuccessHandler" />
+		<!-- <security:remember-me  /> -->
 		<security:logout invalidate-session="true"
 						 logout-url="/logout"
 						 logout-success-url="/" />
+		<security:access-denied-handler ref="accessDeniedHandler" />
 		<security:csrf disabled="true" />
 	</security:http>
 	

@@ -33,6 +33,7 @@
 			 , MOVIE_PRICE
 			 , MOVIE_CD
 		  FROM MOVIES
+		 ORDER BY MOVIE_NO DESC
 	</select>
 	
 	<select id="selectMovie" resultMap="movieResultMap" parameterType="movieVO">
@@ -152,7 +153,7 @@
 							1=1
 						</if>
 		<![CDATA[
-					ORDER BY 1
+					ORDER BY MOVIE_NO DESC
 				)A
 			)
 		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}

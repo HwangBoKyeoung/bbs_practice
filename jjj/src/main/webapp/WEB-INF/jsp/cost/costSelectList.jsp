@@ -22,18 +22,18 @@
 						${pageVO.cri.searchType eq 'method' ? 'selected' : ''}>결제방식</option>
 					<option value="category"
 						${pageVO.cri.searchType eq 'category' ? 'selected' : ''}>결제분류</option>
-				</select> <input type="text" name="searchName"
+				</select> <input type="text" name="searchName" maxlength="20"
 					value="${pageVO.cri.searchName}" /> <input type="submit"
-					value="검색" /> <input type="hidden" value="1" name="pageNum" /> <input
+					value="검색" class="btn btn-primary btn-icon-split btn-lg" /> <input type="hidden" value="1" name="pageNum" /> <input
 					type="hidden" name="amount" value="${pageVO.cri.amount}" />
 			</form>
-		</div>
+		</div><br/>
 		<c:choose>
 			<c:when test="${empty costs}">
 				<h2>게시글이 존재하지 않습니다.</h2>
 			</c:when>
 			<c:otherwise>
-				<table border="1">
+				<table style="text-align: center;" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 					<thead>
 						<tr>
 							<th>순번</th>
@@ -48,7 +48,7 @@
 					</thead>
 					<tbody>
 						<c:forEach items="${costs}" var="cost">
-							<tr onmouseover="this.style.backgroundColor='gray'"
+							<tr onmouseover="this.style.backgroundColor='#fd7e1480'"
 								onmouseout="this.style.backgroundColor='transparent'"
 								onclick="costSelect('${cost.costNo}')">
 								<td>${cost.costNo}</td>
@@ -58,7 +58,7 @@
 								<td>${cost.costCategory}</td>
 								<td>${cost.costDetail}</td>
 								<td>${cost.costBuyer}</td>
-								<td><fmt:formatNumber value="${cost.costSum}" pattern="#,###" /></td>
+								<td style="text-align: right;"><fmt:formatNumber value="${cost.costSum}" pattern="#,###" /></td>
 								<td>${cost.fileName}</td>
 							</tr>
 						</c:forEach>
@@ -87,7 +87,7 @@
 			</a>
 		</c:if>
 	</div>
-	<input type="button" value="경비등록"
+	<input type="button" value="경비등록" class="btn btn-info btn-icon-split"
 		onclick="location.href='costInsertForm.do'" />
 
 	<form action="costSelect.do" method="post" name="frm" id="frm">
@@ -109,8 +109,8 @@
 	</form>
 	
 	<div align="center">
-		<button onclick="location.href='home.do'" style="background-color: red; width: 800px; height: 100px;">홈으로</button>
-	</div>
+		<button onclick="location.href='home.do'" class="btn btn-primary btn-icon-split btn-lg">홈으로</button>
+	</div><br/>
 
 	<script>
 		function costSelect(id) {

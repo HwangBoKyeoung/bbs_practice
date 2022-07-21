@@ -14,7 +14,7 @@
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
 		<form action="costUpdate.do" method="post" enctype="multipart/form-data">
-			<table border="1">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 				<tbody>
 					<tr>
 						<th>순번</th>
@@ -61,9 +61,12 @@
 					<img src="/upload/${cost.fileRename}" id="imgs" />
 				</c:if>
 			</div>
-			<input type="submit" value="수정" />
+			<input type="submit" value="수정" class="btn btn-warning btn-icon-split" />
 		</form>
 	</div>
+	<div align="center">
+		<button onclick="location.href='costSelectList.do'" class="btn btn-primary btn-icon-split btn-lg">목록으로</button>
+	</div><br/>
 	
 	<script>
 		function setThumbNail(e){

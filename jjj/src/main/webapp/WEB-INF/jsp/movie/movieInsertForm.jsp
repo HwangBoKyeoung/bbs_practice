@@ -15,7 +15,7 @@
 		<h1>=====WELCOME=====</h1>
 		<form action="movieInsert.do" method="post"
 			enctype="multipart/form-data">
-			<table border="1">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 				<tbody>
 					<tr>
 						<th>영화제목</th>
@@ -51,10 +51,12 @@
 			</table>
 			<br />
 			<div id="imageView"></div>
-			<input type="submit" value="등록" />
+			<input type="submit" value="등록" class="btn btn-danger btn-icon-split" />
 		</form>
 	</div>
-
+	<div align="center">
+		<button onclick="location.href='movieSelectList.do'" class="btn btn-primary btn-icon-split btn-lg">목록으로</button>
+	</div><br/>
 	<script>
 		/* 업로드 파일이 여러개일 때 처리 방법 */
 		function setThumbNail(e) {

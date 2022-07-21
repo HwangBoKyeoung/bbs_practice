@@ -2,6 +2,8 @@ package egovframework.example.cost.sevice;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import egovframework.example.common.SysCodeDtlVO;
@@ -10,6 +12,7 @@ public class CostVO {
 
 	private int costNo;
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date costDate;
 	private String costMethod;
 	private String costCategory;

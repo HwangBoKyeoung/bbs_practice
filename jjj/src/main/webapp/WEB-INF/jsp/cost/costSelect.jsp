@@ -14,7 +14,7 @@
 <body>
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
-		<table border="1">
+		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 			<tbody>
 				<tr>
 					<th>순번</th>
@@ -72,15 +72,14 @@
 			<input type="hidden" value="${amount}" name="amount" />
 			<input type="hidden" value="${searchType}" name="searchType" />
 			<input type="hidden" value="${searchName}" name="searchName" />
-			<input type="submit" style="width: 200px; height: 100px; background-color: red; color: white;" value="목록으로" />
+			<input type="submit" class="btn btn-primary btn-icon-split btn-lg" value="목록으로" />
 		</form>
 		
 	</div>
 
 	<form action="costUpdateForm.do" method="post">
 		<input type="hidden" value="${cost.costNo}" name="costNo" id="costNo" />
-		<fmt:formatDate value="${cost.costDate}" pattern="yyyy-MM-dd"
-			var="costDt" />
+		<fmt:formatDate value="${cost.costDate}" pattern="yyyy-MM-dd" var="costDt" />
 		<input type="hidden" value="${costDt}" name="costDate" id="costDate" />
 		<input type="hidden" value="${cost.costMethod}" name="costMethod"
 			id="costMethod" /> <input type="hidden" value="${cost.costCategory}"
@@ -90,12 +89,12 @@
 			id="costBuyer" /> <input type="hidden" value="${cost.costSum}"
 			name="costSum" id="costSum" /> <input type="hidden"
 			value="${cost.fileName}" name="fileName" id="fileName" /> <input
-			type="submit" value="수정하기" />
+			type="submit" value="수정하기" class="btn btn-warning btn-icon-split" />
 	</form>
 
 	<form action="costDelete.do" method="post">
 		<input type="hidden" value="${cost.costNo}" name="costNo" id="costNo" />
-		<input type="submit" value="삭제하기" />
+		<input type="submit" value="삭제하기" class="btn btn-secondary btn-icon-split" />
 	</form>
 		<div align="center">
 			<hr />
@@ -103,7 +102,7 @@
 			<div>
 				<textarea rows="30" cols="50" placeholder="댓글작성해주세요"
 					name="replyContent" id="replyContent"></textarea>
-				<input type="submit" value="댓글입력" onclick="insertReply();" />
+				<input type="submit" value="입력" onclick="insertReply();" class="btn btn-success btn-circle btn-lg" />
 			</div>
 			<hr />
 			<c:choose>
@@ -113,8 +112,8 @@
 			
 			<c:otherwise>
 				<div id="replyShow">
-					<table>
-						<tbody id="replyTbody">
+					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						<tbody id="replyTbody" style="text-align:center;">
 							<tr>
 								<td>작성자&nbsp;&nbsp;</td>
 								<td>작성일자&nbsp;&nbsp;</td>
@@ -128,7 +127,12 @@
 									<td>${reply.replyContent}&nbsp;</td>
 									<c:if test="${user.userId eq reply.replyWriter}">
 										<td>
-											<input type="button" value="삭제" onclick="deleteReply('${reply.replyNo}');" />
+											<input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg" onclick="deleteReply('${reply.replyNo}');" />
+										</td>
+									</c:if>
+									<c:if test="${user.userId ne reply.replyWriter}">
+										<td>
+											<input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg" onclick="noneDeleteReply()" />
 										</td>
 									</c:if>
 								</tr>
@@ -141,6 +145,7 @@
 		</div>
 		<input type="hidden" value="${user.userId}" id="userName" />
 	<script>
+		console.log($("#costMethod").val())
 		function insertReply() {
 			$.ajax({
 				url : "ajaxInsertReply.do",
@@ -183,6 +188,13 @@
 						});
 					}
 				}
+			});
+		}
+		
+		function noneDeleteReply() {
+			Swal.fire('타인의 댓글은 지울 수 없습니다.');
+			$(".swal2-confirm").on("click", function() {
+				/* location.reload(); */
 			});
 		}
 	</script>

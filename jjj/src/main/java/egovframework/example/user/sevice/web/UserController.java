@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.user.sevice.UserService;
 import egovframework.example.user.sevice.UserVO;
@@ -32,15 +31,6 @@ public class UserController {
 		return "user/userRegisterForm";
 	}
 	
-//	아이디중복체크
-	@ResponseBody
-	@PostMapping("/ajaxIdChk.do")
-	public int ajaxIdChk(UserVO vo) {
-		int idNo = userService.userIdChk(vo);
-
-		return idNo;
-	}
-	
 	@PostMapping("/userRegister.do")
 	public String userRegister(UserVO vo, HttpSession session, Model model) {
 		/*String userPwd = vo.getUserPwd();
@@ -60,6 +50,11 @@ public class UserController {
 		
 		model.addAttribute("message", "회원가입이 성공하였습니다.");
 		return "cmmn/success";
+	}
+	
+	@RequestMapping("/findUserPasswordForm.do")
+	public String findUserPasswordForm() {
+		return "user/findUserPasswordForm";
 	}
 	
 /*	@PostMapping("/login.do")

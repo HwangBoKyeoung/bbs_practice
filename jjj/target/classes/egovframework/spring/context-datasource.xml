@@ -32,7 +32,7 @@
     
     <!-- oracle (POM에서 commons-dbcp, ojdbc(라이센스 사항으로 별도로 배포되지 않음) 관련 라이브러리 설정)    -->
     
-    <context:property-placeholder location="classpath:/db/db.properties" />
+    <context:property-placeholder location="classpath:/properties/db.properties" />
     
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${driver}"/>

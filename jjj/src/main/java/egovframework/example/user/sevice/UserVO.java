@@ -17,8 +17,10 @@ public class UserVO implements UserDetails {
 	private String userRole;
 	private String userGender;
 	private String userTel;
+	private String userMail;
 	
 	private String role;
+	private String userRePwd;
 
 	public String getUserName() {
 		return userName;
@@ -42,12 +44,6 @@ public class UserVO implements UserDetails {
 
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
-	}
-
-	@Override
-	public String toString() {
-		return "UserVO [userName=" + userName + ", userId=" + userId + ", userPwd=" + userPwd + ", userRole=" + userRole
-				+ ", userGender=" + userGender + ", userTel=" + userTel + "]";
 	}
 
 	public String getUserRole() {
@@ -80,6 +76,22 @@ public class UserVO implements UserDetails {
 
 	public void setUserTel(String userTel) {
 		this.userTel = userTel;
+	}
+	
+	public String getUserMail() {
+		return userMail;
+	}
+
+	public void setUserMail(String userMail) {
+		this.userMail = userMail;
+	}
+	
+	public String getUserRePwd() {
+		return userRePwd;
+	}
+
+	public void setUserRePwd(String userRePwd) {
+		this.userRePwd = userRePwd;
 	}
 
 	@Override
@@ -118,5 +130,12 @@ public class UserVO implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "UserVO [userName=" + userName + ", userId=" + userId + ", userPwd=" + userPwd + ", userRole=" + userRole
+				+ ", userGender=" + userGender + ", userTel=" + userTel + ", userMail=" + userMail + ", role=" + role
+				+ ", userRePwd=" + userRePwd + "]";
+	}
+
 }

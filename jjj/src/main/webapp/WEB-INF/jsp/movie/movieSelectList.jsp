@@ -26,17 +26,17 @@
 						${pageVO.cri.searchType eq 'content' ? 'selected' : ''}>내용</option>
 				</select> <input type="text" name="searchName"
 					value="${pageVO.cri.searchName}" /> <input type="submit"
-					value="검색" /> <input type="hidden" value="1" name="pageNum" /> <input
+					value="검색" class="btn btn-primary btn-icon-split btn-lg" /> <input type="hidden" value="1" name="pageNum" /> <input
 					type="hidden" name="amount" value="${pageVO.cri.amount}" />
 			</form>
 		</div>
-		
+		<br/>
 		<c:choose>
 			<c:when test="${empty movies}">
 				<h2>영화리스트가 존재하지 않습니다.</h2>
 			</c:when>
 			<c:otherwise>
-				<table border="1">
+				<table style="text-align: center;" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 					<thead>
 						<tr>
 							<th>순번</th>
@@ -50,7 +50,7 @@
 					</thead>
 					 <tbody>
 						<c:forEach items="${movies}" var="movie">
-							<tr onmouseover="this.style.backgroundColor='gray'"
+							<tr onmouseover="this.style.backgroundColor='#fd7e1480'"
 								onmouseout="this.style.backgroundColor='transparent'"
 								onclick="movieSelect('${movie.movieNo}')">
 								<td>${movie.movieNo}</td>
@@ -58,7 +58,7 @@
 								<td>${movie.movieConent}</td>
 								<td>${movie.movieDirector}</td>
 								<td>${movie.movieActor}</td>
-								<td><fmt:formatNumber value="${movie.moviePrice}" pattern="#,###" /></td>
+								<td style="text-align: right;"><fmt:formatNumber value="${movie.moviePrice}" pattern="#,###" /></td>
 								<td>${movie.movieHit}</td>
 							</tr>
 						</c:forEach>
@@ -89,7 +89,7 @@
 	</div>
 	
 	<!-- 영화관리자만 등록할 수 있게 해주기 -->
-	<input type="button" value="영화등록"
+	<input type="button" value="영화등록" class="btn btn-info btn-icon-split"
 		onclick="location.href='movieInsertForm.do'" />
 
 	<form action="movieSelect.do" method="post" name="frm" id="frm">
@@ -105,7 +105,7 @@
 	</form>
 	
 	<div align="center">
-		<button onclick="location.href='home.do'" style="background-color: red; width: 800px; height: 100px;">홈으로</button>
+		<button onclick="location.href='home.do'" class="btn btn-primary btn-icon-split btn-lg">홈으로</button>
 	</div>
 
 	<script>

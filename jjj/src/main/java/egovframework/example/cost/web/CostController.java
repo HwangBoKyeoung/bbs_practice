@@ -58,17 +58,22 @@ public class CostController {
 	public String costSelect(CostVO vo, Model model, CostReplyVO rvo, Principal principal, UserVO uvo,
 							@RequestParam("pageNum") int pageNum, @RequestParam("amount") int amount, 
 							@RequestParam("searchType") String searchType, @RequestParam("searchName") String searchName) {
-		System.out.println("uploadPath: ======================================" + uploadPath);
-		vo = costService.costSelect(vo);
-		rvo.setCostNo(vo.getCostNo());
-		List<CostReplyVO> replys = costReplyService.selectCostReply(rvo);
-		
 		String userId = principal.getName();
 		uvo.setUserId(userId);
 		uvo = userService.userSelectLogin(uvo);
 		
-		System.out.println("=================================userId : "+userId);
-		System.out.println("=================================uvo : "+uvo);
+		vo = costService.costSelect(vo);
+		
+		System.out.println("-=========================="+vo);
+		System.out.println("==============이름비교: "+uvo.getUserName() + "+++" + vo.getCostBuyer());
+		
+		if(!uvo.getUserName().equals(vo.getCostBuyer())) {
+			model.addAttribute("message", "게시글 작성자가 아니어서 열람이 불가합니다.");
+			return "cost/error";
+		}
+		
+		rvo.setCostNo(vo.getCostNo());
+		List<CostReplyVO> replys = costReplyService.selectCostReply(rvo);
 		
 //		if (vo != null) {
 		model.addAttribute("pageNum", pageNum);
@@ -134,28 +139,39 @@ public class CostController {
 	}
 
 	@RequestMapping("/costInsertForm.do")
-	public String costInsertForm() {
+	public String costInsertForm(Principal principal, UserVO vo, Model model) {
+		String userId = principal.getName();
+		vo.setUserId(userId);
+		vo = userService.userSelectLogin(vo);
+		
+		model.addAttribute("userName", vo.getUserName());
 		return "cost/costInsertForm";
 	}
 
 	@PostMapping("/costInsert.do")
 	public String costInsert(CostVO vo, Model model, MultipartFile files) {
-		String fileName = files.getOriginalFilename();
-		System.out.println("=================i원래 파일 이름: " + fileName);
+//		MultipartFile 의 메소드 
+//		String getName() : 파라미터 이름 리턴
+//		String getOriginalFilename() : 업로드한 파일의 이름을 리턴
+//		boolean isEmpty() : 업로드한 파일이 존재하지 않으면 true 리턴
+//		long getSize() : 업로드한 파일의 크기를 리턴
+		
+		if(!files.isEmpty()) {
+			String fileName = files.getOriginalFilename();
 
-		String uuId = UUID.randomUUID().toString();
-		String fileRename = uuId + fileName.substring(fileName.lastIndexOf("."));
-		System.out.println("=================i변경 파일 이름: " + fileRename);
+			String uuId = UUID.randomUUID().toString();
+			String fileRename = uuId + fileName.substring(fileName.lastIndexOf("."));
 
-		File target = new File(uploadPath, fileRename);
-		try {
-			// 파일 전송
-			FileCopyUtils.copy(files.getBytes(), target);
-			fileRename = File.separator + fileRename;
-			vo.setFileName(fileName);
-			vo.setFileRename(fileRename);
-		} catch (IOException e) {
-			e.printStackTrace();
+			File target = new File(uploadPath, fileRename);
+			try {
+				// 파일 전송
+				FileCopyUtils.copy(files.getBytes(), target);
+				fileRename = File.separator + fileRename;
+				vo.setFileName(fileName);
+				vo.setFileRename(fileRename);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		int insert = costService.costInsert(vo);

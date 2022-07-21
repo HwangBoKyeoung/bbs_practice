@@ -75,9 +75,9 @@
 					<tr>
 						<th>성별</th>
 						<td>
-							<input type="radio" name="userGender" id="male" />
+							<input type="radio" name="userGender" id="male" value="M" />
 							<label for="male">남</label>
-							<input type="radio" name="userGender" id="female" />
+							<input type="radio" name="userGender" id="female" value="W" />
 							<label for="female">여</label>
 						</td>
 					</tr>

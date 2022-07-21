@@ -71,6 +71,8 @@ public class MovieController {
 			model.addAttribute("message", "영화 한 건 조회가 실패했습니다.");
 			return "cmmn/error";
 		}
+
+		movieService.updateMovieHit(vo);
 		
 		model.addAttribute("movie", movie);
 		model.addAttribute("list", list);

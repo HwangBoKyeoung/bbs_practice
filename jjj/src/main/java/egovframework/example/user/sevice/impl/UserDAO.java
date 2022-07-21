@@ -42,9 +42,15 @@ public class UserDAO {
 		return query.selectOne(namespace+"userIdChk", vo);
 	}
 
-//	아이디를 통해 비밀번호 찾기
+//	security 로그인정보
 	UserVO userSelectLogin(UserVO vo) {
 		return query.selectOne(namespace+"userSelectLogin", vo);
 	}
+
+//	비밀번호찾기
+	int findUserPassword(UserVO vo) {
+		return query.update(namespace+"findUserPassword", vo);
+	}
+	
 
 }

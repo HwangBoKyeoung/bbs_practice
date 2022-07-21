@@ -44,7 +44,7 @@
 				},
 				defaultDate : '2022-07-07',
 				navLinks : true, // can click day/week names to navigate views
-				selectable : true,
+				selectable : false,
 				selectMirror : true,
 				select : function(arg) {
 					var title = prompt('Event Title:');
@@ -70,23 +70,26 @@
 	});
 </script>
 <style>
-body {
-	margin: 40px 10px;
+*{
+	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
+}
+body {
 	font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
 	font-size: 14px;
 }
 
 #calendar {
 	max-width: 900px;
-	margin: 0 auto;
+	margin: 50px auto;
 }
 </style>
 </head>
 <body>
 	<div id='calendar'></div><br/>
 	<div align="center">
-		<button onclick="location.href='home.do'" style="background-color: red; width: 800px; height: 100px;">목록으로</button>
+		<button onclick="location.href='home.do'" style="border: none; background-color: red; color: white; font-weight: bold; width: 800px; height: 100px;">목록으로</button>
 	</div>
 </body>
 </html>

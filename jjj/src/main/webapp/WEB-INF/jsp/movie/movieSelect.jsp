@@ -47,7 +47,7 @@
 		<h1>=====WELCOME=====</h1>
 		<br />
 		<h1>평점 : ${avg}점 </h1>
-		<table border="1">
+		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 			<tbody>
 				<tr>
 					<th>순번</th>
@@ -92,13 +92,13 @@
 		</div>
 
 		<br /> <input type="button"
-			style="width: 200px; height: 100px; background-color: red; color: white;"
+			class="btn btn-primary btn-icon-split btn-lg"
 			value="목록으로" onclick="location.href='movieSelectList.do'" />
 	</div>
 
 	<form action="movieDelete.do" method="post">
 		<input type="hidden" value="${movie.movieNo}" name="movieNo" id="movieNo" />
-		<input type="submit" value="삭제하기" />
+		<input type="submit" value="삭제하기" class="btn btn-secondary btn-icon-split" />
 	</form>
 	<div align="center">
 		<hr />
@@ -119,7 +119,7 @@
 				</fieldset>
 			</form>
 			<textarea rows="30" cols="50" placeholder="댓글작성해주세요" name="movieReplyConent" id="movieReplyConent"></textarea>
-			<input type="submit" value="댓글입력" onclick="insertReply();" />
+			<input type="submit" value="입력" onclick="insertReply();" class="btn btn-success btn-circle btn-lg" />
 		</div>
 		<hr />
 		<c:choose>
@@ -128,8 +128,8 @@
 			</c:when>
 			<c:otherwise>
 				<div id="replyShow">
-					<table>
-						<tbody id="replyTbody">
+					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						<tbody id="replyTbody" style="text-align:center;">
 							<tr>
 								<td>작 성  자&nbsp;&nbsp;</td>
 								<td>댓글내용&nbsp;&nbsp;</td>
@@ -151,8 +151,13 @@
 										</c:choose>
 									</td>
 									<c:if test="${user.userId eq reply.movieReplyWriter}">
-										<td><input type="button" value="삭제"
+										<td><input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg"
 											onclick="deleteReply('${reply.movieReplyNo}');" /></td>
+									</c:if>
+									<c:if test="${user.userId ne reply.movieReplyWriter}">
+										<td>
+											<input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg" onclick="noneDeleteReply()" />
+										</td>
 									</c:if>
 								</tr>
 							</c:forEach>
@@ -218,6 +223,13 @@
 						});
 					}
 				}
+			});
+		}
+		
+		function noneDeleteReply() {
+			Swal.fire('타인의 댓글은 지울 수 없습니다.');
+			$(".swal2-confirm").on("click", function() {
+				/* location.reload(); */
 			});
 		}
 	</script>

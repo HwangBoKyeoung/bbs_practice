@@ -22,15 +22,19 @@
 					</tr>
 					<tr>
 						<th>결제방식</th>
-						<td><input type="text" value="${cost.costMethod}" name="costMethod" id="costMethod" required /></td>
+						<td><select name="costMethod" id="costMethod">
+								<option value="1" <c:if test="${cost.costMethod=='계좌이체'}">selected</c:if>>계좌이체</option>
+								<option value="2" <c:if test="${cost.costMethod=='현금'}">selected</c:if>>현금</option>
+								<option value="3" <c:if test="${cost.costMethod=='카드'}">selected</c:if>>카드</option>
+							</select></td>
 					</tr>
 					<tr>
 						<th>결제분류</th>
 						<td>
 							<select name="costCategory" id="costCategory">
-								<option value="교통비" <c:if test="${cost.costCategory == '교통비' }">selected</c:if>>교통비</option>
-								<option value="숙박비" <c:if test="${cost.costCategory == '숙박비' }">selected</c:if>>숙박비</option>
-								<option value="일비" <c:if test="${cost.costCategory == '일비' }">selected</c:if>>일비</option>
+								<option value="1" <c:if test="${cost.costCategory == '교통비' }">selected</c:if>>교통비</option>
+								<option value="2" <c:if test="${cost.costCategory == '숙박비' }">selected</c:if>>숙박비</option>
+								<option value="3" <c:if test="${cost.costCategory == '일비' }">selected</c:if>>일비</option>
 							</select>
 						</td>
 					</tr>

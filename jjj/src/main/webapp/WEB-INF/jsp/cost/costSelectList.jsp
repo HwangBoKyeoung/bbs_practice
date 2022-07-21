@@ -18,10 +18,10 @@
 				<select id="inputState" name="searchType">
 					<option value="all"
 						${pageVO.cri.searchType eq 'all' ? 'selected' : ''}>전체</option>
-					<option value="date"
-						${pageVO.cri.searchType eq 'date' ? 'selected' : ''}>날짜</option>
+					<option value="method"
+						${pageVO.cri.searchType eq 'method' ? 'selected' : ''}>결제방식</option>
 					<option value="category"
-						${pageVO.cri.searchType eq 'category' ? 'selected' : ''}>분류</option>
+						${pageVO.cri.searchType eq 'category' ? 'selected' : ''}>결제분류</option>
 				</select> <input type="text" name="searchName"
 					value="${pageVO.cri.searchName}" /> <input type="submit"
 					value="검색" /> <input type="hidden" value="1" name="pageNum" /> <input

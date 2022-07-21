@@ -2,15 +2,14 @@ package egovframework.example.cost.sevice;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import egovframework.example.common.SysCodeDtlVO;
 
 public class CostVO {
 
 	private int costNo;
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date costDate;
 	private String costMethod;
 	private String costCategory;
@@ -23,6 +22,8 @@ public class CostVO {
 	private Date start;
 	private Date end;
 	private String title;
+	
+	private SysCodeDtlVO sysCodeDtlVO;
 	
 
 	public int getCostNo() {
@@ -121,13 +122,20 @@ public class CostVO {
 		this.title = title;
 	}
 
+	public SysCodeDtlVO getSysCodeDtlVO() {
+		return sysCodeDtlVO;
+	}
+
+	public void setSysCodeDtlVO(SysCodeDtlVO sysCodeDtlVO) {
+		this.sysCodeDtlVO = sysCodeDtlVO;
+	}
+
 	@Override
 	public String toString() {
 		return "CostVO [costNo=" + costNo + ", costDate=" + costDate + ", costMethod=" + costMethod + ", costCategory="
 				+ costCategory + ", costDetail=" + costDetail + ", costBuyer=" + costBuyer + ", costSum=" + costSum
 				+ ", fileName=" + fileName + ", fileRename=" + fileRename + ", start=" + start + ", end=" + end
-				+ ", title=" + title + "]";
+				+ ", title=" + title + ", sysCodeDtlVO=" + sysCodeDtlVO + "]";
 	}
-	
 
 }

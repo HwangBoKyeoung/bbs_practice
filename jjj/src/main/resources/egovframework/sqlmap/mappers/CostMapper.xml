@@ -2,8 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="costMapper">
 
+	<resultMap type="costVO" id="costResultMap">
+		<id property="costNo" column="cost_no" />
+		<result property="costDate" column="cost_date" />
+		<result property="costMethod" column="cost_method" />
+		<result property="costCategory" column="cost_category" />
+		<result property="costDetail" column="cost_detail" />
+		<result property="costBuyer" column="cost_buyer" />
+		<result property="costSum" column="cost_sum" />
+		<result property="fileName" column="file_name" />
+		<result property="fileRename" column="file_rename" />
+		<collection property="sysCodeDtlVO" resultMap="codeResultMap" />
+	</resultMap>
+	
+	<resultMap type="sysCodeVO" id="codeResultMap">
+		<result property="codeMst" column="code_mst" />
+		<result property="codeDtl" column="code_dtl" />
+		<result property="codeDtlNm" column="code_dtl_nm" />
+		<result property="dtlOrd" column="dtl_ord" />
+	</resultMap>
+
 	<select id="costSelectList" resultType="costVO">
-	    SELECT COST_NO
+	    SELECT F.COST_NO
+	         , F.COST_DATE
+	         , D.CODE_DTL_NM "COST_METHOD"
+	         , D1.CODE_DTL_NM "COST_CATEGORY"
+	         , F.COST_DETAIL
+	         , F.COST_BUYER
+	         , F.COST_SUM
+	         , F.FILE_NAME
+	         , F.FILE_RENAME
+		  FROM FORWIZ_COST_TB F
+		  JOIN SYS_CODE_DTL D
+		    ON (F.COST_METHOD=D.CODE_DTL)
+		  JOIN SYS_CODE_DTL D1
+		    ON (F.COST_CATEGORY = D1.CODE_DTL)
+		 WHERE D.CODE_MST = 'COST_METHOD'
+		   AND D1.CODE_MST = 'COST_CATEGORY'
+		 ORDER BY F.COST_NO
+	</select>
+	
+	<select id="getList" resultType="costVO">
+		<![CDATA[
+		SELECT COST_NO
 			 , COST_DATE
 			 , COST_METHOD
 			 , COST_CATEGORY
@@ -12,11 +53,83 @@
 			 , COST_SUM
 			 , FILE_NAME
 			 , FILE_RENAME
-		FROM FORWIZ_COST_TB
-		ORDER BY 1
+		FROM (
+			  SELECT ROWNUM RN
+			  	   , A.COST_NO
+			  	   , A.COST_DATE
+			  	   , A.COST_METHOD
+			  	   , A.COST_CATEGORY
+			  	   , A.COST_DETAIL
+			  	   , A.COST_BUYER
+			  	   , A.COST_SUM
+			  	   , A.FILE_NAME
+			  	   , A.FILE_RENAME
+			  FROM (
+			  		SELECT F.COST_NO
+				         , F.COST_DATE
+				         , D.CODE_DTL_NM "COST_METHOD"
+				         , D1.CODE_DTL_NM "COST_CATEGORY"
+				         , F.COST_DETAIL
+				         , F.COST_BUYER
+				         , F.COST_SUM
+				         , F.FILE_NAME
+				         , F.FILE_RENAME
+					FROM FORWIZ_COST_TB F
+				    JOIN SYS_CODE_DTL D
+				      ON (F.COST_METHOD=D.CODE_DTL)
+				    JOIN SYS_CODE_DTL D1
+				      ON (F.COST_CATEGORY = D1.CODE_DTL)
+				   WHERE D.CODE_MST = 'COST_METHOD'
+				     AND D1.CODE_MST = 'COST_CATEGORY'
+				     AND
+					]]>
+						<if test="searchType == 'all'">
+							(D1.CODE_DTL_NM LIKE '%'||#{searchName}||'%' 
+							 OR D.CODE_DTL_NM LIKE '%'||#{searchName}||'%')
+						</if>
+						<if test="searchType == 'method'">
+							D.CODE_DTL_NM LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == 'category'">
+							D1.CODE_DTL_NM LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == '' or searchType == null">
+							1=1
+						</if>
+		<![CDATA[
+					ORDER BY F.COST_NO
+				)A
+			)
+		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+    	]]>
 	</select>
 	
-	<select id="getList" resultType="costVO">
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*)
+		  FROM FORWIZ_COST_TB F
+	      JOIN SYS_CODE_DTL D
+	        ON (F.COST_METHOD=D.CODE_DTL)
+	      JOIN SYS_CODE_DTL D1
+	        ON (F.COST_CATEGORY = D1.CODE_DTL)
+	     WHERE D.CODE_MST = 'COST_METHOD'
+	       AND D1.CODE_MST = 'COST_CATEGORY'
+	       AND
+			<if test="searchType == 'all'">
+				(D1.CODE_DTL_NM LIKE '%'||#{searchName}||'%' 
+				 OR D.CODE_DTL_NM LIKE '%'||#{searchName}||'%')
+			</if>
+			<if test="searchType == 'method'">
+				D.CODE_DTL_NM LIKE '%'||#{searchName}||'%'
+			</if>
+			<if test="searchType == 'category'">
+				D1.CODE_DTL_NM LIKE '%'||#{searchName}||'%'
+			</if>
+			<if test="searchType == '' or searchType == null">
+				1=1
+			</if>
+	</select>
+	
+	<!-- <select id="getList" resultType="costVO">
 		<![CDATA[
 		SELECT COST_NO
 			 , COST_DATE
@@ -81,20 +194,27 @@
 			<if test="searchType == '' or searchType == null">
 				1=1
 			</if>
-	</select>
+	</select> -->
 	
 	<select id="costSelect" resultType="costVO">
-		SELECT COST_NO
-			 , COST_DATE
-			 , COST_METHOD
-			 , COST_CATEGORY
-			 , COST_DETAIL
-			 , COST_BUYER
-			 , COST_SUM
-			 , FILE_NAME
-			 , FILE_RENAME
-		FROM FORWIZ_COST_TB
-        WHERE COST_NO = #{costNo}
+		SELECT F.COST_NO
+	         , F.COST_DATE
+	         , D.CODE_DTL_NM "COST_METHOD"
+	         , D1.CODE_DTL_NM "COST_CATEGORY"
+	         , F.COST_DETAIL
+	         , F.COST_BUYER
+	         , F.COST_SUM
+	         , F.FILE_NAME
+	         , F.FILE_RENAME
+		  FROM FORWIZ_COST_TB F
+		  JOIN SYS_CODE_DTL D
+		    ON (F.COST_METHOD=D.CODE_DTL)
+		  JOIN SYS_CODE_DTL D1
+		    ON (F.COST_CATEGORY = D1.CODE_DTL)
+		 WHERE D.CODE_MST = 'COST_METHOD'
+		   AND D1.CODE_MST = 'COST_CATEGORY'
+		   AND F.COST_NO = #{costNo}
+		 ORDER BY F.COST_NO
 	</select>
 	
 	<insert id="costInsert" parameterType="costVO">

@@ -22,7 +22,11 @@
 					</tr>
 					<tr>
 						<th>결제방식</th>
-						<td><input type="text" name="costMethod" id="costMethod" required /></td>
+						<td><select name="costMethod" id="costMethod">
+								<option value="1" selected>계좌이체</option>
+								<option value="2">현금</option>
+								<option value="3">카드</option>
+							</select></td>
 					</tr>
 					<tr>
 						<th>결제분류</th>

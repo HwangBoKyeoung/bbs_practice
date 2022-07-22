@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.mail.HtmlEmail;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -133,6 +133,7 @@ public class UserServiceImplTest extends EgovAbstractServiceImpl implements User
 		}
 	}
 
+	@Test
 	@Override
 	public void findPwd(HttpServletResponse resp, UserVO vo) throws Exception {
 		resp.setContentType("text/html;charset=utf-8");

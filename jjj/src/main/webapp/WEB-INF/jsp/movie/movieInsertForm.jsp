@@ -8,6 +8,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	
+	/* Firefox  */
+	input[type='number'] {
+	  -moz-appearance: textfield;
+	}
+</style>
 <title>WELCOME HOME</title>
 </head>
 <body>
@@ -19,28 +32,30 @@
 				<tbody>
 					<tr>
 						<th>영화제목</th>
-						<td><input type="text" name="movieName" id="movieName"
+						<td><input type="text" name="movieName" id="movieName" style="width: 850px;"
 							required /></td>
 					</tr>
 					<tr>
 						<th>영화내용</th>
-						<td><textarea rows="20" cols="15" name="movieConent"
-								id="movieConent" required></textarea></td>
+						<td><textarea rows="20" cols="100" name="movieConent"
+								id="movieConent" maxlength="1000" placeholder="영화내용을 입력해주세요. 1000자까지 입력할 수 있습니다." required></textarea></td>
 					</tr>
 					<tr>
 						<th>영화감독</th>
-						<td><input type="text" name="movieDirector"
+						<td><input type="text" name="movieDirector" maxlength="30"
 							id="movieDirector" required /></td>
 					</tr>
 					<tr>
 						<th>영화배우</th>
-						<td><input type="text" name="movieActor" id="movieActor"
+						<td><input type="text" name="movieActor" maxlength="300" id="movieActor" style="width: 850px;"
 							required /></td>
 					</tr>
 					<tr>
 						<th>금액</th>
-						<td><input type="text" value="14000" name="moviePrice"
-							id="moviePrice" /></td>
+						<td>
+						<fmt:formatNumber value="" pattern="#,###"></fmt:formatNumber>
+						<input type="number" value="14000" name="moviePrice" style="width: 200px; text-align:right;"
+							id="moviePrice" min="9000" max="16000" required />원</td>
 					</tr>
 					<tr>
 						<th>파일</th>

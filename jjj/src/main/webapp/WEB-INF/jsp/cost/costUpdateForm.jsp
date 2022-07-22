@@ -7,13 +7,27 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>WELCOME HOME</title>
+<style>
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	
+	/* Firefox  */
+	input[type='number'] {
+	  -moz-appearance: textfield;
+	}
+</style>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
-		<form action="costUpdate.do" method="post" enctype="multipart/form-data">
+		<form action="costUpdate.do" method="post" enctype="multipart/form-data" onsubmit="return fileCheck();">
 			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 				<tbody>
 					<tr>
@@ -40,19 +54,19 @@
 					</tr>
 					<tr>
 						<th>상세내용</th>
-						<td><textarea rows="20" cols="30" name="costDetail" id="costDetail" placeholder="상세 내용을 입력해주세요.">${cost.costDetail}</textarea></td>
+						<td><textarea maxlength="300" rows="20" cols="100" name="costDetail" id="costDetail" placeholder="상세 내용을 입력해주세요. 300자까지 입력할 수 있습니다.">${cost.costDetail}</textarea></td>
 					</tr>
 					<tr>
 						<th>결제자</th>
-						<td><input type="text" value="${cost.costBuyer}" name="costBuyer" id="costBuyer" required /></td>
+						<td><input type="text" value="${cost.costBuyer}" name="costBuyer" id="costBuyer" readonly /></td>
 					</tr>
 					<tr>
 						<th>금액</th>
-						<td><input type="text" value="${cost.costSum}" name="costSum" id="costSum" required /></td>
+						<td><input type="number" min="0" maxlength="10" oninput="maxLengthCheck(this)" value="${cost.costSum}" name="costSum" id="costSum" required /></td>
 					</tr>
 					<tr>
 						<th>파일명</th>
-						<td><input type="file" name="file" id="file" required onchange="setThumbNail(event)" /></td>
+						<td><input type="file" name="file" id="file" onchange="setThumbNail(event)" /></td>
 					</tr>
 				</tbody>
 			</table><br />
@@ -84,6 +98,29 @@
 				$("#imageView").children().remove();
 			}
 			reader.readAsDataURL(e.target.files[0]);
+		}
+		
+// 		input type=number => maxlength가 제대로 동작하지 않는 브라우저 존재
+//		oninput 이벤트속성을 이용하여 maxlength 및 minlength 제한 처리
+		function maxLengthCheck(obj){
+			if(obj.value.length > obj.maxLength){
+				obj.value = obj.value.slice(0, obj.maxLength);
+				console.log(obj.value);
+			}
+		}
+		
+// 		파일을 선택하지 않으면 문구 띄워주기용 메서드
+		function fileCheck(){
+			let answer;
+			if(!$("#file").val()){
+				answer = confirm("새로운 파일을 첨부하지 않았습니다. 기존 첨부파일 그대로 전송하시겠습니까?");
+				if(answer == true){
+					return true;
+				} else {
+					return false;
+				}
+			}
+			return true;
 		}
 	</script>
 </body>

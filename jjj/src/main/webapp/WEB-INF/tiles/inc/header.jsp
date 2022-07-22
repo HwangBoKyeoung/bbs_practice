@@ -22,7 +22,7 @@
 	<!-- Topbar Navbar -->
 	<ul class="navbar-nav ml-auto">
 
-		<!-- Nav Item - Search Dropdown (Visible Only XS) -->
+		<%-- <!-- Nav Item - Search Dropdown (Visible Only XS) -->
 		<li class="nav-item dropdown no-arrow d-sm-none"><a
 			class="nav-link dropdown-toggle" href="#" id="searchDropdown"
 			role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -191,7 +191,7 @@
 						로그아웃
 					</a>
 				</sec:authorize>
-			</div></li>
+			</div></li> --%>
 
 	</ul>
 

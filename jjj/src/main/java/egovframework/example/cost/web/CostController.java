@@ -111,24 +111,26 @@ public class CostController {
 
 	@PostMapping("/costUpdate.do")
 	public String costUpdate(CostVO vo, Model model, MultipartFile file) {
-		String fileName = file.getOriginalFilename();
-		System.out.println("=================u원래 파일 이름: " + fileName);
-
-		String uuId = UUID.randomUUID().toString();
-		String fileRename = uuId + fileName.substring(fileName.lastIndexOf("."));
-		System.out.println("=================u변경 파일 이름: " + fileRename);
-
-		File target = new File(uploadPath, fileRename);
-		try {
-			// 파일 전송
-			FileCopyUtils.copy(file.getBytes(), target);
-			fileRename = File.separator + fileRename;
-			vo.setFileName(fileName);
-			vo.setFileRename(fileRename);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(!file.isEmpty()) {
+			String fileName = file.getOriginalFilename();
+			System.out.println("=================u원래 파일 이름: " + fileName);
+	
+			String uuId = UUID.randomUUID().toString();
+			String fileRename = uuId + fileName.substring(fileName.lastIndexOf("."));
+			System.out.println("=================u변경 파일 이름: " + fileRename);
+	
+			File target = new File(uploadPath, fileRename);
+			try {
+				// 파일 전송
+				FileCopyUtils.copy(file.getBytes(), target);
+				fileRename = File.separator + fileRename;
+				vo.setFileName(fileName);
+				vo.setFileRename(fileRename);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-
+		
 		int update = costService.costUpdate(vo);
 		if (update == 0) {
 			model.addAttribute("message", "경비 수정이 실패했습니다.");

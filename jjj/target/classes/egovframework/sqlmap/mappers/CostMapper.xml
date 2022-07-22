@@ -253,8 +253,8 @@
 			<if test="costCategory != null or costCategory != ''">COST_CATEGORY=#{costCategory},</if>
 			<if test="costDetail != null or costDetail != ''">COST_DETAIL=#{costDetail},</if>
 			<if test="costSum != null or costSum != ''">COST_SUM=#{costSum},</if>
-			<if test="fileName != null or fileName != ''">FILE_NAME=#{fileName},</if>
-			<if test="fileRename != null or fileRename != ''">FILE_RENAME=#{fileRename},</if>
+			<if test="fileName != null or fileName != ''">FILE_NAME=NVL(#{fileName},FILE_NAME),</if>
+			<if test="fileRename != null or fileRename != ''">FILE_RENAME=NVL(#{fileRename},FILE_RENAME),</if>
 		</set>
 		WHERE COST_NO = #{costNo}
 	</update>

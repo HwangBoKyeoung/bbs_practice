@@ -7,6 +7,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	
+	/* Firefox  */
+	input[type='number'] {
+	  -moz-appearance: textfield;
+	}
+</style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>WELCOME HOME</title>
@@ -41,7 +54,7 @@
 					</tr>
 					<tr>
 						<th>상세내용</th>
-						<td><textarea maxlength="1000" rows="20" cols="100" name="costDetail" id="costDetail" placeholder="상세 내용을 입력해주세요. 1000자 까지 입력가능합니다."></textarea></td>
+						<td><textarea maxlength="300" rows="20" cols="100" name="costDetail" id="costDetail" placeholder="상세 내용을 입력해주세요. 300자 까지 입력가능합니다."></textarea></td>
 					</tr>
 					<tr>
 						<th>결제자</th>
@@ -49,11 +62,11 @@
 					</tr>
 					<tr>
 						<th>금액</th>
-						<td><input type="number" name="costSum" id="costSum" required /></td>
+						<td><input type="number" min="0" maxlength="10" oninput="maxLengthCheck(this)" value="${cost.costSum}" name="costSum" id="costSum" required /></td>
 					</tr>
 					<tr>
 						<th>파일</th>
-						<td><input type="file" name="files" id="files" onchange="setThumbNail(event)" /></td>
+						<td><input type="file" name="files" id="files" onchange="setThumbNail(event)" required /></td>
 					</tr>
 				</tbody>
 			</table><br />
@@ -77,6 +90,15 @@
 				$("#imageView").children().remove();
 			}
 			reader.readAsDataURL(e.target.files[0]);
+		}
+		
+// 		input type=number => maxlength가 제대로 동작하지 않는 브라우저 존재
+//		oninput 이벤트속성을 이용하여 maxlength 및 minlength 제한 처리
+		function maxLengthCheck(obj){
+			if(obj.value.length > obj.maxLength){
+				obj.value = obj.value.slice(0, obj.maxLength);
+				console.log(obj.value);
+			}
 		}
 	</script>
 </body>

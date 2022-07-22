@@ -25,7 +25,7 @@
 					<option value="category"
 						${pageVO.cri.searchType eq 'content' ? 'selected' : ''}>내용</option>
 				</select> <input type="text" name="searchName"
-					value="${pageVO.cri.searchName}" /> <input type="submit"
+					value="${pageVO.cri.searchName}" maxlength="30" /> <input type="submit"
 					value="검색" class="btn btn-primary btn-icon-split btn-lg" /> <input type="hidden" value="1" name="pageNum" /> <input
 					type="hidden" name="amount" value="${pageVO.cri.amount}" />
 			</form>

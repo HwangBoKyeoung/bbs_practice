@@ -46,6 +46,29 @@
 			 , #{userMail})
 	</insert>
 	
+	<!-- <insert id="userInsert" parameterType="userVO">
+		INSERT INTO USERS(USER_NAME
+						, USER_ID
+						, USER_PWD
+						, USER_ROLE
+						, USER_GENDER
+						, USER_TEL
+						, USER_MAIL
+						, IHIDNUM
+						, IHIDNUM2
+						, IHIDNUM3)
+		VALUES('aaaaaa'
+			 , 'aaaaaa'
+			 , 'aaaaaa'
+			 , 'user'
+			 , 'M'
+			 , '010-5205-8000'
+			 , 'naaruaaa@gmail.com'
+			 , #{ihidnum}
+			 , #{ihIdNum2}
+			 , #{ihIdNum3})
+	</insert> -->
+	
 	<delete id="userDelete" parameterType="userVO">
 		DELETE FROM USERS
 		WHERE USER_ID = #{userId}

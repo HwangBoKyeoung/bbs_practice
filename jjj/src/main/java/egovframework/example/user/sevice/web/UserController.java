@@ -1,11 +1,13 @@
 package egovframework.example.user.sevice.web;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,9 +20,6 @@ public class UserController {
 	@Resource(name="userService")
 	private UserService userService;
 	
-	/*@Autowired
-	private BCryptPasswordEncoder bcrypt;*/
-	
 	@RequestMapping("/userLoginForm.do")
 	public String userLoginForm() {
 		return "user/userLoginForm";
@@ -32,15 +31,15 @@ public class UserController {
 	}
 	
 	@PostMapping("/userRegister.do")
-	public String userRegister(UserVO vo, HttpSession session, Model model) {
-		/*String userPwd = vo.getUserPwd();
-		String encPwd = bcrypt.encode(userPwd);
-		vo.setUserPwd(encPwd);*/
-		
+	public String userRegister(@Valid @ModelAttribute UserVO vo, Model model, BindingResult bindingResult) {
 		String userPwd = vo.getUserPwd();
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 		String result = encoder.encode(userPwd);
 		vo.setUserPwd(result);
+		
+		if(bindingResult.hasErrors()) {
+			return "redirect:/userRegisterForm.do";
+		}
 		
 		int insert = userService.userInsert(vo);
 		if(insert == 0) {

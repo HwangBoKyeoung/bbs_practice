@@ -20,6 +20,11 @@
 	html, body {
 		border: 0;
 	}
+	
+	.padding-none {
+		padding: 0;
+		display: inline-block;
+	}
 
     @media all and (min-width: 320px) {
 		body{
@@ -44,68 +49,103 @@
 </style>
 <title>WELCOME HOME</title>
 </head>
-<body>
-	<div align="center">
-		<h1>=====WELCOME=====</h1>
-		<h2>여기는 회원가입 페이지입니다.</h2>
-	</div>
-	<br />
-	<div align="center">
-		<form action="userRegister.do" method="post" onsubmit="return registerFnc();">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			<table>
-				<tbody>
-					<tr>
-						<th>아이디</th>
-						<td><input type="text" name="userId" id="userId" required /></td>
-						<td><button type="button" id="idChk" value="N" onclick="idChkFnc();">아이디중복체크</button></td>
-					</tr>
-					<tr>
-						<th>비밀번호</th>
-						<td><input type="password" name="userPwd" id="userPwd" required /></td>
-					</tr>
-					<tr>
-						<th>비밀번호 확인하기</th>
-						<td><input type="password" name="userPwdChk" id="userPwdChk" required /></td>
-					</tr>
-					<tr>
-						<th>이름</th>
-						<td><input type="text" name="userName" id="userName" required /></td>
-					</tr>
-					<tr>
-						<th>성별</th>
-						<td>
-							<input type="radio" name="userGender" id="male" value="M" />
-							<label for="male">남</label>
-							<input type="radio" name="userGender" id="female" value="W" />
-							<label for="female">여</label>
-						</td>
-					</tr>
-					<tr>
-						<th>연락처</th>
-						<td><input type="tel" maxlength="13" placeholder="-포함해서 전화번호 13자리를 작성해주세요." name="userTel" id="userTel" required /></td>
-					</tr>
-				</tbody>
-			</table><br />
-			<input type="submit" value="회원가입" />
-			<input type="reset" value="초기화" />
-		</form>
-	</div>
-	
-	<script>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                            	<h1 class="h4 text-gray-900 mb-4">=====WELCOME=====</h1>
+								<h2 class="h4 text-gray-900 mb-4">여기는 회원가입 페이지입니다.</h2>
+                            </div>
+                            <form class="user" action="userRegister.do" method="post" onsubmit="return registerFnc();">
+                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" name="userId" id="userId"
+                                            placeholder="아이디" required/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                    	<button type="button" id="idChk" value="N" onclick="idChkFnc();" class="form-control form-control-user btn btn-primary btn-icon-split btn-lg" style="align-items: center;">아이디중복체크</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                	<div class="form-group row">
+	                                    <div class="col-sm-6 mb-3 mb-sm-0">
+	                                        <input type="text" class="form-control form-control-user" name="userName" id="userName"
+	                                            placeholder="이름" required/>
+	                                    </div>
+	                                    <div class="col-sm-6">
+	                                    	<input type="text" class="form-control form-control-user" name="userTel" id="userTel"
+	                                            placeholder="연락처" required maxlength="11"/>
+	                                    </div>
+	                                </div>
+                                </div>
+                                <div class="form-group">
+                                	<div class="col-sm-8 mb-3 mb-sm-0 padding-none">
+                                		<input type="email" class="form-control form-control-user" id="userMail"
+                                        	   name="userMail" placeholder="이메일 주소 입력"/>
+                                	</div>&nbsp;
+                                    <div class="col-sm-3 padding-none">
+                                    	&nbsp;&nbsp;<strong>성별</strong>&nbsp;
+                                    	<input type="radio" name="userGender" id="male" value="M" />
+										<label for="male">남</label>
+										<input type="radio" name="userGender" id="female" value="W" />
+										<label for="female">여</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control form-control-user"
+                                             name="userPwd" id="userPwd" required placeholder="비밀번호 입력" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user"
+                                            name="userPwdChk" id="userPwdChk" required placeholder="비밀번호 재입력"/>
+                                    </div>
+                                </div>
+                                <input type="submit" value="회원가입" class="btn btn-primary btn-user btn-block"/>
+                                <hr/>
+                            </form>
+                            <hr/>
+                            <div class="text-center">
+                                <a class="small" href="findUserPasswordForm.do">비밀번호를 잊어버리셨나요?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="userLoginForm.do">로그인페이지로</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
 	
 		function registerFnc() {
 			if($("#idChk").val() == 'N') {
 				Swal.fire('아이디 중복체크를 해주십시오.');
 				$(".swal2-confirm").on("click", function() {
-					$("#userId").focus();
+					setTimeout(function(){
+						$("#userId").focus();
+					}, 800);
 				});
 				return false;
 			}
 			if($("#userPwd").val() != $("#userPwdChk").val()) {
 				Swal.fire('비밀번호와 비밀번호 확인하기 값이 다릅니다.');
 				$(".swal2-confirm").on("click", function() {
-					$("#userPwd").focus();
+					setTimeout(function(){
+						$("#userPwd").focus();
+					}, 800);
 				});
 				return false;
 			}
@@ -121,24 +161,31 @@
 				dataType: "json",
 				success: function(result) {
 					if(result == 0) {
-						if($("#userId").val() == '' || $("#userId").val() == null) {
+						Swal.fire('입력하신 아이디가 이미 존재합니다.');
+						$(".swal2-confirm").on("click", function() {
+							setTimeout(function(){
+								$("#userId").val('');
+								$("#userId").focus();
+							}, 800);
+						});
+					} else {
+						if($("#userId").val() == "" || $("#userId").val() == null) {
 							Swal.fire('아이디를 입력해주세요.');
 							$(".swal2-confirm").on("click", function() {
-								$("#userId").focus();
+								setTimeout(function(){
+									$("#userId").focus();
+								}, 800);
 							});
 						} else {
-							Swal.fire('입력하신 아이디가 이미 존재합니다.');
+							Swal.fire('입력하신 아이디는 사용가능합니다.');
 							$(".swal2-confirm").on("click", function() {
-								$("#userId").empty();
-								$("#userId").focus();
+								setTimeout(function(){
+									$("#userName").focus();
+								}, 800);
+								
+								$("#idChk").val("Y");
 							});
 						}
-					} else {
-						Swal.fire('입력하신 아이디는 사용가능합니다.');
-						$(".swal2-confirm").on("click", function() {
-							$("#userPwd").focus();
-							$("#idChk").val("Y");
-						});
 					}
 				}
 			});

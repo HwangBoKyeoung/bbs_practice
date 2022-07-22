@@ -32,7 +32,7 @@
 				<tbody>
 					<tr>
 						<th>영화제목</th>
-						<td><input type="text" name="movieName" id="movieName" style="width: 850px;"
+						<td><input type="text" name="movieName" id="movieName" placeholder="영화제목을 입력해주세요. 300자까지 입력할 수 있습니다." maxlength="300" style="width: 850px;"
 							required /></td>
 					</tr>
 					<tr>
@@ -53,7 +53,7 @@
 					<tr>
 						<th>금액</th>
 						<td>
-						<fmt:formatNumber value="" pattern="#,###"></fmt:formatNumber>
+						<fmt:formatNumber var="price" pattern="#,###"></fmt:formatNumber>
 						<input type="number" value="14000" name="moviePrice" style="width: 200px; text-align:right;"
 							id="moviePrice" min="9000" max="16000" required />원</td>
 					</tr>

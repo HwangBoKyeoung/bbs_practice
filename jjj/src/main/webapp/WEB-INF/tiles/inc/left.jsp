@@ -93,7 +93,14 @@
 								<h6 class="collapse-header">특수기능: </h6>
 								<a class="collapse-item" href="findUserPasswordForm.do">비밀번호 찾기</a>
 							</div>
-						</div></li> <!-- Nav Item - Charts -->
+						</div></li> 
+						
+						<!-- 연습메뉴(validation) -->
+						<li class="nav-item"><a class="nav-link" href="exRegisterForm.do">
+							<i class="fas fa-fw fa-chart-area"></i> <span>주민등록번호 유효성검사</span>
+					</a></li>
+						
+						<!-- Nav Item - Charts -->
 					<li class="nav-item"><a class="nav-link" href="charts.html">
 							<i class="fas fa-fw fa-chart-area"></i> <span>Charts</span>
 					</a></li> <!-- Nav Item - Tables -->

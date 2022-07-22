@@ -25,6 +25,8 @@
 		<security:intercept-url pattern="/userLoginForm.do" access="permitAll" />
 		<security:intercept-url pattern="/userRegisterForm.do" access="permitAll" />
 		<security:intercept-url pattern="/findUserPasswordForm.do" access="permitAll" />
+		<security:intercept-url pattern="/exRegisterForm.do" access="permitAll" />
+		<security:intercept-url pattern="/exRegister.do" access="permitAll" />
 		<!-- <security:intercept-url pattern="/login" filters="none" /> -->
 		<security:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
 		<security:form-login login-page="/userLoginForm.do"

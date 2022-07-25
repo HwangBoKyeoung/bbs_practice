@@ -20,7 +20,12 @@ public class UserRestController {
 	@PostMapping("/ajaxIdChk.do")
 	public int ajaxIdChk(UserVO vo) {
 		int idNo = userService.userIdChk(vo);
-
+		boolean usid = vo.isAlphaNumber(vo.getUserId());
+		
+		if(!usid) {
+			return -1;
+		}
+		
 		return idNo;
 	}
 	

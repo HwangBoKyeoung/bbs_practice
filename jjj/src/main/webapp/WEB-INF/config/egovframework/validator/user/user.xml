@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+        <form name="userVO">
+        	<!-- <field property="userId" depends="required">
+        		<arg0 key="title.sample.name" />
+			</field> -->
+			<field property="userPwd" depends="required, mask">
+                <arg0 key="일반회원비밀번호" resource="false" />
+            </field>
+        	<!-- <field property="userName" depends="required">
+        		<arg0 key="title.sample.regUser" />
+			</field>
+			<field property="userTel" depends="required">
+        		<arg0 key="title.sample.name" />
+			</field>
+			<field property="userMail" depends="required, email">
+                <arg0 key="title.sample.description" />
+            </field>
+        	<field property="ihidnum" depends="required, ihidnum">
+        		<arg0 key="title.sample.regUser" />
+			</field> -->
+        </form>
+    </formset>
+    
+</form-validation>

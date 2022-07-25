@@ -19,19 +19,4 @@
         </form>
     </formset>
     
-    <!-- 황보경 추가!! -->
-    <formset>
-        <form name="userVO">
-        	<field property="userId" depends="required">
-        		<arg0 key="아이디" resource="true" />
-        	</field>
-        	<field property="userName" depends="required">
-        		<arg0 key="이름" resource="true" />
-        	</field>
-        	<field property="userPwd" depends="required, mask">
-        		<arg0 key="비밀번호" resource="true" />
-        	</field>
-        </form>
-    </formset>
-
 </form-validation>

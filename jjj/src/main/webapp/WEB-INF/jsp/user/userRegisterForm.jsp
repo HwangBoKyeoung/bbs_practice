@@ -89,11 +89,24 @@
 	                                </div>
                                 </div>
                                 <div class="form-group">
-                                	<div class="col-sm-8 mb-3 mb-sm-0 padding-none">
-                                		<input type="email" class="form-control form-control-user" id="userMail"
-                                        	   name="userMail" placeholder="이메일 주소 입력"/>
-                                	</div>&nbsp;
-                                    <div class="col-sm-3 padding-none">
+                                	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
+                                		<input type="text" class="form-control form-control-user" id="email1"
+                                        	   name="email1" placeholder="이메일 주소 입력"/>
+                                	</div>@
+                                	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
+                                		<input type="text" class="form-control form-control-user" id="email2"
+                                        	   name="email2" readonly/>
+                                	</div>
+                                	<div class="col-sm-3 mb-3 mb-sm-0 padding-none">
+                                		<select name="emailSelect" id="emailSelect" class="form-control form-control-user" style="padding: 0; text-align: center;">
+                                			<option value="null" selected>선택하세요</option>
+                                			<option value="naver.com">naver.com</option>
+                                			<option value="gmail.com">gmail.com</option>
+                                		</select>
+                                	</div>
+                                </div>
+                                <div class="form-group">
+                                	<div class="col-sm-12 padding-none">
                                     	&nbsp;&nbsp;<strong>성별</strong>&nbsp;
                                     	<input type="radio" name="userGender" id="male" value="M" />
 										<label for="male">남</label>
@@ -109,6 +122,16 @@
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
                                             name="userPwdChk" id="userPwdChk" required placeholder="비밀번호 재입력"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user"
+                                             name="ihIdNum2" id="ihIdNum2" required placeholder="주민번호 앞자리" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user"
+                                            name="ihIdNum3" id="ihIdNum3" required placeholder="주민번호 뒷자리" />
                                     </div>
                                 </div>
                                 <input type="submit" value="회원가입" class="btn btn-primary btn-user btn-block"/>
@@ -149,6 +172,22 @@
 				});
 				return false;
 			}
+			
+			let e1 = $("#email1").val();
+			let e2 = $("#email2").val();
+			if(e1 == '' || e1 == null){
+				Swal.fire('이메일이 유효하지 않습니다.');
+				$(".swal2-confirm").on("click", function() {
+					
+				});
+				return false;
+			} else if (e2 == '' || e2 == null){
+				Swal.fire('도메인이 유효하지 않습니다.');
+				$(".swal2-confirm").on("click", function() {
+					
+				});
+				return false;
+			}
 			return true;
 		}
 
@@ -160,6 +199,15 @@
 				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				dataType: "json",
 				success: function(result) {
+					if(result == -1){
+						Swal.fire('아이디는 6~12자의 영문과 숫자로만 이루어질 수 있습니다.');
+						$(".swal2-confirm").on("click", function() {
+							setTimeout(function(){
+								$("#userId").val('');
+								$("#userId").focus();
+							}, 800);
+						});
+					}
 					if(result == 0) {
 						Swal.fire('입력하신 아이디가 이미 존재합니다.');
 						$(".swal2-confirm").on("click", function() {
@@ -190,6 +238,15 @@
 				}
 			});
 		}
+		
+		$("#emailSelect").on("change", function() {
+			$("#email2").val('');
+			let val = $(event.target).val();
+			if(val == 'null' || val == '' || val == null) {
+				return;
+			}
+			$("#email2").val(val);
+		})
 	</script>
 </body>
 </html>

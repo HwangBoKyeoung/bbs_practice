@@ -5,7 +5,7 @@ import org.apache.commons.validator.ValidatorAction;
 import org.springframework.validation.Errors;
 import org.springmodules.validation.commons.FieldChecks;
 
-import egovframework.rte.ptl.mvc.validation.RteGenericValidator;
+import egovframework.example.common.RteGenericValidator;
 
 public class CustomValidator extends FieldChecks {
 
@@ -23,4 +23,6 @@ public class CustomValidator extends FieldChecks {
 			return true;
 		}
 	}
+	
+	
 }

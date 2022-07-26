@@ -126,7 +126,8 @@
 	                                            placeholder="이름" maxlength="10" required/>
 	                                    </div>
 	                                    <div class="col-sm-6">
-	                                    	<input type="number" class="form-control form-control-user" name="userTel" id="userTel" oninput="maxLengthCheck(this)"
+	                                    	<input type="number" class="form-control form-control-user" name="userTel" 
+	                                    			id="userTel" oninput="maxLengthCheck(this)" onkeyup="keyUpTel(this.value);"
 	                                            placeholder="연락처('-' 제외)" required maxlength="11"/>
 	                                    </div>
 	                                </div>
@@ -134,7 +135,8 @@
                                 <div class="form-group">
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email1"
-                                        	   name="email1" placeholder="이메일 주소 입력" maxlength="15"/>
+                                        	   name="email1" placeholder="이메일 주소 입력" maxlength="15"
+                                        	   onkeypress="return isAlphaNumeric(event);" ondrop="return false;" />
                                 	</div>@
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email2"
@@ -287,7 +289,25 @@
 					}
 				}
 			});
-		}
+		};
+		
+		$("#userPwdChk").on("change", function(){
+			let pwd = $("#userPwd").val();
+			let pwdChk = $("#userPwdChk").val();
+			let validatedPwd = $("#userPwdChk").next();
+			let invalidatedPwd = $("#userPwdChk").next().next();
+			if(pwd == pwdChk){
+				if(invalidatedPwd != "" || invalidatedPwd != null){
+					invalidatedPwd.text("");
+				}
+				validatedPwd.text("비밀번호와 일치합니다.");
+			} else{
+				if(validatedPwd != "" || validatedPwd != null){
+					validatedPwd.text("");
+				}
+				invalidatedPwd.text("비밀번호와 일치하지 않습니다.");
+			}
+		});
 		
 		$("#userId").on("change", function(){
 			let validatedId = $("#userId").next();
@@ -299,20 +319,22 @@
 			$("#idChk").val("N");
 		});
 		
-		let pwdArr = [];
-		let pwdValArr = [];
-		$("#userPwdChk").on("keyup", function(e){
-			console.log(e);
-// 			console.log(e.originalEvent.key);
-			
-// 			pwdArr.push(e.originalEvent.key);
-// 			console.log(pwdArr);
-			
-// 			console.log()
-// 			console.log($("#userPwd").val());
-			
-// 			if($("#userPwd").val() == )
-		});
+		function isAlphaNumeric(ev){
+			const keyCode = ev.keyCode;
+			const isValidKey = (
+			    (keyCode >= 48 && keyCode <= 57) || // Numbers
+			    (keyCode >= 97 && keyCode <= 122) || // Numbers, Keypad
+			    (keyCode >= 65 && keyCode <= 90) || // Alphabet
+			    (keyCode === 32) || // Space
+			    (keyCode === 8) || // BackSpace
+			    (keyCode === 189) // Dash
+			  );
+			  if (!isValidKey) {
+				ev.preventDefault();
+			    $("#email1").val('');
+			    return false;
+			  }
+		}
 		
 		$("#emailSelect").on("change", function() {
 			$("#email2").val('');
@@ -321,7 +343,13 @@
 				return;
 			}
 			$("#email2").val(val);
-		})
+		});
+		
+		function keyUpTel(val){
+			console.log(val);
+			val = val.replace('-', '');
+			$("#userTel").val(val);
+		};
 		
 // 		input type=number => maxlength가 제대로 동작하지 않는 브라우저 존재
 //		oninput 이벤트속성을 이용하여 maxlength 및 minlength 제한 처리
@@ -330,7 +358,7 @@
 				obj.value = obj.value.slice(0, obj.maxLength);
 				console.log(obj.value);
 			}
-		}
+		};
 	</script>
 </body>
 </html>

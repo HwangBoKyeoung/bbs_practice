@@ -151,7 +151,7 @@ public class CostController {
 	}
 
 	@PostMapping("/costInsert.do")
-	public String costInsert(CostVO vo, Model model, MultipartFile files) {
+	public String costInsert(CostVO vo, Model model, MultipartFile files, Principal p) {
 //		MultipartFile 의 메소드 
 //		String getName() : 파라미터 이름 리턴
 //		String getOriginalFilename() : 업로드한 파일의 이름을 리턴
@@ -175,6 +175,9 @@ public class CostController {
 				e.printStackTrace();
 			}
 		}
+		
+		String id = p.getName();
+		vo.setUserId(id);
 
 		int insert = costService.costInsert(vo);
 		if (insert == 0) {

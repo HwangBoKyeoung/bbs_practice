@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -25,12 +26,16 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			roleNames.add(authority.getAuthority());
 		});
 		
+		HttpSession session = req.getSession();
+		
 		if(roleNames.contains("ROLE_USER")) {
 			resp.sendRedirect("home.do");
+			session.setAttribute("sessionAuth", "user");
 			return;
 		}
 		if(roleNames.contains("ROLE_ADMIN")) {
 			resp.sendRedirect("costSelectList.do");
+			session.setAttribute("sessionAuth", "admin");
 			return;
 		}
 		

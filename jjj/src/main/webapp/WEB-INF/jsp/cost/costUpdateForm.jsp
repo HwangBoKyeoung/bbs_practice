@@ -81,7 +81,7 @@
 	<div align="center">
 		<button onclick="location.href='costSelectList.do'" class="btn btn-primary btn-icon-split btn-lg">목록으로</button>
 	</div><br/>
-	
+	<input type="hidden" value="${sessionAuth}" id="auth" />
 	<script>
 		function setThumbNail(e){
 			let reader = new FileReader();
@@ -122,6 +122,7 @@
 			}
 			return true;
 		}
+
 	</script>
 </body>
 </html>

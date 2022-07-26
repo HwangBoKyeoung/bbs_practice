@@ -10,13 +10,13 @@
 		<result property="movieDirector" column="movie_director" />
 		<result property="movieActor" column="movie_actor" />
 		<result property="moviePrice" column="movie_price" />
-		<result property="movieCd" column="movie_cd" />
+		<result property="userId" column="user_id" />
 		<collection property="movieCodeVO" resultMap="movieCdResultMap" />
 	</resultMap>
 	
 	<resultMap type="movieCodeVO" id="movieCdResultMap">
 		<result property="movieCdNo" column="movie_cd_no" />
-		<result property="movieCd" column="movie_cd" />
+		<result property="movieNo" column="movie_no" />
 		<result property="movieCdDetail" column="movie_cd_detail" />
 		<result property="movieCdRename" column="movie_cd_rename" />
 	</resultMap>
@@ -31,7 +31,7 @@
 			 , MOVIE_DIRECTOR
 			 , MOVIE_ACTOR
 			 , MOVIE_PRICE
-			 , MOVIE_CD
+			 , USER_ID
 		  FROM MOVIES
 		 ORDER BY MOVIE_NO DESC
 	</select>
@@ -40,7 +40,7 @@
 		   SELECT C.MOVIE_CD_DETAIL
 			 	, C.MOVIE_CD_RENAME
 		  FROM MOVIES M, MOVIE_CODE C
-		 WHERE M.MOVIE_NO = C.MOVIE_CD
+		 WHERE M.MOVIE_NO = C.MOVIE_NO
 		   AND M.MOVIE_NO=#{movieNo}
 	</select>
 	
@@ -52,6 +52,7 @@
 			 , MOVIE_DIRECTOR
 			 , MOVIE_ACTOR
 			 , MOVIE_PRICE
+			 , USER_ID
 		  FROM MOVIES
 		 WHERE MOVIE_NO=#{movieNo}
 	</select>
@@ -63,19 +64,21 @@
 						  , MOVIE_HIT
 						  , MOVIE_DIRECTOR
 						  , MOVIE_ACTOR
-						  , MOVIE_PRICE)
+						  , MOVIE_PRICE
+						  , USER_ID)
 		VALUES (MOVIES_SEQ.NEXTVAL
 			  , #{movieName}
 			  , #{movieConent}
 			  , 0
 			  , #{movieDirector}
 			  , #{movieActor}
-			  , #{moviePrice})
+			  , #{moviePrice}
+			  , #{userId})
 	</insert>
 	
 	<insert id="insertMovieCode" parameterType="movieCodeVO">
 		INSERT INTO MOVIE_CODE(MOVIE_CD_NO
-							 , MOVIE_CD
+							 , MOVIE_NO
 							 , MOVIE_CD_DETAIL
 							 , MOVIE_CD_RENAME)
 		VALUES (MOVIE_CODE_SEQ.NEXTVAL
@@ -101,7 +104,7 @@
 	
 	<delete id="deleteMovieCode" parameterType="movieVO">
 		DELETE FROM MOVIE_CODE
-		 WHERE MOVIE_CD = #{movieNo}
+		 WHERE MOVIE_NO = #{movieNo}
 	</delete>
 	
 	<select id="updateMovieHit" parameterType="movieVO">
@@ -119,6 +122,7 @@
 			 , MOVIE_DIRECTOR
 			 , MOVIE_ACTOR
 			 , MOVIE_PRICE
+			 , USER_ID
 		FROM (
 			  SELECT ROWNUM RN
 			  	   , A.MOVIE_NO
@@ -128,6 +132,7 @@
 			  	   , A.MOVIE_DIRECTOR
 			  	   , A.MOVIE_ACTOR
 			  	   , A.MOVIE_PRICE
+			  	   , A.USER_ID
 			  FROM (
 			  		SELECT MOVIE_NO
 						 , MOVIE_NAME
@@ -136,6 +141,7 @@
 						 , MOVIE_DIRECTOR
 						 , MOVIE_ACTOR
 						 , MOVIE_PRICE
+						 , USER_ID
 					FROM MOVIES
 					WHERE
 					]]>

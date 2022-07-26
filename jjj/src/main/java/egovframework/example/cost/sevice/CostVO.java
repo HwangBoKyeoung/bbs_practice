@@ -21,6 +21,7 @@ public class CostVO {
 	private int costSum;
 	private String fileName;
 	private String fileRename;
+	private String userId;
 	
 	private Date start;
 	private Date end;
@@ -139,6 +140,14 @@ public class CostVO {
 				+ costCategory + ", costDetail=" + costDetail + ", costBuyer=" + costBuyer + ", costSum=" + costSum
 				+ ", fileName=" + fileName + ", fileRename=" + fileRename + ", start=" + start + ", end=" + end
 				+ ", title=" + title + ", sysCodeDtlVO=" + sysCodeDtlVO + "]";
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

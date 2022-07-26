@@ -1,4 +1,4 @@
-package egovframework.example.user.sevice.web;
+package egovframework.example.user.web;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +20,13 @@ public class UserRestController {
 	@PostMapping("/ajaxIdChk.do")
 	public int ajaxIdChk(UserVO vo) {
 		int idNo = userService.userIdChk(vo);
-		boolean usid = vo.isAlphaNumber(vo.getUserId());
+		boolean usid = vo.isId(vo.getUserId());
 		
 		if(!usid) {
 			return -1;
+		} else {
+			return idNo;
 		}
-		
-		return idNo;
 	}
 	
 //	비밀번호찾기 + 임시비밀번호 메일 보내기

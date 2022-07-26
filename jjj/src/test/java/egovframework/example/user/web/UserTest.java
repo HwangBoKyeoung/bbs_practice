@@ -1,4 +1,4 @@
-package egovframework.example.user.sevice.web;
+package egovframework.example.user.web;
 
 
 import org.junit.Test;

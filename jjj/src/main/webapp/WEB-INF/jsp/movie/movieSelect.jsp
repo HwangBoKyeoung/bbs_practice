@@ -168,7 +168,7 @@
 		</c:choose>
 	</div>
 	<input type="hidden" id="movieNo" value="${movie.movieNo}"/>
-	<input type="text" value="${user.userId}" id="userName" />
+	<input type="hidden" value="${user.userId}" id="userName" />
 	<input type="hidden" id="movieReplyStar" />
 	<script>
 		$("#myform input").on("click", function(){

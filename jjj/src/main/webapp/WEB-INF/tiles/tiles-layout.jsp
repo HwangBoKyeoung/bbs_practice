@@ -2,11 +2,19 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.request.contextPath}/sb-admin2" />
+<%    
+response.setHeader("Cache-Control","no-store");    
+response.setHeader("Pragma","no-cache");    
+response.setDateHeader("Expires",0);    
+if (request.getProtocol().equals("HTTP/1.1"))  
+        response.setHeader("Cache-Control", "no-cache, must-revalidate");
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <!-- Custom fonts for this template-->
 <link href="${path}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link
@@ -15,7 +23,9 @@
 
 <!-- Custom styles for this template-->
 <link href="${path}/css/sb-admin-2.min.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <title><tiles:getAsString name="title" /></title>
+
 </head>
 <body id="page-top">
 	<!-- Page Wrapper -->
@@ -71,6 +81,8 @@
 		</div>
 	</div>
 	
+	<input type="hidden" value="${sessionAuth}" id="auth" />
+	
 	<!-- Bootstrap core JavaScript-->
     <script src="${path}/vendor/jquery/jquery.min.js"></script>
     <script src="${path}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -87,5 +99,28 @@
     <!-- Page level custom scripts -->
     <script src="${path}/js/demo/chart-area-demo.js"></script>
     <script src="${path}/js/demo/chart-pie-demo.js"></script>
+    <!-- <script>
+    	console.log($("#auth").val());
+    	
+    	window.onload = function() {
+    		if(!window.location.hash) {
+    			alert()
+    			window.location = window.location + '#loaded';
+    			window.location.reload();
+    		}
+    	}
+    	
+    	function noBack(){
+    		if($("#auth").val() == '' || $("#auth").val() == null) {
+    			window.history.forward();
+    		}
+    	}
+    	
+    	function noBackPageShow(event){
+    		if(event.persisted || (window.performance && (window.performance.navigation.type == 1 || window.performance.navigation.type == 2))){
+    			noBack();
+    		}
+    	}
+	</script> -->
 </body>
 </html>

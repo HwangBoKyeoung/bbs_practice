@@ -9,8 +9,9 @@ public class MovieVO {
 	private String movieDirector;
 	private String movieActor;
 	private int moviePrice;
-	private String movieCd;
-
+//	private String movieCd;
+	private String userId;
+	
 	// join할 객체
 	private MovieCodeVO movieCodeVO;
 
@@ -70,13 +71,13 @@ public class MovieVO {
 		this.moviePrice = moviePrice;
 	}
 
-	public String getMovieCd() {
+	/*public String getMovieCd() {
 		return movieCd;
 	}
 
 	public void setMovieCd(String movieCd) {
 		this.movieCd = movieCd;
-	}
+	}*/
 
 	public MovieCodeVO getMovieCodeVO() {
 		return movieCodeVO;
@@ -90,7 +91,15 @@ public class MovieVO {
 	public String toString() {
 		return "MovieVO [movieNo=" + movieNo + ", movieName=" + movieName + ", movieConent=" + movieConent
 				+ ", movieHit=" + movieHit + ", movieDirector=" + movieDirector + ", movieActor=" + movieActor
-				+ ", moviePrice=" + moviePrice + ", movieCd=" + movieCd + ", movieCodeVO=" + movieCodeVO + "]";
+				+ ", moviePrice=" + moviePrice + ", movieCodeVO=" + movieCodeVO + "]";
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

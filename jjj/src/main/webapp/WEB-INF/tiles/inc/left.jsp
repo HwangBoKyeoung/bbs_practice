@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="path" value="${pageContext.request.contextPath}/sb-admin2" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
@@ -86,12 +87,18 @@
 							aria-labelledby="headingPages" data-parent="#accordionSidebar">
 							<div class="bg-white py-2 collapse-inner rounded">
 								<h6 class="collapse-header">접속관련: </h6>
+								<sec:authorize access="isAnonymous()">
 								<a class="collapse-item" href="userLoginForm.do">로그인</a> <a
 									class="collapse-item" href="userRegisterForm.do">회원가입</a> 
-								<a class="collapse-item" href="logout">로그아웃</a>
+								</sec:authorize>
+								<sec:authorize access="isAuthenticated()">
+									<a class="collapse-item" href="logout">로그아웃</a>
+								</sec:authorize>
 								<div class="collapse-divider"></div>
-								<h6 class="collapse-header">특수기능: </h6>
-								<a class="collapse-item" href="findUserPasswordForm.do">비밀번호 찾기</a>
+								<sec:authorize access="isAnonymous()">
+									<h6 class="collapse-header">특수기능: </h6>
+									<a class="collapse-item" href="findUserPasswordForm.do">비밀번호 찾기</a>
+								</sec:authorize>
 							</div>
 						</div></li> 
 						

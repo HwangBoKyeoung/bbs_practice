@@ -110,5 +110,6 @@
 			<input type="button" value="로그아웃" onclick="location.href='logout'" />
 		</sec:authorize>
 	</div>
+	<input type="hidden" value="로그아웃연습" onclick="location.href='userLogout.do'" />
 </body>
 </html>

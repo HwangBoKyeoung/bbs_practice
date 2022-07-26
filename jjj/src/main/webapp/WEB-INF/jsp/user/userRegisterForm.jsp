@@ -7,6 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- bootstrap5 사용 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -19,6 +20,46 @@
 	
 	html, body {
 		border: 0;
+	}
+	
+	.input-number-password {
+    	-webkit-text-security: disc;
+	}
+	
+	.valid-id {
+		font-weight: bold;
+		text-align: center;
+		color: green;
+	}
+	
+	.invalid-id {
+		font-weight: bold;
+		text-align: center;
+		color: red;
+	}
+	
+	.valid-pwd {
+		font-weight: bold;
+		text-align: center;
+		color: green;
+	}
+	
+	.invalid-pwd {
+		font-weight: bold;
+		text-align: center;
+		color: red;
+	}
+	
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	
+	/* Firefox  */
+	input[type='number'] {
+	  -moz-appearance: textfield;
 	}
 	
 	.padding-none {
@@ -70,7 +111,9 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user" name="userId" id="userId"
-                                            placeholder="아이디" required/>
+                                            placeholder="아이디" maxlength="20" required/>
+                                           <div class="valid-id"></div>
+                                           <div class="invalid-id"></div>
                                     </div>
                                     <div class="col-sm-6">
                                     	<button type="button" id="idChk" value="N" onclick="idChkFnc();" class="form-control form-control-user btn btn-primary btn-icon-split btn-lg" style="align-items: center;">아이디중복체크</button>
@@ -80,18 +123,18 @@
                                 	<div class="form-group row">
 	                                    <div class="col-sm-6 mb-3 mb-sm-0">
 	                                        <input type="text" class="form-control form-control-user" name="userName" id="userName"
-	                                            placeholder="이름" required/>
+	                                            placeholder="이름" maxlength="10" required/>
 	                                    </div>
 	                                    <div class="col-sm-6">
-	                                    	<input type="text" class="form-control form-control-user" name="userTel" id="userTel"
-	                                            placeholder="연락처" required maxlength="11"/>
+	                                    	<input type="number" class="form-control form-control-user" name="userTel" id="userTel" oninput="maxLengthCheck(this)"
+	                                            placeholder="연락처('-' 제외)" required maxlength="11"/>
 	                                    </div>
 	                                </div>
                                 </div>
                                 <div class="form-group">
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email1"
-                                        	   name="email1" placeholder="이메일 주소 입력"/>
+                                        	   name="email1" placeholder="이메일 주소 입력" maxlength="15"/>
                                 	</div>@
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email2"
@@ -117,21 +160,23 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" class="form-control form-control-user"
-                                             name="userPwd" id="userPwd" required placeholder="비밀번호 입력" />
+                                             name="userPwd" id="userPwd" maxlength="20" required placeholder="비밀번호 입력" />
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
-                                            name="userPwdChk" id="userPwdChk" required placeholder="비밀번호 재입력"/>
+                                            name="userPwdChk" id="userPwdChk" maxlength="20" required placeholder="비밀번호 재입력"/>
+                                           <div class="valid-pwd"></div>
+                                           <div class="invalid-pwd"></div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user"
-                                             name="ihIdNum2" id="ihIdNum2" required placeholder="주민번호 앞자리" />
+                                        <input type="number" oninput="maxLengthCheck(this)" class="form-control form-control-user"
+                                             name="ihIdNum2" id="ihIdNum2" maxlength="6" required placeholder="주민번호 앞자리" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            name="ihIdNum3" id="ihIdNum3" required placeholder="주민번호 뒷자리" />
+                                        <input type="number" oninput="maxLengthCheck(this)" inputmode="numeric" class="form-control form-control-user input-number-password"
+                                            name="ihIdNum3" id="ihIdNum3" maxlength="7" required placeholder="주민번호 뒷자리" />
                                     </div>
                                 </div>
                                 <input type="submit" value="회원가입" class="btn btn-primary btn-user btn-block"/>
@@ -199,17 +244,16 @@
 				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				dataType: "json",
 				success: function(result) {
-					if(result == -1){
-						Swal.fire('아이디는 6~12자의 영문과 숫자로만 이루어질 수 있습니다.');
+					if(result == 0) {
+						Swal.fire('입력하신 아이디가 이미 존재합니다.');
 						$(".swal2-confirm").on("click", function() {
 							setTimeout(function(){
 								$("#userId").val('');
 								$("#userId").focus();
 							}, 800);
 						});
-					}
-					if(result == 0) {
-						Swal.fire('입력하신 아이디가 이미 존재합니다.');
+					} else if(result == -1){
+						Swal.fire('아이디는 시작은 영문으로만, 언더바를 제외한 특수문자 안되며 영문, 숫자, 언더바로만 이루어진 5 ~ 12자 이하 문자열을 사용하십시오.');
 						$(".swal2-confirm").on("click", function() {
 							setTimeout(function(){
 								$("#userId").val('');
@@ -232,12 +276,43 @@
 								}, 800);
 								
 								$("#idChk").val("Y");
+								let validatedId = $("#userId").next();
+								validatedId.text("아이디 사용가능합니다.");
+								if(validatedId.text() != null || validatedId.text() != ""){
+									let invalidatedId = $("#userId").next().next();
+									invalidatedId.text("");
+								}
 							});
 						}
 					}
 				}
 			});
 		}
+		
+		$("#userId").on("change", function(){
+			let validatedId = $("#userId").next();
+			validatedId.text("");
+			if(validatedId.text() == "" || validatedId() == null){
+				let invalidatedId = $("#userId").next().next();
+				invalidatedId.text("중복체크를 진행해주세요.");
+			}
+			$("#idChk").val("N");
+		});
+		
+		let pwdArr = [];
+		let pwdValArr = [];
+		$("#userPwdChk").on("keyup", function(e){
+			console.log(e);
+// 			console.log(e.originalEvent.key);
+			
+// 			pwdArr.push(e.originalEvent.key);
+// 			console.log(pwdArr);
+			
+// 			console.log()
+// 			console.log($("#userPwd").val());
+			
+// 			if($("#userPwd").val() == )
+		});
 		
 		$("#emailSelect").on("change", function() {
 			$("#email2").val('');
@@ -247,6 +322,15 @@
 			}
 			$("#email2").val(val);
 		})
+		
+// 		input type=number => maxlength가 제대로 동작하지 않는 브라우저 존재
+//		oninput 이벤트속성을 이용하여 maxlength 및 minlength 제한 처리
+		function maxLengthCheck(obj){
+			if(obj.value.length > obj.maxLength){
+				obj.value = obj.value.slice(0, obj.maxLength);
+				console.log(obj.value);
+			}
+		}
 	</script>
 </body>
 </html>

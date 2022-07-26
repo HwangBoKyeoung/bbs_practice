@@ -84,5 +84,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" value="${sessionAuth}" id="auth" />
+ 
 </body>
 </html>

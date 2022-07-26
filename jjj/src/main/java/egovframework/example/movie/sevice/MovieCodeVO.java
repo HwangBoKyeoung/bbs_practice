@@ -3,7 +3,7 @@ package egovframework.example.movie.sevice;
 public class MovieCodeVO {
 
 	private int movieCdNo;
-	private String movieCd;
+	private int movieNo;
 	private String movieCdDetail;
 	private String movieCdRename;
 
@@ -15,12 +15,12 @@ public class MovieCodeVO {
 		this.movieCdNo = movieCdNo;
 	}
 
-	public String getMovieCd() {
-		return movieCd;
+	public int getMovieNo() {
+		return movieNo;
 	}
 
-	public void setMovieCd(String movieCd) {
-		this.movieCd = movieCd;
+	public void setMovieNo(int movieNo) {
+		this.movieNo = movieNo;
 	}
 
 	public String getMovieCdDetail() {
@@ -41,7 +41,7 @@ public class MovieCodeVO {
 
 	@Override
 	public String toString() {
-		return "MovieCodeVO [movieCdNo=" + movieCdNo + ", movieCd=" + movieCd + ", movieCdDetail=" + movieCdDetail
+		return "MovieCodeVO [movieCdNo=" + movieCdNo + ", movieNo=" + movieNo + ", movieCdDetail=" + movieCdDetail
 				+ ", movieCdRename=" + movieCdRename + "]";
 	}
 

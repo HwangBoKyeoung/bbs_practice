@@ -194,7 +194,8 @@
 		function noneDeleteReply() {
 			Swal.fire('타인의 댓글은 지울 수 없습니다.');
 			$(".swal2-confirm").on("click", function() {
-				/* location.reload(); */
+				/* 
+				location.reload(); */
 			});
 		}
 	</script>

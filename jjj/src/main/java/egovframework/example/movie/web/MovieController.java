@@ -88,7 +88,9 @@ public class MovieController {
 	}
 	
 	@PostMapping("/movieInsert.do")
-	public String movieInsert(MovieVO vo, List<MultipartFile> files, MovieCodeVO cvo, Model model) {
+	public String movieInsert(Principal p, MovieVO vo, List<MultipartFile> files, MovieCodeVO cvo, Model model) {
+		String id = p.getName();
+		vo.setUserId(id);
 		
 		int voResult = movieService.insertMovie(vo);
 		
@@ -120,11 +122,10 @@ public class MovieController {
 		
 		if(voResult == 0) {
 			model.addAttribute("message", "영화등록이 실패했습니다.");
-			return "cmmn/error";
 		}
 		
 		model.addAttribute("message", "영화등록이 성공했습니다.");
-		return "cmmn/success";
+		return "movie/message";
 	}
 	
 	@PostMapping("/movieDelete.do")

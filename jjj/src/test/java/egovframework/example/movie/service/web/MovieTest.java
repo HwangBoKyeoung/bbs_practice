@@ -47,9 +47,6 @@ public class MovieTest {
 				FileCopyUtils.copy(mf.getBytes(), target);
 				fileRename = File.separator + fileRename;;
 				
-				System.out.println("******************************"+cvo.getMovieCd());
-				
-				map.put("v_cd", "m"+cvo.getMovieCd());
 				map.put("v_cd_detail", orinalFileName);
 				map.put("v_cd_rename", fileRename);
 			} catch (IOException e) {

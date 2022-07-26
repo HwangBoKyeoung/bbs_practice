@@ -1,4 +1,4 @@
-package egovframework.example.user.sevice.web;
+package egovframework.example.user.web;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -51,13 +51,6 @@ public class UserController {
 		boolean ihid = vo.isPersonalId(ihidnum);
 		boolean pass = vo.isPwdChk(userPwd, vo.getUserId());
 		boolean tels = vo.isTel(vo.getUserTel());
-		boolean usid = vo.isAlphaNumber(vo.getUserId());
-		
-		if(!usid) {
-			model.addAttribute("message", "아이디가 올바르지 않은 형태입니다.");
-
-			return "user/message";
-		}
 		
 		if(!(mail && ihid && pass && tels)) {
 			if(!mail) {
@@ -116,6 +109,12 @@ public class UserController {
 	@RequestMapping("/findUserPasswordForm.do")
 	public String findUserPasswordForm() {
 		return "user/findUserPasswordForm";
+	}
+	
+	@RequestMapping("/userLogout.do")
+	public String userLogout(Model model) {
+		model.addAttribute("message", "로그아웃이 완료되었습니다.");
+		return "user/userLogout";
 	}
 	
 }

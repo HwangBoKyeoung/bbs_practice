@@ -53,7 +53,6 @@
 					<tr>
 						<th>금액</th>
 						<td>
-						<fmt:formatNumber var="price" pattern="#,###"></fmt:formatNumber>
 						<input type="number" value="14000" name="moviePrice" style="width: 200px; text-align:right;"
 							id="moviePrice" min="9000" max="16000" required />원</td>
 					</tr>

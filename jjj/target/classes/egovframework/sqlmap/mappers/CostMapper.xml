@@ -12,6 +12,7 @@
 		<result property="costSum" column="cost_sum" />
 		<result property="fileName" column="file_name" />
 		<result property="fileRename" column="file_rename" />
+		<result property="userId" column="user_id" />
 		<collection property="sysCodeDtlVO" resultMap="codeResultMap" />
 	</resultMap>
 	
@@ -32,6 +33,7 @@
 	         , F.COST_SUM
 	         , F.FILE_NAME
 	         , F.FILE_RENAME
+	         , F.USER_ID
 		  FROM FORWIZ_COST_TB F
 		  JOIN SYS_CODE_DTL D
 		    ON (F.COST_METHOD=D.CODE_DTL)
@@ -53,6 +55,7 @@
 			 , COST_SUM
 			 , FILE_NAME
 			 , FILE_RENAME
+			 , USER_ID
 		FROM (
 			  SELECT ROWNUM RN
 			  	   , A.COST_NO
@@ -64,6 +67,7 @@
 			  	   , A.COST_SUM
 			  	   , A.FILE_NAME
 			  	   , A.FILE_RENAME
+			  	   , A.USER_ID
 			  FROM (
 			  		SELECT F.COST_NO
 				         , F.COST_DATE
@@ -74,6 +78,7 @@
 				         , F.COST_SUM
 				         , F.FILE_NAME
 				         , F.FILE_RENAME
+				         , F.USER_ID
 					FROM FORWIZ_COST_TB F
 				    JOIN SYS_CODE_DTL D
 				      ON (F.COST_METHOD=D.CODE_DTL)
@@ -206,6 +211,7 @@
 	         , F.COST_SUM
 	         , F.FILE_NAME
 	         , F.FILE_RENAME
+	         , F.USER_ID
 		  FROM FORWIZ_COST_TB F
 		  JOIN SYS_CODE_DTL D
 		    ON (F.COST_METHOD=D.CODE_DTL)
@@ -229,7 +235,8 @@
 								  , COST_BUYER
 								  , COST_SUM
 								  , FILE_NAME
-								  , FILE_RENAME)
+								  , FILE_RENAME
+								  , USER_ID)
 		VALUES (#{costNo}
 			  , #{costDate}
 			  , #{costMethod}
@@ -238,7 +245,8 @@
 			  , #{costBuyer}
 			  , #{costSum}
 			  , #{fileName}
-			  , #{fileRename})
+			  , #{fileRename}
+			  , #{userId})
 	</insert>
 	
 	<delete id="costDelete" parameterType="costVO">

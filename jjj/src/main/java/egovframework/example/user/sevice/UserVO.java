@@ -196,7 +196,13 @@ public class UserVO implements UserDetails {
 	public boolean isAlphaNumber(String str) {
 		return Pattern.matches("^[a-zA-Z0-9]{6,12}$", str);
 	}
-
+	
+	// 아이디 검사
+	// 시작은 영문으로만, '_'를 제외한 특수문자 안되며 영문, 숫자, '_'으로만 이루어진 5 ~ 12자 이하
+	public boolean isId(String str) {
+		return Pattern.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$", str);
+	}
+	
 	// 비밀번호 검사
 	// 영문, 특수문자, 숫자 포함 8자 이상
 	// 반복X, 아이디포함X, 연속문자X

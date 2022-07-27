@@ -31,10 +31,8 @@ public class UserRestController {
 	
 //	비밀번호찾기 + 임시비밀번호 메일 보내기
 	@PostMapping("/findUserPassword.do")
-	public String findUserPassword(UserVO vo, Model model, HttpServletResponse resp) throws Exception {
+	public void findUserPassword(UserVO vo, Model model, HttpServletResponse resp) throws Exception {
 		userService.findPwd(resp, vo);
-		
-		return "success";
 	}
 	
 }

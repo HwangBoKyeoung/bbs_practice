@@ -1,8 +1,11 @@
 package egovframework.example.user.sevice;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.mail.MailException;
 
 
 public interface UserService {
@@ -23,7 +26,7 @@ public interface UserService {
 	int findUserPassword(UserVO vo);
 	
 //	이메일발송 메서드
-	void sendEmail(UserVO vo, String div);
+	void sendEmail(UserVO vo, String div) throws MailException, MalformedURLException;
 	
 //	비밀번호 찾기
 	void findPwd(HttpServletResponse resp, UserVO vo) throws Exception;

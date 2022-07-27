@@ -16,6 +16,12 @@
 		margin: 0;
 	}
 	
+	.bg-findPwd-image {
+		background:url(${path}/egovframework/background/duck.PNG);
+		background-position:center;
+		background-size:cover;
+	}
+	
 	@media all and (min-width: 320px) {
 		.h4 {
 			font-size: 1.0rem;
@@ -44,7 +50,7 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-findPwd-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
@@ -60,7 +66,7 @@
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="userMail" name="userMail" placeholder="Enter your Email" required>
-                            
+                            			<br />
                                         <input type="button" value="비밀번호 찾기" id="findPwd" class="btn btn-primary btn-user btn-block" />
                                         <hr>
 <!--                                     </form> -->
@@ -84,19 +90,17 @@
         		url: "findUserPassword.do",
         		type: "post",
         		data: {"userId":$("#userId").val(), "userMail":$("#userMail").val()},
-        		dataType: "json",
+        		dataType: "text",
         		success: function(result){
+        			console.log('success..?')
+        			console.log(result);
         			if(result=='success'){
+        				console.log('success')
         				Swal.fire("임시비밀번호가 메일로 발송되었습니다.");
         				$(".swal2-confirm").on("click", function() {
-        					location.href="userLoginForm.do";
+        					location.href="userPasswordUpdateForm.do";
         				});
-        			} else {
-        				console.log("실패!");
         			}
-        		},
-        		error: function(error){
-        			console.log(error);
         		}
         	});
     	});

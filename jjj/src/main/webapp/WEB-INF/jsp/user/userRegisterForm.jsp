@@ -136,7 +136,7 @@
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email1"
                                         	   name="email1" placeholder="이메일 주소 입력" maxlength="15"
-                                        	   onkeypress="return isAlphaNumeric(event);" ondrop="return false;" />
+                                        	   onkeypress="isAlphaNumeric(this);" ondrop="return false;" />
                                 	</div>@
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email2"

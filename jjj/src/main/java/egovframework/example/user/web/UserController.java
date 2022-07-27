@@ -117,4 +117,15 @@ public class UserController {
 		return "user/userLogout";
 	}
 	
+	@RequestMapping("/userPasswordUpdateForm.do")
+	public String userPasswordUpdateForm() {
+		return "user/userPasswordUpdateForm";
+	}
+	
+	@PostMapping("/userPasswordUpdate.do")
+	public String userPasswordUpdate() {
+		
+		return "";
+	}
+	
 }

@@ -1,11 +1,24 @@
 package egovframework.example.user.web;
 
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.mail.MailException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import egovframework.example.user.sevice.UserService;
 import egovframework.example.user.sevice.UserVO;
 
 @WebAppConfiguration
@@ -13,7 +26,14 @@ import egovframework.example.user.sevice.UserVO;
 @ContextConfiguration(locations="classpath:/egovframework/spring/context-*.xml")
 public class UserControllerTest {
 	
-	@Test
+	@Resource(name="userService")
+	private UserService userService;
+	
+	/*@Resource(name="naverMailSender")
+	private JavaMailSender naverMailSender;*/
+	
+//	유효성 검사 테스트
+//	@Test
 	public void userInsertTest() {
 		UserVO userVO = new UserVO();
 		
@@ -31,6 +51,76 @@ public class UserControllerTest {
 		boolean b = userVO.isId(str);
 		
 		System.out.println("============아이디 유효성검사 결과=>" + str + "= "+ b);
+	}
+	
+//	메일 전송 테스트
+//	@Test
+	public void userPasswordTest() throws Exception {
+		ServletWebRequest servletContainer = (ServletWebRequest)RequestContextHolder.getRequestAttributes();
+		HttpServletResponse resp = servletContainer.getResponse();
+			
+		UserVO vo = new UserVO();
+		
+		vo.setUserId("test1");
+		vo.setUserMail("lier723441@gmail.com");
+		userService.findPwd(resp, vo);
+		String newPwd = vo.getUserRePwd();
+		//liadymetzzwv
+		//bbamsflmnqsy
+		System.out.println("====================임시비밀번호: "+newPwd);
+	}
+	
+//	임시비밀번호 생성 테스트
+//	@Test
+	public String userTemporaryPasswordTest() {
+		String pw = "";
+		for (int i = 0; i < 12; i++) {
+			// 임시비밀번호에 12자리 문자가 들어갈 것
+			pw += (char) ((Math.random() * 26) + 97);
+		}
+		// 임시비밀번호에 1~100까지 숫자 들어가기
+		pw += (int) ((Math.random() * 100) + 1);
+		
+		System.out.println("=======================임시비밀번호: " + pw);
+		return pw;
+	}
+	
+//	메일발송 테스트
+	@Test
+	public void sendMail() throws MailException, MalformedURLException {
+		try {
+			HtmlEmail email = new HtmlEmail();
+			
+			// 메일정보
+			email.setHostName("smtp.naver.com");
+			email.setSmtpPort(587);
+			email.setAuthentication("naru1780@naver.com", "naruto1010*");
+			email.addTo("naru1780@naver.com", "naruto1010*");
+			email.setFrom("naru1780@naver.com", "naruto1010*");
+			email.setSubject("임시비밀번호 전송 메일입니다.");
+			
+			// 삽입할 이미지
+			URL url = new URL("https://www.apache.org/images/asf_logo_wide.gif");
+			String cid = email.embed(url, "아파치 로고");
+			
+			// 전송할 임시비밀번호
+			String pwd = userTemporaryPasswordTest();
+			
+			// HTML 메세지
+			email.setHtmlMsg("<html>"
+						   + "<h1>임시비밀번호를 전송합니다.</h1>"
+						   + "<h2>"+ pwd +"</h2>"
+						   + "<img src='" + cid + "'>"
+						   + "</html>");
+			
+			// html이메일을 지원하지 않는 클라이언트라면, 다음 메세지를 뿌려줌
+			email.setTextMsg("HTML을 지원하지 않는 클라이언트입니다.");
+			
+			// 이메일 전송
+			email.send();
+		} catch(EmailException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

@@ -94,7 +94,7 @@
     			type: "post",
     			data: {},
     			success: function(result){
-    				if(result == 'success'{
+    				if(result == 'success'){
     					return true;
     				}) else{
     					return false;

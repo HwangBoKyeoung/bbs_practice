@@ -57,4 +57,9 @@ public class CostServiceImpl extends EgovAbstractServiceImpl implements CostServ
 		return costDAO.costCalendarList();
 	}
 
+	@Override
+	public List<CostVO> costSumByYear(String year) {
+		return costDAO.costSumByYear(year);
+	}
+
 }

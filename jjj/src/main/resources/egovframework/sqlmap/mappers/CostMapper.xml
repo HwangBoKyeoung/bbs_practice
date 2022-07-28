@@ -25,7 +25,7 @@
 
 	<select id="costSelectList" resultType="costVO">
 	    SELECT F.COST_NO
-	         , F.COST_DATE
+	         , TO_CHAR(F.COST_DATE, 'yyyy-mm-dd') "COST_DATE"
 	         , D.CODE_DTL_NM "COST_METHOD"
 	         , D1.CODE_DTL_NM "COST_CATEGORY"
 	         , F.COST_DETAIL
@@ -47,7 +47,7 @@
 	<select id="getList" resultType="costVO">
 		<![CDATA[
 		SELECT COST_NO
-			 , COST_DATE
+			 , TO_CHAR(COST_DATE, 'yyyy-mm-dd') "COST_DATE"
 			 , COST_METHOD
 			 , COST_CATEGORY
 			 , COST_DETAIL
@@ -203,7 +203,7 @@
 	
 	<select id="costSelect" resultType="costVO">
 		SELECT F.COST_NO
-	         , F.COST_DATE
+	         , TO_CHAR(F.COST_DATE, 'yyyy-mm-dd') "COST_DATE"
 	         , D.CODE_DTL_NM "COST_METHOD"
 	         , D1.CODE_DTL_NM "COST_CATEGORY"
 	         , F.COST_DETAIL
@@ -268,10 +268,18 @@
 	</update>
 	
 	<select id="costCalendarList" resultType="costVO">
-		SELECT COST_DATE    "start"
-			 , COST_DATE    "end"
-			 , COST_DETAIL  "title"
+		SELECT TO_CHAR(COST_DATE,'yyyy-mm-dd')    "start"
+			 , TO_CHAR(COST_DATE,'yyyy-mm-dd')    "end"
+			 , COST_DETAIL                        "title"
 		FROM   FORWIZ_COST_TB
+	</select>
+	
+	<select id="costSumByYear" parameterType="String" resultType="costVO">
+		SELECT TO_CHAR(COST_DATE, 'YYYYMM') AS COST_DATE
+			 , NVL(SUM(COST_SUM), 0) AS COST_SUM
+		  FROM FORWIZ_COST_TB
+		 WHERE TO_CHAR(COST_DATE, 'YYYY') = #{year}
+		 GROUP BY TO_CHAR(COST_DATE, 'YYYYMM')
 	</select>
 	
 </mapper>

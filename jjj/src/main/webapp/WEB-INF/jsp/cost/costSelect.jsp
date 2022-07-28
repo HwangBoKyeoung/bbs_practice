@@ -79,8 +79,7 @@
 
 	<form action="costUpdateForm.do" method="post">
 		<input type="hidden" value="${cost.costNo}" name="costNo" id="costNo" />
-		<fmt:formatDate value="${cost.costDate}" pattern="yyyy-MM-dd" var="costDt" />
-		<input type="hidden" value="${costDt}" name="costDate" id="costDate" />
+		<input type="hidden" value="${cost.costDate}" name="costDate" id="costDate" />
 		<input type="hidden" value="${cost.costMethod}" name="costMethod"
 			id="costMethod" /> <input type="hidden" value="${cost.costCategory}"
 			name="costCategory" id="costCategory" /> <input type="hidden"

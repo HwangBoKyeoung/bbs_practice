@@ -25,7 +25,7 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 	private UserDAO userDAO;
 	
 	@Value("#{system['emailAddr']}")
-	private String email;
+	private String emailAddr;
 	
 	@Value("#{system['emailPassword']}")
 	private String password;
@@ -72,6 +72,7 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 
 	@Override
 	public void sendEmail(UserVO vo, String div) throws MailException, MalformedURLException {
+		String charSet = "UTF-8" ;
 		try {
 			HtmlEmail email = new HtmlEmail();
 			
@@ -81,15 +82,19 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 			} else if (vo.getUserMail().contains("@gmail.com")) {
 				hostSMTP = "smtp.gmail.com";
 			} else {
-				return;
+				hostSMTP = null;
 			}
 			
+			System.out.println(vo.getUserMail());
 			// 메일정보
 			email.setHostName(hostSMTP);
 			email.setSmtpPort(587);
-			email.setAuthentication("naru1780@naver.com", "naruto1010*");
-			email.addTo("naru1780@naver.com", "naruto1010*");
-			email.setFrom("naru1780@naver.com", "naruto1010*");
+			email.setSSL(true);
+			email.setAuthentication(emailAddr, password);
+			email.addTo(vo.getUserMail(), vo.getUsername()+"님", "utf-8");
+			email.setFrom(emailAddr, "포위즈게시판");
+			email.setCharset(charSet);
+			email.setSubject("임시비밀번호 전송===포위즈===");
 			
 			// HTML 메세지
 			email.setHtmlMsg("<html>"
@@ -101,11 +106,11 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 			email.setTextMsg("HTML을 지원하지 않는 클라이언트입니다.");
 			
 			// 이메일 전송
-			email.send();
+			String success = email.send();
+			System.out.println("**********************이메일전송 결과 : "+success);
 		} catch(EmailException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
@@ -115,12 +120,12 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 		PrintWriter out = resp.getWriter();
 		// 가입된 아이디가 없으면
 		if (ck == null) {
-			out.print("등록되지 않은 아이디입니다.");
+			out.print("");
 			out.close();
 		}
 		// 가입된 이메일이 아니면
 		else if (!vo.getUserMail().equals(ck.getUserMail())) {
-			out.print("등록되지 않은 이메일입니다.");
+			out.print("");
 			out.close();
 		} else {
 			// 임시 비밀번호 생성
@@ -145,15 +150,22 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 			// 비밀번호 변경
 			int r = userDAO.findUserPassword(vo);
 			if(r <= 0) {
-				out.print("작성한 이메일과 아이디의 정보가 존재하지 않습니다.");
+				out.print("");
 			}
 			
 			// 비밀번호 변경 메일 발송
 			sendEmail(vo, "findPwd");
-
-			out.print("success");
+			
+			out.print(vo.getUserRePwd());
 			out.close();
 		}
 
 	}
+
+//	이메일로 아이디찾기 (임시비밀번호 변경을 위해 필요)
+	@Override
+	public String findUserIdByMail(String mail) {
+		return userDAO.findUserIdByMail(mail);
+	}
+	
 }

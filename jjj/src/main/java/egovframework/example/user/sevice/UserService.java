@@ -30,4 +30,8 @@ public interface UserService {
 	
 //	비밀번호 찾기
 	void findPwd(HttpServletResponse resp, UserVO vo) throws Exception;
+	
+//	이메일로 아이디찾기 (임시비밀번호 변경을 위해 필요)
+	String findUserIdByMail(String mail);
+	
 }

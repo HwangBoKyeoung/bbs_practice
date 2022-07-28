@@ -14,6 +14,12 @@
 		margin: 0;
 	}
 	
+	.bg-findPwd-image {
+		background:url(${path}/egovframework/background/gorapaduck.PNG);
+		background-position:center;
+		background-size:cover;
+	}
+	
 	@media all and (min-width: 320px) {
 		.h4 {
 			font-size: 1.0rem;
@@ -29,7 +35,7 @@
 	}
 </style>
 </head>
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 
     <div class="container">
 
@@ -42,7 +48,7 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-findPwd-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
@@ -51,13 +57,14 @@
                                     </div>
                                     <form class="user" action="userPasswordUpdate.do" method="post" id="myform" onsubmit="return passwordChk();">
                                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    	<input type="hidden" value="${mail}" name="userMail" id="userMail" />
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="tempPwd" name="tempPwd" placeholder="현재 임시비밀번호" required>
+                                                id="tempPwd" name="tempPwd" value="${tempPwd}" placeholder="현재 임시비밀번호" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="updatePwd" name="updatePwd" placeholder="신규 비밀번호" required>
+                                                id="updatePwd" name="updatePwd" placeholder="신규 비밀번호 " required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
@@ -74,31 +81,39 @@
             </div>
         </div>
     </div>
-    
+    <input type="hidden" value="${tempPwd}" name="compareVal" id="compareVal" />
+    <input type="hidden" id="tempVal" value="fail" />
     <script>
+	    /* 뒤로가기 막을 페이지 */
+		window.history.forward();
+		function noBack(){
+			window.history.forward();
+		}
+	
     	function passwordChk(){
     		if($("#updatePwd").val() != $("#updatePwd2").val()){
     			return false;
     		}
     		
-    		if(!comparePwd()){
+    		comparePwd();
+    		if($("#tempVal").val() != 'success'){
+    			alert($("#tempVal").val())
     			return false;
     		}
+    		
     		return true;
     	}
     	
     	function comparePwd(){
+    		console.log($("#tempPwd").val());
     		$.ajax({
-    			url: "",
+    			url: "ajaxUpdatePwdCompare.do",
     			dataType: "text",
     			type: "post",
-    			data: {},
+    			async: false,
+    			data: {"tempPwd":$("#tempPwd").val(), "compareVal":$("#compareVal").val()},
     			success: function(result){
-    				if(result == 'success'){
-    					return true;
-    				}) else{
-    					return false;
-    				}
+    				$("#tempVal").val(result);
     			}
     		});
     	}

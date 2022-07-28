@@ -118,14 +118,50 @@ public class UserController {
 	}
 	
 	@RequestMapping("/userPasswordUpdateForm.do")
-	public String userPasswordUpdateForm() {
+	public String userPasswordUpdateForm(Model model
+									   , UserVO vo
+									   , @RequestParam("mail") String mail) {
+		
+		vo.setUserMail(mail);
+		model.addAttribute("tempPwd", vo.getUserRePwd());
+		model.addAttribute("mail", vo.getUserMail());
 		return "user/userPasswordUpdateForm";
 	}
 	
 	@PostMapping("/userPasswordUpdate.do")
-	public String userPasswordUpdate() {
+	public String userPasswordUpdate(UserVO vo
+								   , @RequestParam("tempPwd") String tempPwd
+								   , @RequestParam("updatePwd") String updatePwd
+								   , Model model) {
 		
-		return "";
+		// 이메일을 통해 아이디 찾아오기
+		String findIdResult = userService.findUserIdByMail(vo.getUserMail());
+		
+		if(findIdResult == null) {
+			model.addAttribute("message", "임시비밀번호가 잘못되었습니다.");
+			return "user/message";
+		}
+		
+		// 비밀번호를 통해 찾은 아이디를 vo에 넣기
+		vo.setUserId(findIdResult);
+		// 새로운 비밀번호와 내 아이디 정보를 이용해 유효성 검사 진행
+		boolean p1 = vo.isPwdChk(updatePwd, vo.getUserId());
+		if(!p1) {
+			model.addAttribute("message", "비밀번호의 형식이 올바르지 않습니다. 비밀번호는 '숫자', '문자', '특수문자' 무조건 1개 이상, 비밀번호 '최소 8자에서 최대 16자'까지 허용");
+			return "user/message";
+		}
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+		String userPwd = encoder.encode(updatePwd);
+		vo.setUserPwd(userPwd);
+		int r = userService.findUserPassword(vo);
+		
+		if(r == 0) {
+			model.addAttribute("message", "비밀번호 업데이트 실패했습니다.");
+			return "cmmn/error";
+		}
+		
+		return "redirect:/userLoginForm.do";
 	}
 	
 }

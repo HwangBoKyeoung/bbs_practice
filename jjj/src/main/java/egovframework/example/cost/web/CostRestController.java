@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.example.cost.sevice.CostReplyService;
@@ -46,6 +48,15 @@ public class CostRestController {
 			return null;
 		}
 		return "success";
+	}
+	
+	@PostMapping("/ajaxCostChartValue.do")
+	public List<CostVO> ajaxCostChartValue(@RequestParam("year") String year){
+		List<CostVO> list = costService.costSumByYear(year);
+		if(list == null) {
+			return null;
+		}
+		return list;
 	}
 	
 }

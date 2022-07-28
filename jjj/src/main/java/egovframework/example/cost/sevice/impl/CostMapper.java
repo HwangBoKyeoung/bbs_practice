@@ -20,4 +20,7 @@ public interface CostMapper {
 	
 	List<CostVO> costCalendarList();
 	
+//	연별/월별 경비 차트
+	List<CostVO> costSumByYear(String year);
+	
 }

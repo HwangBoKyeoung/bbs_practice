@@ -29,7 +29,7 @@
 	}
 </style>
 </head>
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 
     <div class="container">
 
@@ -85,6 +85,13 @@
         </div>
     </div>
     <input type="hidden" value="${sessionAuth}" id="auth" />
- 
+ 	
+ 	<script>
+	 	/* 뒤로가기 막을 페이지 */
+		window.history.forward();
+		function noBack(){
+			window.history.forward();
+		}
+ 	</script>
 </body>
 </html>

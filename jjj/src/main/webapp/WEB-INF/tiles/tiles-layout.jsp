@@ -99,28 +99,5 @@ if (request.getProtocol().equals("HTTP/1.1"))
     <!-- Page level custom scripts -->
     <script src="${path}/js/demo/chart-area-demo.js"></script>
     <script src="${path}/js/demo/chart-pie-demo.js"></script>
-    <!-- <script>
-    	console.log($("#auth").val());
-    	
-    	window.onload = function() {
-    		if(!window.location.hash) {
-    			alert()
-    			window.location = window.location + '#loaded';
-    			window.location.reload();
-    		}
-    	}
-    	
-    	function noBack(){
-    		if($("#auth").val() == '' || $("#auth").val() == null) {
-    			window.history.forward();
-    		}
-    	}
-    	
-    	function noBackPageShow(event){
-    		if(event.persisted || (window.performance && (window.performance.navigation.type == 1 || window.performance.navigation.type == 2))){
-    			noBack();
-    		}
-    	}
-	</script> -->
 </body>
 </html>

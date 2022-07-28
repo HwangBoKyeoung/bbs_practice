@@ -89,6 +89,9 @@ public class MovieController {
 	
 	@PostMapping("/movieInsert.do")
 	public String movieInsert(Principal p, MovieVO vo, List<MultipartFile> files, MovieCodeVO cvo, Model model) {
+		if(p == null) {
+			return "security/error_auth";
+		}
 		String id = p.getName();
 		vo.setUserId(id);
 		

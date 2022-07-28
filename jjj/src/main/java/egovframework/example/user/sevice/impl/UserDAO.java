@@ -52,5 +52,9 @@ public class UserDAO {
 		return query.update(namespace+"findUserPassword", vo);
 	}
 	
+//	이메일로 아이디찾기 (임시비밀번호 변경을 위해 필요)
+	String findUserIdByMail(String mail) {
+		return query.selectOne(namespace+"findUserIdByMail", mail);
+	}
 
 }

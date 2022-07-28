@@ -50,4 +50,9 @@ public class CostDAO {
 		return query.selectList(namespace+"costCalendarList");
 	}
 	
+//	연별/월별 경비 차트
+	List<CostVO> costSumByYear(String year) {
+		return query.selectList(namespace+"costSumByYear", year);
+	}
+	
 }

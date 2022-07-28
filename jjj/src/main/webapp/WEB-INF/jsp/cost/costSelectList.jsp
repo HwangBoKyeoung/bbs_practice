@@ -52,8 +52,7 @@
 								onmouseout="this.style.backgroundColor='transparent'"
 								onclick="costSelect('${cost.costNo}')">
 								<td>${cost.costNo}</td>
-								<td><fmt:formatDate value="${cost.costDate}"
-										pattern="yyyy-MM-dd" /></td>
+								<td>${cost.costDate}</td>
 								<td>${cost.costMethod}</td>
 								<td>${cost.costCategory}</td>
 								<td>${cost.costDetail}</td>

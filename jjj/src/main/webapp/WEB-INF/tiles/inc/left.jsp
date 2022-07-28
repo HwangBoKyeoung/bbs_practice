@@ -103,23 +103,36 @@
 						</div></li> 
 						
 						<!-- 연습메뉴(validation) -->
-						<li class="nav-item"><a class="nav-link" href="exRegisterForm.do">
+						<!-- <li class="nav-item"><a class="nav-link" href="exRegisterForm.do">
 							<i class="fas fa-fw fa-chart-area"></i> <span>주민등록번호 유효성검사</span>
-					</a></li>
+					</a></li> -->
 						
 						<!-- Nav Item - Charts -->
-					<li class="nav-item"><a class="nav-link" href="charts.html">
-							<i class="fas fa-fw fa-chart-area"></i> <span>Charts</span>
-					</a></li> <!-- Nav Item - Tables -->
-					<li class="nav-item"><a class="nav-link" href="tables.html">
-							<i class="fas fa-fw fa-table"></i> <span>Tables</span>
-					</a></li> <!-- Divider -->
+					<li class="nav-item"><a class="nav-link" href="costChart.do">
+							<i class="fas fa-fw fa-chart-area"></i> <span>경비차트</span>
+					</a></li> 
+						<!-- Divider -->
+					<hr class="sidebar-divider d-none d-md-block">
+					<!-- nav item - map -->
+					<li class="nav-item"><a class="nav-link" href="companyMap.do">
+							<i class="fas fa-fw fa-chart-area"></i> <span>오시는길</span>
+					</a></li> 
+						<!-- Divider -->
+					<hr class="sidebar-divider d-none d-md-block">
+
+					<!-- nav item - todo -->
+					<li class="nav-item"><a class="nav-link" href="todoList.do">
+							<i class="fas fa-fw fa-chart-area"></i> <span>TO-DO LIST</span>
+					</a></li> 
+						<!-- Divider -->
 					<hr class="sidebar-divider d-none d-md-block">
 
 						<!-- Sidebar Toggler (Sidebar) -->
 						<div class="text-center d-none d-md-inline">
 							<button class="rounded-circle border-0" id="sidebarToggle"></button>
 						</div>
+						
+						
 	</ul>
 </body>
 </html>

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.example.user.sevice.UserService;
@@ -33,6 +34,17 @@ public class UserRestController {
 	@PostMapping("/findUserPassword.do")
 	public void findUserPassword(UserVO vo, Model model, HttpServletResponse resp) throws Exception {
 		userService.findPwd(resp, vo);
+	}
+	
+//	임시비밀번호 값이 관리자가 보낸 메일의 임시비밀번호와 동일한지 체크.
+	@PostMapping("/ajaxUpdatePwdCompare.do")
+	public String ajaxUpdatePwdCompare(@RequestParam("tempPwd") String tempPwd
+									 , @RequestParam("compareVal") String compareVal) {
+		System.out.println("전송한 임시비밀번호: " + compareVal + ", 유저가 작성한 임시비밀번호: " + tempPwd);
+		if(!tempPwd.equals(compareVal)) {
+			return "fail";
+		}
+		return "success";
 	}
 	
 }

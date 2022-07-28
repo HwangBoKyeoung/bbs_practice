@@ -3,6 +3,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<c:set var="today" value="<%=new java.util.Date()%>" />
+<c:set var="year"> <fmt:formatDate value="${today}" pattern="yyyy" /> </c:set>
+<c:set var="month"> <fmt:formatDate value="${today}" pattern="MM" /> </c:set>
+<c:set var="day"> <fmt:formatDate value="${today}" pattern="dd" /> </c:set>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 <head>
@@ -32,7 +37,8 @@
 				<tbody>
 					<tr>
 						<th>날짜</th>
-						<td><input type="date" name="costDate" id="costDate" required /></td>
+						<td><input type="date" min="${year}-${month}-${day-10}" max="${year}-${month}-${day}" 
+								   name="costDate" id="costDate" required /></td>
 					</tr>
 					<tr>
 						<th>결제방식</th>

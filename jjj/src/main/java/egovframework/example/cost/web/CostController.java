@@ -142,6 +142,9 @@ public class CostController {
 
 	@RequestMapping("/costInsertForm.do")
 	public String costInsertForm(Principal principal, UserVO vo, Model model) {
+		if(principal == null) {
+			return "security/error_auth";
+		}
 		String userId = principal.getName();
 		vo.setUserId(userId);
 		vo = userService.userSelectLogin(vo);
@@ -151,12 +154,14 @@ public class CostController {
 	}
 
 	@PostMapping("/costInsert.do")
-	public String costInsert(CostVO vo, Model model, MultipartFile files, Principal p) {
+	public String costInsert(CostVO vo, Model model, MultipartFile files, Principal p, @RequestParam("costDate") String costDate) {
 //		MultipartFile 의 메소드 
 //		String getName() : 파라미터 이름 리턴
 //		String getOriginalFilename() : 업로드한 파일의 이름을 리턴
 //		boolean isEmpty() : 업로드한 파일이 존재하지 않으면 true 리턴
 //		long getSize() : 업로드한 파일의 크기를 리턴
+		
+		System.out.println("costDate 값 가져와지나 알아보자!!!!!!!!!!!!!!!!!!!!!"+costDate);
 		
 		if(!files.isEmpty()) {
 			String fileName = files.getOriginalFilename();
@@ -178,7 +183,7 @@ public class CostController {
 		
 		String id = p.getName();
 		vo.setUserId(id);
-
+		vo.setCostDate(costDate);
 		int insert = costService.costInsert(vo);
 		if (insert == 0) {
 			model.addAttribute("message", "경비 한 건 등록이 실패했습니다.");
@@ -202,6 +207,11 @@ public class CostController {
 	@RequestMapping("/costCalendar.do")
 	public String costCalendar() {
 		return "cost/costCalendar";
+	}
+	
+	@RequestMapping("/costChart.do")
+	public String costChart() {
+		return "cost/costChart";
 	}
 
 }

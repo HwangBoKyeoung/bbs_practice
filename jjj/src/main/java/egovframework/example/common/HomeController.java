@@ -1,4 +1,4 @@
-package egovframework.example.cmmn.web;
+package egovframework.example.common;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +15,16 @@ public class HomeController {
 	@RequestMapping("/home.do")
 	public String home(Model model) {
 		return "home/home";
+	}
+	
+	@RequestMapping("/companyMap.do")
+	public String companyMap() {
+		return "company/companyMap";
+	}
+	
+	@RequestMapping("/todoList.do")
+	public String todoList() {
+		return "cmmn/todoList";
 	}
 	
 }

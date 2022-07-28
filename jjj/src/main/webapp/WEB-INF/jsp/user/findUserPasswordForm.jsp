@@ -84,6 +84,11 @@
         </div>
     </div>
     
+    <form action="userPasswordUpdateForm.do" method="post" id="updatePwdSend">
+    	<input type="hidden" id="userRePwd" name="userRePwd" />
+    	<input type="hidden" id="mail" name="mail" />
+    </form>
+    
     <script>
     	$("#findPwd").on("click", function(){
     		$.ajax({
@@ -92,13 +97,18 @@
         		data: {"userId":$("#userId").val(), "userMail":$("#userMail").val()},
         		dataType: "text",
         		success: function(result){
-        			console.log('success..?')
         			console.log(result);
-        			if(result=='success'){
-        				console.log('success')
+        			if(result==null || result==""){
+        				Swal.fire("아이디와 이메일 정보가 일치하지 않습니다.");
+        				$(".swal2-confirm").on("click", function() {
+        					history.go(0);
+        				});
+        			} else{
         				Swal.fire("임시비밀번호가 메일로 발송되었습니다.");
         				$(".swal2-confirm").on("click", function() {
-        					location.href="userPasswordUpdateForm.do";
+        					$("#userRePwd").val(result);
+        					$("#mail").val($("#userMail").val());
+        					$("#updatePwdSend").submit();
         				});
         			}
         		}

@@ -123,12 +123,12 @@
                                 	<div class="form-group row">
 	                                    <div class="col-sm-6 mb-3 mb-sm-0">
 	                                        <input type="text" class="form-control form-control-user" name="userName" id="userName"
-	                                            placeholder="이름" maxlength="10" required/>
+	                                            placeholder="이름" maxlength="10" minlength="3" required oninput="nameValidation();" />
 	                                    </div>
 	                                    <div class="col-sm-6">
-	                                    	<input type="number" class="form-control form-control-user" name="userTel" 
-	                                    			id="userTel" oninput="maxLengthCheck(this)" onkeyup="keyUpTel(this.value);"
-	                                            placeholder="연락처('-' 제외)" required maxlength="11"/>
+	                                    	<input type="text" class="form-control form-control-user" name="userTel" 
+	                                    			id="userTel" onkeyup="keyUpTel(this.value);"
+	                                            placeholder="연락처('-' 제외)" minlength="9" required maxlength="11"/>
 	                                    </div>
 	                                </div>
                                 </div>
@@ -136,7 +136,7 @@
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email1"
                                         	   name="email1" placeholder="이메일 주소 입력" maxlength="15"
-                                        	   onkeypress="isAlphaNumeric(this);" ondrop="return false;" />
+                                        	   oninput="isAlphaNumeric(this.value);" />
                                 	</div>@
                                 	<div class="col-sm-4 mb-3 mb-sm-0 padding-none">
                                 		<input type="text" class="form-control form-control-user" id="email2"
@@ -309,6 +309,7 @@
 			}
 		});
 		
+// 		id 텍스트박스가 비었을 때 처리
 		$("#userId").on("change", function(){
 			let validatedId = $("#userId").next();
 			validatedId.text("");
@@ -320,22 +321,10 @@
 		});
 		
 		function isAlphaNumeric(ev){
-			const keyCode = ev.keyCode;
-			const isValidKey = (
-			    (keyCode >= 48 && keyCode <= 57) || // Numbers
-			    (keyCode >= 97 && keyCode <= 122) || // Numbers, Keypad
-			    (keyCode >= 65 && keyCode <= 90) || // Alphabet
-			    (keyCode === 32) || // Space
-			    (keyCode === 8) || // BackSpace
-			    (keyCode === 189) // Dash
-			  );
-			  if (!isValidKey) {
-				ev.preventDefault();
-			    $("#email1").val('');
-			    return false;
-			  }
+			
 		}
 		
+// 		option으로 선택한 도메인 주소를 text박스로 넣기
 		$("#emailSelect").on("change", function() {
 			$("#email2").val('');
 			let val = $(event.target).val();
@@ -345,11 +334,29 @@
 			$("#email2").val(val);
 		});
 		
+// 		전화번호에 특수기호 -가 들어가면 공백으로 처리
 		function keyUpTel(val){
 			console.log(val);
-			val = val.replace('-', '');
-			$("#userTel").val(val);
+			let regTel = /^[0-9]{0,11}$/;
+			if(!regTel.test($("#userTel").val())){
+				Swal.fire('숫자만 입력하세요.');
+				$(".swal2-confirm").on("click", function() {
+					$("#userTel").val('');
+				});
+			}
 		};
+		
+// 		회원이름=> 숫자, 특수기호 제외
+		function nameValidation(){
+			let regNameKor = /^[a-zA-Zㄱ-힣]{0,1}[a-zA-Zㄱ-힣]{0,15}$/;
+
+			if(!regNameKor.test($("#userName").val())){
+				Swal.fire('특수문자, 숫자는 사용할 수 없습니다.');
+				$(".swal2-confirm").on("click", function() {
+					$("#userName").val('');
+				});
+			}
+		}
 		
 // 		input type=number => maxlength가 제대로 동작하지 않는 브라우저 존재
 //		oninput 이벤트속성을 이용하여 maxlength 및 minlength 제한 처리

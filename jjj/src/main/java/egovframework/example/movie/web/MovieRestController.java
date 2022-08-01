@@ -15,6 +15,7 @@ public class MovieRestController {
 	@Resource(name="movieService")
 	private MovieService movieService;
 	
+//	영화 댓글 등록
 	@PostMapping("/ajaxInsertMovieReply.do")
 	public String ajaxInsertMovieReply(MovieReplyVO rvo) {
 		int insert = movieService.insertReply(rvo);
@@ -24,6 +25,7 @@ public class MovieRestController {
 		return "success";
 	}
 	
+//	영화 댓글 삭제
 	@PostMapping("/ajaxDeleteMovieReply.do")
 	public String ajaxDeleteMovieReply(MovieReplyVO rvo) {
 		int delete = movieService.deleteReply(rvo);

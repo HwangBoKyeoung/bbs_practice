@@ -222,6 +222,7 @@
 			
 			let e1 = $("#email1").val();
 			let e2 = $("#email2").val();
+			let regMail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 			if(e1 == '' || e1 == null){
 				Swal.fire('이메일이 유효하지 않습니다.');
 				$(".swal2-confirm").on("click", function() {
@@ -230,6 +231,12 @@
 				return false;
 			} else if (e2 == '' || e2 == null){
 				Swal.fire('도메인이 유효하지 않습니다.');
+				$(".swal2-confirm").on("click", function() {
+					
+				});
+				return false;
+			} else if (!regMail.test(e1+'@'+e2)){
+				Swal.fire('이메일은 한글 및 일부 특수문자 사용이 불가합니다.');
 				$(".swal2-confirm").on("click", function() {
 					
 				});

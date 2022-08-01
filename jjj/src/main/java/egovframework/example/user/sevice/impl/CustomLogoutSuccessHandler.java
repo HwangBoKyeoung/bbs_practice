@@ -14,11 +14,13 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 	@Override
 	public void onLogoutSuccess(HttpServletRequest req
 							  , HttpServletResponse resp
-							  , Authentication auth) throws IOException, ServletException {
+							  , Authentication auth) throws IOException
+														  , ServletException {
 		
 		if(auth != null && auth.getDetails() != null) {
 			try {
 				req.getSession().invalidate();
+				req.getSession(true);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

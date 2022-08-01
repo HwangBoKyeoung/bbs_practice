@@ -86,7 +86,7 @@ public class UserControllerTest {
 	}
 	
 //	메일발송 테스트
-	@Test
+//	@Test
 	public void sendMail() throws MailException, MalformedURLException {
 		try {
 			HtmlEmail email = new HtmlEmail();
@@ -122,6 +122,16 @@ public class UserControllerTest {
 			e.printStackTrace();
 		}
 		
+	}
+	
+//	주민등록번호 유효성 검사
+	@Test
+	public void ihIdNumTest() {
+		String str = "111140-1111111";
+		UserVO vo = new UserVO();
+		boolean test = vo.isPersonalId(str);
+		
+		System.out.println("주민등록번호 유효성 테스트 =>========================="+test);
 	}
 	
 }

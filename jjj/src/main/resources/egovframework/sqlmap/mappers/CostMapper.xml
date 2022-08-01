@@ -23,6 +23,7 @@
 		<result property="dtlOrd" column="dtl_ord" />
 	</resultMap>
 
+	<!-- 페이징 처리 없이 리스트만 출력 -->
 	<select id="costSelectList" resultType="costVO">
 	    SELECT F.COST_NO
 	         , TO_CHAR(F.COST_DATE, 'yyyy-mm-dd') "COST_DATE"
@@ -44,6 +45,7 @@
 		 ORDER BY F.COST_NO DESC
 	</select>
 	
+	<!-- 페이징 처리 + 검색 값 유지해서 리스트 출력 -->
 	<select id="getList" resultType="costVO">
 		<![CDATA[
 		SELECT COST_NO
@@ -56,7 +58,7 @@
 			 , FILE_NAME
 			 , FILE_RENAME
 			 , USER_ID
-		FROM (
+		  FROM (
 			  SELECT ROWNUM RN
 			  	   , A.COST_NO
 			  	   , A.COST_DATE
@@ -68,7 +70,7 @@
 			  	   , A.FILE_NAME
 			  	   , A.FILE_RENAME
 			  	   , A.USER_ID
-			  FROM (
+			    FROM (
 			  		SELECT F.COST_NO
 				         , F.COST_DATE
 				         , D.CODE_DTL_NM "COST_METHOD"
@@ -109,6 +111,7 @@
     	]]>
 	</select>
 	
+	<!-- 페이징처리=> 총 페이지 수 계산 -->
 	<select id="getTotal" resultType="int">
 		SELECT COUNT(*)
 		  FROM FORWIZ_COST_TB F
@@ -134,73 +137,7 @@
 			</if>
 	</select>
 	
-	<!-- <select id="getList" resultType="costVO">
-		<![CDATA[
-		SELECT COST_NO
-			 , COST_DATE
-			 , COST_METHOD
-			 , COST_CATEGORY
-			 , COST_DETAIL
-			 , COST_BUYER
-			 , COST_SUM
-			 , FILE_NAME
-			 , FILE_RENAME
-		FROM (
-			  SELECT ROWNUM RN
-			  	   , A.*
-			  FROM (
-			  		SELECT COST_NO
-					     , COST_DATE
-					     , COST_METHOD
-					     , COST_CATEGORY
-					     , COST_DETAIL
-					     , COST_BUYER
-					     , COST_SUM
-					     , FILE_NAME
-					     , FILE_RENAME
-					FROM FORWIZ_COST_TB
-					WHERE
-					]]>
-						<if test="searchType == 'all'">
-							(COST_CATEGORY LIKE '%'||#{searchName}||'%' 
-							 OR TO_CHAR(COST_DATE, 'YYYYMMDD') = #{searchName})
-						</if>
-						<if test="searchType == 'date'">
-							TO_CHAR(COST_DATE, 'YYYYMMDD') = #{searchName}
-						</if>
-						<if test="searchType == 'category'">
-							COST_CATEGORY LIKE '%'||#{searchName}||'%'
-						</if>
-						<if test="searchType == '' or searchType == null">
-							1=1
-						</if>
-		<![CDATA[
-					ORDER BY 1
-				)A
-			)
-		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
-    	]]>
-	</select>
-	
-	<select id="getTotal" resultType="int">
-		SELECT COUNT(*)
-		FROM FORWIZ_COST_TB
-		WHERE 
-			<if test="searchType == 'all'">
-				(COST_CATEGORY LIKE '%'||#{searchName}||'%' 
-				 OR TO_CHAR(COST_DATE, 'YYYYMMDD') = #{searchName})
-			</if>
-			<if test="searchType == 'date'">
-				TO_CHAR(COST_DATE, 'YYYYMMDD') = #{searchName}
-			</if>
-			<if test="searchType == 'category'">
-				COST_CATEGORY LIKE '%'||#{searchName}||'%'
-			</if>
-			<if test="searchType == '' or searchType == null">
-				1=1
-			</if>
-	</select> -->
-	
+	<!-- 경비 1건 조회(by 경비번호) -->
 	<select id="costSelect" resultType="costVO">
 		SELECT F.COST_NO
 	         , TO_CHAR(F.COST_DATE, 'yyyy-mm-dd') "COST_DATE"
@@ -222,6 +159,92 @@
 		   AND F.COST_NO = #{costNo}
 	</select>
 	
+	<!-- 경비 여러 건 조회(by 회원아이디) : 페이징처리 없음 -->
+	<select id="costSelectByUser" resultType="costVO">
+		SELECT F.COST_NO
+	         , TO_CHAR(F.COST_DATE, 'yyyy-mm-dd') "COST_DATE"
+	         , D.CODE_DTL_NM "COST_METHOD"
+	         , D1.CODE_DTL_NM "COST_CATEGORY"
+	         , F.COST_DETAIL
+	         , F.COST_BUYER
+	         , F.COST_SUM
+	         , F.FILE_NAME
+	         , F.FILE_RENAME
+	         , F.USER_ID
+		  FROM FORWIZ_COST_TB F
+		  JOIN SYS_CODE_DTL D
+		    ON (F.COST_METHOD=D.CODE_DTL)
+		  JOIN SYS_CODE_DTL D1
+		    ON (F.COST_CATEGORY = D1.CODE_DTL)
+		 WHERE D.CODE_MST = 'COST_METHOD'
+		   AND D1.CODE_MST = 'COST_CATEGORY'
+		   AND F.USER_ID = #{userId}
+	</select>
+	
+	<!-- 경비 여러 건 조회(by 회원아이디) : 페이징처리 존재 -->
+	<select id="getListByUser" parameterType="hashMap" resultType="costVO">
+		<![CDATA[
+		SELECT COST_NO
+			 , COST_DATE
+			 , COST_METHOD
+			 , COST_CATEGORY
+			 , COST_DETAIL
+			 , COST_BUYER
+			 , COST_SUM
+			 , FILE_NAME
+			 , FILE_RENAME
+			 , USER_ID
+		  FROM (
+				SELECT ROWNUM RN
+					 , A.COST_NO
+					 , A.COST_DATE
+					 , A.COST_METHOD
+					 , A.COST_CATEGORY
+					 , A.COST_DETAIL
+					 , A.COST_BUYER
+					 , A.COST_SUM
+					 , A.FILE_NAME
+					 , A.FILE_RENAME
+					 , A.USER_ID
+				  FROM (
+						SELECT F.COST_NO
+							 , TO_CHAR(F.COST_DATE, 'yyyy-mm-dd') "COST_DATE"
+							 , D.CODE_DTL_NM "COST_METHOD"
+							 , D1.CODE_DTL_NM "COST_CATEGORY"
+							 , F.COST_DETAIL
+							 , F.COST_BUYER
+							 , F.COST_SUM
+							 , F.FILE_NAME
+							 , F.FILE_RENAME
+							 , F.USER_ID
+						  FROM FORWIZ_COST_TB F
+						  JOIN SYS_CODE_DTL D
+						    ON (F.COST_METHOD=D.CODE_DTL)
+						  JOIN SYS_CODE_DTL D1
+						    ON (F.COST_CATEGORY = D1.CODE_DTL)
+						 WHERE D.CODE_MST = 'COST_METHOD'
+						   AND D1.CODE_MST = 'COST_CATEGORY'
+						   AND F.USER_ID = #{userId}
+		                 ORDER BY F.COST_NO DESC
+						) A
+				)
+		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalByUser" parameterType="hashMap" resultType="int">
+		SELECT COUNT(*)
+		  FROM FORWIZ_COST_TB F
+	      JOIN SYS_CODE_DTL D
+	        ON (F.COST_METHOD=D.CODE_DTL)
+	      JOIN SYS_CODE_DTL D1
+	        ON (F.COST_CATEGORY = D1.CODE_DTL)
+	     WHERE D.CODE_MST = 'COST_METHOD'
+	       AND D1.CODE_MST = 'COST_CATEGORY'
+	       AND F.USER_ID = #{cvo.userId}
+	</select>
+	
+	<!-- 경비 등록: cost_no(primary key)는 sequence말고 selectkey로 생성 -->
 	<insert id="costInsert" parameterType="costVO">
 		<selectKey keyProperty="costNo" resultType="int" order="BEFORE">
 			SELECT NVL(MAX(COST_NO),0)+1
@@ -249,11 +272,13 @@
 			  , #{userId})
 	</insert>
 	
+	<!-- 경비 1건 삭제 -->
 	<delete id="costDelete" parameterType="costVO">
 		DELETE FROM FORWIZ_COST_TB
 		WHERE COST_NO = #{costNo}
 	</delete>
 	
+	<!-- 경비 1건 수정 -->
 	<update id="costUpdate" parameterType="costVO">
 		UPDATE FORWIZ_COST_TB
 		<set>
@@ -267,6 +292,7 @@
 		WHERE COST_NO = #{costNo}
 	</update>
 	
+	<!-- 경비 전체 조회 (시작날짜, 끝날짜, 내용) -->
 	<select id="costCalendarList" resultType="costVO">
 		SELECT TO_CHAR(COST_DATE,'yyyy-mm-dd')    "start"
 			 , TO_CHAR(COST_DATE,'yyyy-mm-dd')    "end"
@@ -274,6 +300,7 @@
 		FROM   FORWIZ_COST_TB
 	</select>
 	
+	<!-- 경비 연도마다 월별 경비 합계 출력 -->
 	<select id="costSumByYear" parameterType="String" resultType="costVO">
 		SELECT TO_CHAR(COST_DATE, 'YYYYMM') AS COST_DATE
 			 , NVL(SUM(COST_SUM), 0) AS COST_SUM

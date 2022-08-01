@@ -19,9 +19,12 @@ public class UserVO implements UserDetails {
 	private String userGender;
 	private String userTel;
 	private String userMail;
-
+	
+//	회원 권한 (ROLE_ADMIN, ROLE_USER 등) 저장될 필드
 	private String role;
+//	비밀번호 신규 입력 필드
 	private String userRePwd;
+//	ihidnum(주민번호) = ihIdNum2(주민번호 앞자리) + '-' + ihIdNum3(주민번호 뒷자리)
 	private String ihidnum;
 	private String ihIdNum2;
 	private String ihIdNum3;
@@ -134,6 +137,7 @@ public class UserVO implements UserDetails {
 				+ ihIdNum3 + "]";
 	}
 
+//	spring-security에서 필요. User에 대한 정보 저장
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
@@ -171,51 +175,51 @@ public class UserVO implements UserDetails {
 		return true;
 	}
 
-	// 유효성 검사 (regex이용)
-	// 이메일
+//	유효성 검사 (regex이용)
+//	이메일
 	public boolean isEmail(String str) {
 		return Pattern.matches("^[a-z0-9A-Z._-]*@[a-z0-9A-Z]*.[a-zA-Z.]*$", str);
 	}
 
-	// 전화번호
+//	전화번호
 	public boolean isTel(String str) {
 		return Pattern.matches("^\\d{2,3}\\d{3,4}\\d{4}$", str);
 	}
 
-	// 주민등록번호
+//	주민등록번호
 	public boolean isPersonalId(String str) {
-		return Pattern.matches("^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))-[1-4][0-9]{6}$", str);
+		return Pattern.matches("^\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|[3][01])\\-[1-4][0-9]{6}$", str);
 	}
 
-	// 영어 검사
+//	영어 검사
 	public boolean isAlpha(String str) {
 		return Pattern.matches("^[a-zA-Z]*$", str);
 	}
 	
-	// 영어+숫자 검사 (6자리~12자리)
+//	영어+숫자 검사 (6자리~12자리)
 	public boolean isAlphaNumber(String str) {
 		return Pattern.matches("^[a-zA-Z0-9]{6,12}$", str);
 	}
 	
-	// 아이디 검사
-	// 시작은 영문으로만, '_'를 제외한 특수문자 안되며 영문, 숫자, '_'으로만 이루어진 5 ~ 12자 이하
+//	아이디 검사
+//	시작은 영문으로만, '_'를 제외한 특수문자 안되며 영문, 숫자, '_'으로만 이루어진 5 ~ 12자 이하
 	public boolean isId(String str) {
 		return Pattern.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$", str);
 	}
 	
-	// 비밀번호 검사
-	// 영문, 특수문자, 숫자 포함 8자 이상
-	// 반복X, 아이디포함X, 연속문자X
+//	비밀번호 검사
+//	영문, 특수문자, 숫자 포함 8자 이상
+//	반복X, 아이디포함X, 연속문자X
 	public boolean isPwdChk(String str, String id) {
-		// '숫자', '문자', '특수문자' 무조건 1개 이상, 비밀번호 '최소 8자에서 최대 16자'까지 허용
-		// (특수문자는 정의된 특수문자만 사용 가능)
+//		'숫자', '문자', '특수문자' 무조건 1개 이상, 비밀번호 '최소 8자에서 최대 16자'까지 허용
+//		(특수문자는 정의된 특수문자만 사용 가능)
 		boolean p1 = Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$",
 				str);
 		if (!p1) {
 			return false;
 		}
 
-		// 아이디 포함 여부(아이디와 동일문자 4자리 체크)
+//		아이디 포함 여부(아이디와 동일문자 4자리 체크)
 		for (int i = 0; i < str.length() - 3; i++) {
 			if (id.contains(str.substring(i, i + 3))) {
 				return false;

@@ -1,5 +1,9 @@
 package egovframework.example.user.web;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.example.cost.sevice.CostService;
+import egovframework.example.cost.sevice.CostVO;
+import egovframework.example.cost.sevice.CriteriaVO;
+import egovframework.example.cost.sevice.PageVO;
 import egovframework.example.user.sevice.UserService;
 import egovframework.example.user.sevice.UserVO;
 
@@ -19,16 +27,22 @@ public class UserController {
 	@Resource(name="userService")
 	private UserService userService;
 	
+	@Resource(name="costService")
+	private CostService costService;
+	
+//	회원로그인 양식으로 이동 (로그인 처리: CustomUserDetailsService.java에서 확인 가능)
 	@RequestMapping("/userLoginForm.do")
 	public String userLoginForm() {
 		return "user/userLoginForm";
 	}
 	
+//	회원 회원가입 양식으로 이동
 	@RequestMapping("/userRegisterForm.do")
 	public String userRegisterForm() {
 		return "user/userRegisterForm";
 	}
 	
+//	회원가입 진행 중... 정규식 검사 (이메일, 주민번호, 전화번호)
 	@PostMapping("/userRegister.do")
 	public String userRegister(UserVO vo
 							 , Model model
@@ -46,7 +60,7 @@ public class UserController {
 //		비밀번호
 		String userPwd = vo.getUserPwd();
 		
-//		유효성검사
+//		정규식검사
 		boolean mail = vo.isEmail(userMail);
 		boolean ihid = vo.isPersonalId(ihidnum);
 		boolean pass = vo.isPwdChk(userPwd, vo.getUserId());
@@ -88,9 +102,13 @@ public class UserController {
 			} else {
 				model.addAttribute("message", "메일, 주민번호, 비밀번호, 전화번호 모두 올바르지 않은 형태입니다.");
 			}
-
 			return "user/message";
 		}
+		
+		vo.setIhidnum(ihidnum);
+		vo.setIhIdNum2(ihIdNum2);
+		vo.setIhIdNum3(ihIdNum3);
+		vo.setUserMail(userMail);
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 		String result = encoder.encode(userPwd);
@@ -106,17 +124,20 @@ public class UserController {
 		return "cmmn/success";
 	}
 	
+//	회원 비밀번호 찾기 양식
 	@RequestMapping("/findUserPasswordForm.do")
 	public String findUserPasswordForm() {
 		return "user/findUserPasswordForm";
 	}
 	
+//	회원 로그아웃 (로그아웃 성공 시, CustomLogoutSuccessHandler.java 파일 참고)
 	@RequestMapping("/userLogout.do")
 	public String userLogout(Model model) {
 		model.addAttribute("message", "로그아웃이 완료되었습니다.");
 		return "user/userLogout";
 	}
 	
+//	회원 임시비밀번호-> 새로운 비밀번호로 수정하기 페이지
 	@RequestMapping("/userPasswordUpdateForm.do")
 	public String userPasswordUpdateForm(Model model
 									   , UserVO vo
@@ -125,9 +146,11 @@ public class UserController {
 		vo.setUserMail(mail);
 		model.addAttribute("tempPwd", vo.getUserRePwd());
 		model.addAttribute("mail", vo.getUserMail());
+		
 		return "user/userPasswordUpdateForm";
 	}
 	
+//	수정된 비밀번호에 대한 정규식 검사 및 update 시켜주기
 	@PostMapping("/userPasswordUpdate.do")
 	public String userPasswordUpdate(UserVO vo
 								   , @RequestParam("tempPwd") String tempPwd
@@ -162,6 +185,98 @@ public class UserController {
 		}
 		
 		return "redirect:/userLoginForm.do";
+	}
+	
+//	회원 마이페이지 이동
+	@RequestMapping("/userMyPage.do")
+	public String userMyPage(Model model
+						   , CostVO cvo
+						   , Principal principal
+						   , CriteriaVO cri
+						   , Map<String, Object> myPageMap) {
+		
+		cvo.setUserId(principal.getName());
+		myPageMap.put("pageNum", cri.getPageNum());
+		myPageMap.put("amount", cri.getAmount());
+		myPageMap.put("userId", cvo.getUserId());
+		
+		PageVO pageVO = new PageVO(cri, costService.getTotalByUser(myPageMap));
+		List<CostVO> costs = costService.getListByUser(myPageMap);
+		
+		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("costList", costs);
+		
+		return "user/userMyPage";
+	}
+	
+//	회원 수정 양식으로 이동
+	@PostMapping("/userUpdateForm.do")
+	public String userUpdateForm(Model model
+							   , UserVO vo) {
+		
+		vo = userService.userSelectLogin(vo);
+		
+		if(vo==null) {
+			model.addAttribute("message", "회원수정이 불가능합니다.");
+			return "cmmn/error";
+		}
+		model.addAttribute("user", vo);
+		return "user/userUpdateForm";
+	}
+	
+	@PostMapping("/userUpdate.do")
+	public String userUpdate(UserVO vo
+						   , Model model
+						   , HttpServletRequest req) {
+		
+		System.out.println("vo================================="+vo);
+		
+//		정규식검사
+		boolean mail = vo.isEmail(vo.getUserMail());
+		boolean tels = vo.isTel(vo.getUserTel());
+		boolean pass = false;
+		if(vo.getUserPwd() == "" || vo.getUserPwd() == null) {
+			pass = true;
+			vo.setUserPwd(null);
+		} else {
+			pass = vo.isPwdChk(vo.getUserPwd(), vo.getUserId());
+		}
+		
+		if(!(mail && pass && tels)) {
+			if(!(mail || pass)) {
+				model.addAttribute("message", "메일과 비밀번호가 유효하지 않습니다.");
+			} else if(!(pass || tels)) {
+				model.addAttribute("message", "비밀번호와 전화번호가 유효하지 않습니다.");
+			} else if(!(mail || tels)) {
+				model.addAttribute("message", "메일과 전화번호가 유효하지 않습니다.");
+			} else if(!mail) {
+				model.addAttribute("message", "메일이 유효하지 않습니다.");
+			} else if(!pass) {
+				model.addAttribute("message", "비밀번호가 유효하지 않습니다.");
+			} else if(!tels) {
+				model.addAttribute("message", "전화번호가 유효하지 않습니다.");
+			} else {
+				model.addAttribute("message", "메일, 비밀번호, 전화번호 모두 유효하지 않습니다.");
+			}
+			
+			return "user/message";
+		}
+		
+		if(vo.getUserPwd() != null || vo.getUserPwd() != "") {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+			String pwd = encoder.encode(vo.getUserPwd());
+			vo.setUserPwd(pwd);
+		}
+		
+		int update = userService.userUpdate(vo);
+		
+		if(update == 0) {
+			model.addAttribute("message", "회원정보 수정에 실패하였습니다.");
+			return "user/message";
+		}
+		
+		model.addAttribute("message", "회원정보를 수정하였습니다.");
+		return "cmmn/success";
 	}
 	
 }

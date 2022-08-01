@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userMapper">
-
+	
+	<!-- 회이ㅝㄴ 전체 조회 -->
 	<select id="userSelectList" resultType="userVO">
 		SELECT USER_NAME
 			 , USER_ID
@@ -14,6 +15,7 @@
 		 ORDER BY USER_NAME DESC
 	</select>
 	
+	<!-- 회원 1건 조회 -->
 	<select id="userSelect" resultType="userVO" parameterType="userVO">
 		SELECT USER_NAME
 			 , USER_ID
@@ -29,24 +31,8 @@
 		 </if>
 	</select>
 	
+	<!-- 회원가입 -->
 	<insert id="userInsert" parameterType="userVO">
-		INSERT INTO USERS(USER_NAME
-						, USER_ID
-						, USER_PWD
-						, USER_ROLE
-						, USER_GENDER
-						, USER_TEL
-						, USER_MAIL)
-		VALUES(#{userName}
-			 , #{userId}
-			 , #{userPwd}
-			 , 'user'
-			 , #{userGender}
-			 , #{userTel}
-			 , #{userMail})
-	</insert>
-	
-	<!-- <insert id="userInsert" parameterType="userVO">
 		INSERT INTO USERS(USER_NAME
 						, USER_ID
 						, USER_PWD
@@ -57,34 +43,34 @@
 						, IHIDNUM
 						, IHIDNUM2
 						, IHIDNUM3)
-		VALUES('aaaaaa'
-			 , 'aaaaaa'
-			 , 'aaaaaa'
+		VALUES(#{userName}
+			 , #{userId}
+			 , #{userPwd}
 			 , 'user'
-			 , 'M'
-			 , '010-5205-8000'
-			 , 'naaruaaa@gmail.com'
+			 , #{userGender}
+			 , #{userTel}
+			 , #{userMail}
 			 , #{ihidnum}
 			 , #{ihIdNum2}
 			 , #{ihIdNum3})
-	</insert> -->
+	</insert>
 	
+	<!-- 회원 1건 삭제(비밀번호를 입력해야 삭제가 가능함) -->
 	<delete id="userDelete" parameterType="userVO">
 		DELETE FROM USERS
-		WHERE USER_ID = #{userId}
-		<if test="userPwd != '' or userPwd != null">
-			AND USER_PWD = #{userPwd}
-		</if>
+		 WHERE USER_ID = #{userId}
+		   AND USER_PWD = #{userPwd}
 	</delete>
 	
+	<!-- 회원 정보 업데이트 -->
 	<update id="userUpdate" parameterType="userVO">
 		UPDATE USERS
 		<set>
 			<if test="userPwd != '' or userPwd != null">
 				USER_PWD = #{userPwd},
 			</if>
-			<if test="userName != '' or userName != null">
-				USER_NAME = #{userName},
+			<if test="userMail != '' or userMail != null">
+				USER_MAIL = #{userMail},
 			</if>
 			<if test="userTel != '' or userTel != null">
 				USER_TEL = #{userTel},
@@ -93,6 +79,7 @@
 		WHERE USER_ID = #{userId}
 	</update>
 	
+	<!-- 회원아이디 중복체크 쿼리 -->
 	<select id="userIdChk" parameterType="userVO" resultType="int">
 		SELECT CASE COUNT(*) WHEN 1 THEN 0
 			   ELSE 1 END AS "idNo"
@@ -100,6 +87,7 @@
 		 WHERE USER_ID = #{userId}
 	</select>
 	
+	<!-- 회원 로그인 정보 -->
 	<select id="userSelectLogin" resultType="userVO" parameterType="userVO">
 		SELECT USER_NAME
 			 , USER_ID
@@ -108,10 +96,12 @@
 			 , USER_GENDER
 			 , USER_TEL
 			 , USER_MAIL
+			 , IHIDNUM
 		  FROM USERS
 		 WHERE USER_ID = #{userId}
 	</select>
 	
+	<!-- 회원 비밀번호 찾기(메일과 아이디를 통해) -->
 	<update id="findUserPassword" parameterType="userVO">
 		UPDATE USERS
 		   SET USER_PWD=#{userPwd}
@@ -121,6 +111,7 @@
                              AND USER_MAIL= #{userMail})
 	</update>
 	
+	<!-- 메일에 의해 아이디 찾기 -->
 	<select id="findUserIdByMail" resultType="String" parameterType="String">
 		SELECT USER_ID
 		  FROM USERS

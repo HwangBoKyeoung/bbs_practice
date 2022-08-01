@@ -1,5 +1,6 @@
 package egovframework.example.movie.sevice;
 
+//	영화 파일 저장 테이블 관련 VO (영화 1건 - 파일 n건)
 public class MovieCodeVO {
 
 	private int movieCdNo;

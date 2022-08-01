@@ -71,7 +71,10 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 	}
 
 	@Override
-	public void sendEmail(UserVO vo, String div) throws MailException, MalformedURLException {
+	public void sendEmail(UserVO vo
+						, String div) throws MailException
+										   , MalformedURLException {
+		
 		String charSet = "UTF-8" ;
 		try {
 			HtmlEmail email = new HtmlEmail();
@@ -114,7 +117,9 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 	}
 
 	@Override
-	public void findPwd(HttpServletResponse resp, UserVO vo) throws Exception {
+	public void findPwd(HttpServletResponse resp
+					  , UserVO vo) throws Exception {
+		
 		resp.setContentType("text/html;charset=utf-8");
 		UserVO ck = userDAO.userSelectLogin(vo);
 		PrintWriter out = resp.getWriter();

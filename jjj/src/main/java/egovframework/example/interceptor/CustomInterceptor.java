@@ -3,13 +3,13 @@ package egovframework.example.interceptor;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.example.user.sevice.UserService;
 
+//	dispatcher-servlet.xml 파일에서 설정
 public class CustomInterceptor implements HandlerInterceptor {
 	
 	@Resource(name="userService")

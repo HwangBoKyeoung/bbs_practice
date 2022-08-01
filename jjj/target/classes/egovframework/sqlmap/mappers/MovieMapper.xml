@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="movieMapper">
 	
+	<!-- MovieVO와 MovieCodeVO join=> collection사용 -->
 	<resultMap type="movieVO" id="movieResultMap">
 		<result property="movieNo" column="movie_no" />
 		<result property="movieName" column="movie_name" />
@@ -21,8 +22,10 @@
 		<result property="movieCdRename" column="movie_cd_rename" />
 	</resultMap>
 	
+	<!-- 프로시저 호출용 -->
 	<resultMap id="procedureCall" type="hashmap" />
 	
+	<!-- 영화전체조회(페이징 처리 없음) -->
 	<select id="selectListMovie" resultType="movieVO">
 		SELECT MOVIE_NO
 			 , MOVIE_NAME
@@ -36,6 +39,7 @@
 		 ORDER BY MOVIE_NO DESC
 	</select>
 	
+	<!-- 영화 1건에 대한 파일 여러건 조회 -->
 	<select id="selectMovie" resultMap="movieResultMap" parameterType="movieVO">
 		   SELECT C.MOVIE_CD_DETAIL
 			 	, C.MOVIE_CD_RENAME
@@ -44,6 +48,7 @@
 		   AND M.MOVIE_NO=#{movieNo}
 	</select>
 	
+	<!-- 영화 1건 조회 -->
 	<select id="selectMovieOne" resultType="movieVO" parameterType="movieVO">
 		SELECT MOVIE_NO
 			 , MOVIE_NAME
@@ -57,6 +62,7 @@
 		 WHERE MOVIE_NO=#{movieNo}
 	</select>
 	
+	<!-- 영화등록, sequence 사용 -->
 	<insert id="insertMovie" parameterType="movieVO">
 		INSERT INTO MOVIES (MOVIE_NO
 						  , MOVIE_NAME
@@ -76,6 +82,7 @@
 			  , #{userId})
 	</insert>
 	
+	<!-- 영화 관련 파일 등록 -->
 	<insert id="insertMovieCode" parameterType="movieCodeVO">
 		INSERT INTO MOVIE_CODE(MOVIE_CD_NO
 							 , MOVIE_NO
@@ -87,6 +94,7 @@
 			  , #{movieCdRename})
 	</insert>
 	
+	<!-- 영화 1건 수정 -->
 	<update id="updateMovie" parameterType="movieVO">
 		UPDATE MOVIES
 		<set>
@@ -97,22 +105,26 @@
 		 WHERE MOVIE_NO = #{movieNo}
 	</update>
 	
+	<!-- 영화 1건 삭제 -->
 	<delete id="deleteMovie" parameterType="movieVO">
 		DELETE FROM MOVIES
 		 WHERE MOVIE_NO = #{movieNo}
 	</delete>
 	
+	<!-- 영화 파일 삭제 (by movieNo) -->
 	<delete id="deleteMovieCode" parameterType="movieVO">
 		DELETE FROM MOVIE_CODE
 		 WHERE MOVIE_NO = #{movieNo}
 	</delete>
 	
+	<!-- 영화 게시판 조회수 증가 쿼리 -->
 	<select id="updateMovieHit" parameterType="movieVO">
 		UPDATE MOVIES
 		   SET MOVIE_HIT = NVL(MOVIE_HIT,0) + 1
 		 WHERE MOVIE_NO = #{movieNo}
 	</select>
 	
+	<!-- 영화전체조회 (페이징처리 완료, 검색유지 완료) -->
 	<select id="getList" resultType="movieVO">
 		<![CDATA[
 		SELECT MOVIE_NO
@@ -166,6 +178,7 @@
     	]]>
 	</select>
 	
+	<!-- 영화 페이지 수 계산 -->
 	<select id="getTotal" resultType="int">
 		SELECT COUNT(*)
 		  FROM MOVIES
@@ -197,12 +210,14 @@
 						 #{v_cd_rename,   mode=IN,    jdbcType=VARCHAR,    javaType=STRING})}
 	</insert>
 	
+	<!-- 영화번호 출력, 이 쿼리는 사용하지 않음 -->
 	<select id="selectMovieCdNo" resultType="int">
 		SELECT NVL(MAX(MOVIE_NO), 0) "MOVIE_NO"
 		  FROM MOVIES
 	</select>
 	
 	<!-- 영화댓글기능 -->
+	<!-- 영화 댓글 조회(영화번호에 의해 전체조회) -->
 	<select id="selectListReply" parameterType="movieVO" resultType="movieReplyVO">
 		SELECT MOVIE_REPLY_NO
 			 , MOVIE_REPLY_CONENT
@@ -213,11 +228,13 @@
 		 WHERE MOVIE_NO = #{movieNo}
 	</select>
 	
+	<!-- 영화 댓글 1건 삭제 -->
 	<delete id="deleteReply" parameterType="movieReplyVO">
 		DELETE FROM MOVIE_REPLY
 		 WHERE MOVIE_REPLY_NO = #{movieReplyNo}
 	</delete>
 	
+	<!-- 영화 댓글 1건 등록 -->
 	<insert id="insertReply" parameterType="movieReplyVO">
 		INSERT INTO MOVIE_REPLY(MOVIE_REPLY_NO
 							  , MOVIE_REPLY_CONENT
@@ -231,6 +248,7 @@
 			  , #{movieReplyStar})
 	</insert>
 	
+	<!-- 영화 평균점수 계산 쿼리 -->
 	<select id="avgReplyStar" parameterType="movieReplyVO" resultType="float">
 		SELECT NVL(AVG(MOVIE_REPLY_STAR),0) "REPLY_AVG"
 		  FROM MOVIE_REPLY

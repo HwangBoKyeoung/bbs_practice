@@ -2,19 +2,15 @@ package egovframework.example.common;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.example.user.sevice.UserVO;
 
+// 사용안함
 @Controller
 public class ValidatorController {
 	

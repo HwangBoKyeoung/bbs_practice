@@ -92,6 +92,7 @@
 									class="collapse-item" href="userRegisterForm.do">회원가입</a> 
 								</sec:authorize>
 								<sec:authorize access="isAuthenticated()">
+									<a class="collapse-item" href="userMyPage.do">마이페이지</a>
 									<a class="collapse-item" href="logout">로그아웃</a>
 								</sec:authorize>
 								<div class="collapse-divider"></div>

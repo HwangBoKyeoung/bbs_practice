@@ -8,6 +8,7 @@ public class MovieReplyVO {
 	private int movieReplyStar;
 	private int movieNo;
 	
+//	영화 점수 평균 낸 값을 저장할 필드
 	private float replyAvg;
 
 	public int getMovieReplyNo() {

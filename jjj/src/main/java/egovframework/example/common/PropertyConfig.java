@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 public class PropertyConfig {
 	
+//	system이라는 이름으로 email.properties파일의 속성값을 가져올 수 있게됨
 	@Bean(name="system")
 	public PropertiesFactoryBean propertiesFactoryBean() throws Exception {
 		PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();

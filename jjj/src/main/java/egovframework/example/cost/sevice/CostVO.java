@@ -9,6 +9,7 @@ public class CostVO {
 //	@JsonFormat(pattern = "yyyy-MM-dd")
 //	@DateTimeFormat(pattern = "yyyy-MM-dd")
 //	private Date costDate;
+//	costDate => date타입에서 String 타입으로 변경
 	private String costDate;
 	private String costMethod;
 	private String costCategory;
@@ -19,13 +20,14 @@ public class CostVO {
 	private String fileRename;
 	private String userId;
 	
+//	임시로 사용할 필드명 생성(달력에 사용예정)
 	private String start;
 	private String end;
 	private String title;
 	
+//	공통코드를 join하기 위함, mybatis파일에 collection 생성
 	private SysCodeDtlVO sysCodeDtlVO;
 	
-
 	public int getCostNo() {
 		return costNo;
 	}

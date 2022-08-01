@@ -34,11 +34,15 @@ public class MovieController {
 	@Resource(name="userService")
 	private UserService userService;
 	
+//	영화 파일 업로드 경로
 	@Autowired
 	private String uploadPath;
 	
+//	영화 전체 조회 (페이징 처리 완료)
 	@RequestMapping("/movieSelectList.do")
-	public String movieSelectList(Model model, CriteriaVO cri) {
+	public String movieSelectList(Model model
+							    , CriteriaVO cri) {
+		
 		PageVO pageVO = new PageVO(cri, movieService.getTotal(cri));
 		List<MovieVO> list = movieService.getList(cri);
 		
@@ -48,8 +52,13 @@ public class MovieController {
 		return "movie/movieSelectList";
 	}
 	
+//	영화 1건 조회, 평균 평점 계산
 	@PostMapping("/movieSelect.do")
-	public String movieSelect(MovieVO vo, Model model, UserVO uvo, Principal principal) {
+	public String movieSelect(MovieVO vo
+							, Model model
+							, UserVO uvo
+							, Principal principal) {
+		
 		System.out.println("===================== 여긴 도달했는가?? ========================");
 		
 		String uId = principal.getName();
@@ -82,13 +91,20 @@ public class MovieController {
 		return "movie/movieSelect";
 	}
 	
+//	영화 등록 양식
 	@RequestMapping("/movieInsertForm.do")
 	public String movieInsertForm() {
 		return "movie/movieInsertForm";
 	}
 	
+//	영화 등록 처리, 파일은 required => .isEmpty() 메서드 사용하지 않음
 	@PostMapping("/movieInsert.do")
-	public String movieInsert(Principal p, MovieVO vo, List<MultipartFile> files, MovieCodeVO cvo, Model model) {
+	public String movieInsert(Principal p
+							, MovieVO vo
+							, List<MultipartFile> files
+							, MovieCodeVO cvo
+							, Model model) {
+		
 		if(p == null) {
 			return "security/error_auth";
 		}
@@ -131,8 +147,11 @@ public class MovieController {
 		return "movie/message";
 	}
 	
+//	영화 1건 삭제
 	@PostMapping("/movieDelete.do")
-	public String movieDelete(MovieVO vo, Model model) {
+	public String movieDelete(MovieVO vo
+							, Model model) {
+		
 		int delete = movieService.deleteMovie(vo);
 		int deleteCd = movieService.deleteMovieCode(vo);
 		if(delete == 0 || deleteCd == 0) {

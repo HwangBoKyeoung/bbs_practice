@@ -1,6 +1,7 @@
 package egovframework.example.cost.sevice.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -60,6 +61,21 @@ public class CostServiceImpl extends EgovAbstractServiceImpl implements CostServ
 	@Override
 	public List<CostVO> costSumByYear(String year) {
 		return costDAO.costSumByYear(year);
+	}
+
+	@Override
+	public List<CostVO> costSelectByUser(CostVO vo) {
+		return costDAO.costSelectByUser(vo);
+	}
+
+	@Override
+	public List<CostVO> getListByUser(Map<String, Object> myPageMap) {
+		return costDAO.getListByUser(myPageMap);
+	}
+
+	@Override
+	public int getTotalByUser(Map<String, Object> myPageMap) {
+		return costDAO.getTotalByUser(myPageMap);
 	}
 
 }

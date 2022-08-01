@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class RteGenericValidator implements Serializable {
 
+//	주민등록번호 eGov validator을 사용해보려 했으나.. 
+	
 	private static final long serialVersionUID = 1L;
 	
 	public static boolean isValidIdIhNum(String value) {

@@ -15,8 +15,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth)
-			throws IOException, ServletException {
+	public void onAuthenticationSuccess(HttpServletRequest req
+									  , HttpServletResponse resp
+									  , Authentication auth) throws IOException
+																  , ServletException {
+		
 //		로그인 이후 추가적으로 처리할 내용
 		System.out.println("=====================로그인 성공==================");
 		
@@ -29,7 +32,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		HttpSession session = req.getSession();
 		
 		if(roleNames.contains("ROLE_USER")) {
-			resp.sendRedirect("home.do");
+			resp.sendRedirect("userMyPage.do");
 			session.setAttribute("sessionAuth", "user");
 			return;
 		}

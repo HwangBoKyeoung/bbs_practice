@@ -32,7 +32,10 @@ public class UserRestController {
 	
 //	비밀번호찾기 + 임시비밀번호 메일 보내기
 	@PostMapping("/findUserPassword.do")
-	public void findUserPassword(UserVO vo, Model model, HttpServletResponse resp) throws Exception {
+	public void findUserPassword(UserVO vo
+							   , Model model
+							   , HttpServletResponse resp) throws Exception {
+		
 		userService.findPwd(resp, vo);
 	}
 	
@@ -40,6 +43,7 @@ public class UserRestController {
 	@PostMapping("/ajaxUpdatePwdCompare.do")
 	public String ajaxUpdatePwdCompare(@RequestParam("tempPwd") String tempPwd
 									 , @RequestParam("compareVal") String compareVal) {
+		
 		System.out.println("전송한 임시비밀번호: " + compareVal + ", 유저가 작성한 임시비밀번호: " + tempPwd);
 		if(!tempPwd.equals(compareVal)) {
 			return "fail";

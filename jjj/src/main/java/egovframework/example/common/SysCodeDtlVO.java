@@ -1,6 +1,8 @@
 package egovframework.example.common;
 
+//	공통코드 관련 VO 작성 (CostVO와 연결)
 public class SysCodeDtlVO {
+	
 	private String codeMst;
 	private String codeDtl;
 	private String codeDtlNm;

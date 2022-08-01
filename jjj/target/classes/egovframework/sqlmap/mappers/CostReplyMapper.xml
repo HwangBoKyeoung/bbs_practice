@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="costReplyMapper">
+
+	<!-- 경비 댓글 조회 (경비 리스트 번호에 의해 전체 조회) -->
 	<select id="selectCostReply" resultType="costReplyVO" parameterType="costReplyVO">
 		SELECT REPLY_NO
 		     , REPLY_WRITER
@@ -11,6 +13,7 @@
 		 WHERE COST_NO = #{costNo}
 	</select>
 	
+	<!-- 경비 댓글 등록 -->
 	<insert id="insertCostReply" parameterType="costReplyVO">
 		<selectKey keyProperty="replyNo" order="BEFORE" resultType="int">
 			SELECT NVL(MAX(REPLY_NO), 0)+1
@@ -28,6 +31,7 @@
 			  , #{costNo})
 	</insert>
 	
+	<!-- 경비댓글 1건 수정 (댓글내용) -->
 	<update id="updateCostReply" parameterType="costReplyVO">
 		UPDATE FORWIZ_REPLY_COST_TB
 		<set>
@@ -38,6 +42,7 @@
 		 WHERE REPLY_NO = #{replyNo}
 	</update>
 	
+	<!-- 경비댓글 1건 삭제 -->
 	<delete id="deleteCostReply" parameterType="costReplyVO">
 		DELETE FROM FORWIZ_REPLY_COST_TB
 		 WHERE REPLY_NO = #{replyNo}

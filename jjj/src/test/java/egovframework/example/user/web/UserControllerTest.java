@@ -12,6 +12,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.mail.MailException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -125,13 +126,46 @@ public class UserControllerTest {
 	}
 	
 //	주민등록번호 유효성 검사
-	@Test
+//	@Test
 	public void ihIdNumTest() {
 		String str = "111140-1111111";
 		UserVO vo = new UserVO();
 		boolean test = vo.isPersonalId(str);
 		
 		System.out.println("주민등록번호 유효성 테스트 =>========================="+test);
+	}
+	
+//	비밀번호 null값 update
+//	@Test
+	public void pwdUpdateTest() {
+		UserVO vo = new UserVO();
+		vo.setUserPwd(null);
+		if(vo.getUserPwd() != null) {
+			System.out.println("ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+			String pwd = encoder.encode(vo.getUserPwd());
+			vo.setUserPwd(pwd);
+		} else {
+			System.out.println("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
+			vo.setUserPwd(null);
+		}
+		
+		System.out.println("userPwd값============================"+vo.getUserPwd());
+	}
+	
+	@Test
+	public void bcryptTest() {
+		String p1 = "$2a$10$Rtu7WzzuYxcRLVx9vfRzwu7PPslBpaUXBjDndP.vdIcBIgqZnXB.m";
+		String p2 = "ghkdqhrud11*";
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+		String p3 = encoder.encode(p2);
+		int a = p3.hashCode();
+		int b = p1.hashCode();
+		
+		System.out.println("============================="+p2.matches(p1));
+		System.out.println("============================="+(a==b ? "true " : "false ") + "a: " + a + ", b: " + b);
+		
 	}
 	
 }

@@ -20,11 +20,14 @@
 					</tr>
 					<tr>
 						<th>아이디</th>
-						<td><input type="hidden" value="${user.userId}" name=""/>${user.userId}</td>
+						<td><input type="hidden" value="${user.userId}" name="userId"/>${user.userId}</td>
 					</tr>
 					<tr>
 						<th>비밀번호</th>
-						<td><input type="password" name="userPwd" id="userPwd" /> </td>
+						<td>
+							<input type="password" name="userPwd1" id="userPwd1" /> 
+							<input type="hidden" name="userPwd2" id="userPwd2" value="${user.userPwd}" />
+						</td>
 					</tr>
 					<tr>
 						<th>비밀번호재입력</th>
@@ -97,24 +100,24 @@
 			
 			function updateSubmit(){
 // 				비밀번호 일치성 검사
-				let userPwdVal = $("#userPwd").val();
+				let userPwdVal = $("#userPwd1").val();
 				let userRePwdVal = $("#userRePwd").val();
 				
-				if((userPwdVal != '' && userRePwdVal != '') || (userPwdVal != null && userRePwdVal != null)){
-					if(userPwdVal != userRePwdVal){
-						Swal.fire('비밀번호와 비밀번호 재입력 부분이 다릅니다.');
-						$(".swal2-confirm").on("click", function() {
-							
-						});
-						return false;
-					} else {
-						return true;
-					}
-				}
+				console.log(userPwdVal);
+				console.log(userRePwdVal);
 				
-				if((userPwdVal == '' && userRePwdVal == '') || (userPwdVal == null && userRePwdVal == null)){
+				if(userPwdVal == '' || userRePwdVal == ''){
 					userPwdVal = null;
 					userRePwdVal = null;
+					return true;
+				}
+				
+				if(userPwdVal != userRePwdVal){
+					Swal.fire("비밀번호, 재입력 부분이 일치하지 않습니다.");
+    				$(".swal2-confirm").on("click", function() {
+    					history.go(0);
+    				});
+    				return false;
 				}
 				
 				return true;

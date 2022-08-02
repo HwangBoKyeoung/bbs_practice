@@ -98,7 +98,7 @@
 		</form>
 		
 		<!-- 회원탈퇴양식 -->
-		<form action="userUpdateForm.do" method="post" id="deleteFrm">
+		<form action="userDeleteForm.do" method="post" id="deleteFrm">
 			<input type="hidden" value="<sec:authentication property="principal.username" />" name="userId" />
 		</form>
 	</div>

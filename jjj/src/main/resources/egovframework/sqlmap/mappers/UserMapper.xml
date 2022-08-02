@@ -66,8 +66,8 @@
 	<update id="userUpdate" parameterType="userVO">
 		UPDATE USERS
 		<set>
-			<if test="userPwd != '' or userPwd != null">
-				USER_PWD = #{userPwd},
+			<if test="userPwd != '' or userPwd != null or @egovframework.example.common.CommonUtil@empty(userPwd)">
+				USER_PWD = NVL(#{userPwd}, USER_PWD),
 			</if>
 			<if test="userMail != '' or userMail != null">
 				USER_MAIL = #{userMail},

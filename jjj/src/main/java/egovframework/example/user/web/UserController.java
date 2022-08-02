@@ -227,17 +227,20 @@ public class UserController {
 	@PostMapping("/userUpdate.do")
 	public String userUpdate(UserVO vo
 						   , Model model
-						   , HttpServletRequest req) {
+						   , HttpServletRequest req
+						   , @RequestParam("userPwd1") String userPwd1
+						   , @RequestParam("userPwd2") String userPwd2) {
 		
-		System.out.println("vo================================="+vo);
+		vo.setUserPwd(userPwd1);
+		String emptyPwd = vo.getUserPwd();
 		
 //		정규식검사
 		boolean mail = vo.isEmail(vo.getUserMail());
 		boolean tels = vo.isTel(vo.getUserTel());
 		boolean pass = false;
-		if(vo.getUserPwd() == "" || vo.getUserPwd() == null) {
-			pass = true;
+		if(emptyPwd.isEmpty() || emptyPwd.equals(null) || emptyPwd == "") {
 			vo.setUserPwd(null);
+			pass = true;
 		} else {
 			pass = vo.isPwdChk(vo.getUserPwd(), vo.getUserId());
 		}
@@ -262,21 +265,66 @@ public class UserController {
 			return "user/message";
 		}
 		
-		if(vo.getUserPwd() != null || vo.getUserPwd() != "") {
+		if(vo.getUserPwd() != null) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 			String pwd = encoder.encode(vo.getUserPwd());
 			vo.setUserPwd(pwd);
+			
+			int update = userService.userUpdate(vo);
+			
+			if(update == 0) {
+				model.addAttribute("message", "회원정보 수정에 실패하였습니다.");
+				return "user/message";
+			}
+			
+			model.addAttribute("message", "회원정보를 수정하였습니다. 다시 로그인하세요.");
+			return "redirect:logout";
+		} else {
+			int update = userService.userUpdate(vo);
+			
+			if(update == 0) {
+				model.addAttribute("message", "회원정보 수정에 실패하였습니다.");
+				return "user/message";
+			}
+			
+			model.addAttribute("message", "회원정보를 수정하였습니다.");
+			return "cmmn/success";
 		}
 		
-		int update = userService.userUpdate(vo);
 		
-		if(update == 0) {
-			model.addAttribute("message", "회원정보 수정에 실패하였습니다.");
-			return "user/message";
+	}
+	
+	@RequestMapping("/userDeleteForm.do")
+	public String userDeleteForm(Model model
+							   , UserVO vo) {
+		
+		vo = userService.userSelectLogin(vo);
+		if(vo == null) {
+			model.addAttribute("message", "회원정보가 없습니다.");
+			return "cmmn/error";
 		}
 		
-		model.addAttribute("message", "회원정보를 수정하였습니다.");
-		return "cmmn/success";
+		model.addAttribute("user", vo);
+		return "user/userDeleteForm";
+	}
+	
+	@RequestMapping("/userDelete.do")
+	public String userDelete(UserVO vo
+					 	   , Model model) {
+		
+		System.out.println("==================================="+vo);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+		String pwd = encoder.encode(vo.getUserPwd());
+		vo.setUserPwd(pwd);
+		
+		int delete = userService.userDelete(vo);
+		if(delete == 0) {
+			model.addAttribute("message", "회원탈퇴가 실패했습니다.");
+			return "cmmn/error";
+		}
+		
+		model.addAttribute("message", "회원탈퇴 되었습니다.");
+		return "redirect:logout";
 	}
 	
 }

@@ -83,6 +83,10 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	
 	<input type="hidden" value="${sessionAuth}" id="auth" />
 	
+	<script>
+		
+	</script>
+	
 	<!-- Bootstrap core JavaScript-->
     <script src="${path}/vendor/jquery/jquery.min.js"></script>
     <script src="${path}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

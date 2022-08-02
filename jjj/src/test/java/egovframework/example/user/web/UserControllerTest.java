@@ -160,11 +160,8 @@ public class UserControllerTest {
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 		String p3 = encoder.encode(p2);
-		int a = p3.hashCode();
-		int b = p1.hashCode();
 		
-		System.out.println("============================="+p2.matches(p1));
-		System.out.println("============================="+(a==b ? "true " : "false ") + "a: " + a + ", b: " + b);
+		System.out.println("============================="+encoder.matches(p1, p3));
 		
 	}
 	

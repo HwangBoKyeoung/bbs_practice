@@ -34,8 +34,8 @@
 								access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
 		<security:intercept-url pattern="/movieInsertForm.do" 
 								access="hasAuthority('ROLE_ADMIN')" />
-		<!-- <security:intercept-url pattern="/costChart.do" 
-								access="hasAuthority('ROLE_ADMIN')" /> -->
+		<security:intercept-url pattern="/costChart.do" 
+								access="hasAuthority('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/**" 
 								access="permitAll" />
 		<security:form-login login-page="/userLoginForm.do"

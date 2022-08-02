@@ -1,23 +1,32 @@
 package egovframework.example.user.web;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import egovframework.example.cost.sevice.CostService;
 import egovframework.example.cost.sevice.CostVO;
 import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.example.cost.sevice.PageVO;
+import egovframework.example.user.sevice.KakaoRestAPI;
 import egovframework.example.user.sevice.UserService;
 import egovframework.example.user.sevice.UserVO;
 
@@ -310,12 +319,26 @@ public class UserController {
 	
 	@RequestMapping("/userDelete.do")
 	public String userDelete(UserVO vo
-					 	   , Model model) {
+					 	   , Model model
+					 	   , RedirectAttributes redirectAttr
+					 	   , Principal principal) {
 		
 		System.out.println("==================================="+vo);
+		String pwd = vo.getUserPwd();
+		
+		String id = principal.getName();
+		vo.setUserId(id);
+		vo = userService.userSelectLogin(vo);
+		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-		String pwd = encoder.encode(vo.getUserPwd());
-		vo.setUserPwd(pwd);
+		boolean a = encoder.matches(pwd, vo.getUserPwd());
+		
+		System.out.println("------------*******************////////////"+a);
+		
+		if(!a) {
+			model.addAttribute("message", "비밀번호가 올바르지 않습니다.");
+			return "user/message";
+		}
 		
 		int delete = userService.userDelete(vo);
 		if(delete == 0) {
@@ -324,6 +347,81 @@ public class UserController {
 		}
 		
 		model.addAttribute("message", "회원탈퇴 되었습니다.");
+//		회원탈퇴 시 로그아웃 처리(spring security 기능)
+		SecurityContextHolder.clearContext();
+		return "redirect:logout";
+	}
+	
+	@RequestMapping("/kakaoLoginForm.do")
+	public String kakaoLoginForm() {
+		return "user/kakaoLoginForm";
+	}
+	
+//	카카오로그인
+	@RequestMapping(value="/kakaoLogin.do", produces="application/json", method=RequestMethod.GET)
+	public String kakaoLogin(RedirectAttributes ra
+			   			   , HttpSession session
+			   			   , HttpServletResponse resp
+			   			   , HttpServletRequest req
+			   			   , Model model
+			   			   , @RequestParam("code") String code) throws IOException {
+		
+		KakaoRestAPI kra = new KakaoRestAPI();
+		System.out.println("------------------------kra: "+kra);
+		
+		JsonNode jsonToken = KakaoRestAPI.getKakaoAccessToken(code);
+//		여러 json객체 중 access_token을 가져옴
+		JsonNode accessToken = jsonToken.get("access_token");
+		System.out.println("========================access_token: "+accessToken);
+		
+//		access_token을 이용해 사용자 정보 요청
+		JsonNode userInfo = KakaoRestAPI.getKakaoUserInfo(accessToken);
+		
+		String id = userInfo.path("id").asText();
+		String name = null;
+		String email = null;
+		
+//		유저정보를 kakao에서 가져오기(Get properties)
+		JsonNode properties = userInfo.path("properties");
+		JsonNode kakao_account = userInfo.path("kakao_account");
+		
+		name = properties.path("nickname").asText();
+		email = kakao_account.path("email").asText();
+		
+		System.out.println("id: " + id + ", name: " + name + ", email: " + email);
+		UserVO vo = new UserVO();
+		
+//		받아온 이메일이 DB에 있으면 바로 로그인, 그렇지 않으면 DB에 저장
+		String uId = userService.findUserIdByMail(email);
+		if(uId == null) {
+			vo.setUserId(id);
+			vo.setUserMail(email);
+			userService.userInsert(vo);
+		}
+		
+		String msg = "";
+		String url = "";
+		
+		if(name.isEmpty()) {
+			msg = "로그인 실패";
+		} else {
+			msg = "로그인 성공";
+			session.setAttribute("sessionName", name);
+			session.setAttribute("sessionId", id);
+		}
+		
+		session.setAttribute("accessToken", accessToken);
+		url = "home.do";
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "user/message";
+	}
+	
+//	카카오 로그아웃
+	@RequestMapping(value="/kakaoLogout.do", produces="application/json")
+	public String kakaoLogout(HttpSession session) {
 		return "redirect:logout";
 	}
 	

@@ -14,19 +14,12 @@
 </head>
 <body>
 	<form action="userDelete.do" method="post" onsubmit="return deleteSubmit();">
-	<input type="hidden" value="${user.userName}" name="userName" />
-	<input type="hidden" value="<sec:authentication property="principal.username" />" name="userId" />
 		<table class="table table-bordered" id="dataTable" width="100%"
 			cellspacing="0">
 			<tbody>
 				<tr>
 					<th>비밀번호</th>
 					<td><input type="password" name="userPwd" id="userPwd" /></td>
-				</tr>
-				<tr>
-					<th>비밀번호재입력</th>
-					<td><input type="password" name="userRePwd" id="userRePwd" />
-					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -41,17 +34,6 @@
 			});
 			
 			function deleteSubmit(){
-				let userPwd = $("#userPwd").val();
-				let userRePwd = $("#userRePwd").val();
-				
-				if(userPwd != userRePwd){
-					Swal.fire("비밀번호, 재입력 부분이 일치하지 않습니다.");
-    				$(".swal2-confirm").on("click", function() {
-    					history.go(0);
-    				});
-					return false;
-				}
-				
 				let result = confirm("정말 회원탈퇴를 진행하시겠습니까?");
 				if(result){
 					return true;

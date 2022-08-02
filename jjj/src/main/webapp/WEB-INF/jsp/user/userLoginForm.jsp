@@ -67,9 +67,13 @@
                                             </div>
                                         </div>
                                         <input type="submit" value="LOGIN" class="btn btn-primary btn-user btn-block" />
-                                        <hr>
+                                        <hr />
                                     </form>
-                                    <hr>
+                                    <hr />
+                                    	<a href="kakaoLoginForm.do">
+                                    		<img src="${path}/egovframework/kakao/kakao_login_large_narrow.png" style="width: 100%;"/>
+                                    	</a>
+                                    <hr />
                                     <div class="text-center">
                                         <a class="small" href="findUserPasswordForm.do">비밀번호 찾기</a>
                                     </div>

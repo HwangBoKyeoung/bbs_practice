@@ -118,13 +118,7 @@
 					<li class="nav-item"><a class="nav-link" href="companyMap.do">
 							<i class="fas fa-fw fa-chart-area"></i> <span>오시는길</span>
 					</a></li> 
-						<!-- Divider -->
-					<hr class="sidebar-divider d-none d-md-block">
 
-					<!-- nav item - todo -->
-					<li class="nav-item"><a class="nav-link" href="todoList.do">
-							<i class="fas fa-fw fa-chart-area"></i> <span>TO-DO LIST</span>
-					</a></li> 
 						<!-- Divider -->
 					<hr class="sidebar-divider d-none d-md-block">
 

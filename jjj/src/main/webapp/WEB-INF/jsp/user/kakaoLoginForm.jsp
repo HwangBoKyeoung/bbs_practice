@@ -12,8 +12,8 @@
 	<c:if test="${userId eq null}">
 		<a href="https://kauth.kakao.com/oauth/authorize
             ?client_id=62bffd34275370b1c97b721d1595304f
-            &redirect_uri=http://localhost:8080
-            &response_type=code" />
+            &redirect_uri=http://localhost:8080/oauth/callback/kakao
+            &response_type=code">로그인?</a>
 	</c:if>
 	<c:if test="${userId ne null}">
 		<h1>로그인 성공입니다.</h1>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="addrMapper">
+	<insert id="insertAddrInfo" parameterType="addrVO">
+		INSERT INTO USER_ADDRESS_INFO (ADDRESS_NO
+									 , USER_ID
+									 , POST_NO
+									 , NEW_ADDR
+									 , OLD_ADDR
+									 , ENG_ADDR)
+		VALUES (ADDR_SEQ.NEXTVAL
+			  , #{userId}
+			  , #{postNo}
+			  , #{newAddr}
+			  , #{oldAddr}
+			  , #{engAddr})
+	</insert>
+	
+	<update id="updateAddrInfo" parameterType="addrVO">
+		UPDATE USER_ADDRESS_INFO
+		<set>
+			<if test="postNo != null or postNo != ''">
+				POST_NO = #{postNo},
+			</if>
+			<if test="newAddr != null or newAddr != ''">
+				NEW_ADDR = #{newAddr},
+			</if>
+			<if test="oldAddr != null or oldAddr != ''">
+				OLD_ADDR = #{oldAddr},
+			</if>
+			<if test="engAddr != null or engAddr != ''">
+				ENG_ADDR = #{engAddr},
+			</if>
+		</set>
+		 WHERE ADDRESS_NO = #{addressNo}
+	</update>
+	
+	<delete id="deleteAddrInfo" parameterType="addrVO">
+		DELETE FROM USER_ADDRESS_INFO
+		 WHERE ADDRESS_NO = #{addressNo}
+	</delete>
+</mapper>

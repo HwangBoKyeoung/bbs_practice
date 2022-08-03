@@ -438,6 +438,7 @@ public class UserController {
 		return "user/userNaverLogin";
 	}
 	
+//	네이버 로그인 처리-security
 	@PostMapping("/naverLogin.do")
 	public String naverLogin(UserVO vo
 						   , Model model
@@ -453,7 +454,13 @@ public class UserController {
 			
 			vo.setIhidnum("******-*******");
 			vo.setIhIdNum2("******");
-			vo.setIhIdNum3("*******");;
+			vo.setIhIdNum3("*******");
+			
+			if(vo.getUserGender() == "F") {
+				vo.setUserGender("W");
+			} else {
+				vo.setUserGender("M");
+			}
 			
 			userService.userInsert(vo);
 			
@@ -463,6 +470,12 @@ public class UserController {
 		session.setAttribute("sessionId", vo.getUserId());
 		model.addAttribute("message", "로그인완료");
 		return "user/kakaoMessage";
+	}
+	
+//	회원 주소지 등록 페이지 이동
+	@RequestMapping("/userAddressInsertForm.do")
+	public String userAddressInsertForm() {
+		return "user/userAddressInsertForm";
 	}
 	
 }

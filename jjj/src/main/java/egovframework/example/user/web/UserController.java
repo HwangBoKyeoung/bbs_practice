@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,9 @@ public class UserController {
 	
 	@Resource(name="costService")
 	private CostService costService;
+	
+	@Resource(name="userDetailsService")
+	private UserDetailsService userDetailsService;
 	
 //	회원로그인 양식으로 이동 (로그인 처리: CustomUserDetailsService.java에서 확인 가능)
 	@RequestMapping("/userLoginForm.do")
@@ -352,11 +356,6 @@ public class UserController {
 		return "redirect:logout";
 	}
 	
-	@RequestMapping("/kakaoLoginForm.do")
-	public String kakaoLoginForm() {
-		return "user/kakaoLoginForm";
-	}
-	
 //	카카오로그인
 	@RequestMapping(value="/kakaoLogin.do", produces="application/json", method=RequestMethod.GET)
 	public String kakaoLogin(RedirectAttributes ra
@@ -393,14 +392,22 @@ public class UserController {
 		
 //		받아온 이메일이 DB에 있으면 바로 로그인, 그렇지 않으면 DB에 저장
 		String uId = userService.findUserIdByMail(email);
+		System.out.println("+++++++++++++++++++++++++++++uId : "+uId);
 		if(uId == null) {
 			vo.setUserId(id);
 			vo.setUserMail(email);
-			userService.userInsert(vo);
+			vo.setUserName(name);
+			
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+			String pwd = encoder.encode("");
+			vo.setUserPwd(pwd);
+			
+			userService.kakaoUserInsert(vo);
+			
+			return "redirect:userLoginForm.do";
 		}
-		
+
 		String msg = "";
-		String url = "";
 		
 		if(name.isEmpty()) {
 			msg = "로그인 실패";
@@ -408,15 +415,14 @@ public class UserController {
 			msg = "로그인 성공";
 			session.setAttribute("sessionName", name);
 			session.setAttribute("sessionId", id);
+			session.setAttribute("sessionAuth", "ROLE_USER");
 		}
 		
 		session.setAttribute("accessToken", accessToken);
-		url = "home.do";
 		
-		model.addAttribute("msg", msg);
-		model.addAttribute("url", url);
+		model.addAttribute("message", msg);
 		
-		return "user/message";
+		return "user/kakaoMessage";
 	}
 	
 //	카카오 로그아웃

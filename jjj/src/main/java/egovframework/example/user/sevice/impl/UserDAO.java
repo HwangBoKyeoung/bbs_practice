@@ -56,5 +56,10 @@ public class UserDAO {
 	String findUserIdByMail(String mail) {
 		return query.selectOne(namespace+"findUserIdByMail", mail);
 	}
+	
+//	카카오로그인
+	int kakaoUserInsert(UserVO vo) {
+		return query.insert(namespace+"kakaoUserInsert", vo);
+	}
 
 }

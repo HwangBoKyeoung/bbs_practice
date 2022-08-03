@@ -26,4 +26,7 @@ public interface UserMapper {
 //	이메일로 아이디찾기 (임시비밀번호 변경을 위해 필요)
 	String findUserIdByMail(String mail);
 	
+//	카카오로그인
+	int kakaoUserInsert(UserVO vo);
+	
 }

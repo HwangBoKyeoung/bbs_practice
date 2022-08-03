@@ -12,6 +12,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.mail.MailException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,6 +30,9 @@ public class UserControllerTest {
 	
 	@Resource(name="userService")
 	private UserService userService;
+	
+	@Resource(name="userDetailsService")
+	private UserDetailsService userDetailsService;
 	
 	/*@Resource(name="naverMailSender")
 	private JavaMailSender naverMailSender;*/
@@ -153,7 +157,7 @@ public class UserControllerTest {
 		System.out.println("userPwd값============================"+vo.getUserPwd());
 	}
 	
-	@Test
+//	@Test
 	public void bcryptTest() {
 		String p1 = "$2a$10$Rtu7WzzuYxcRLVx9vfRzwu7PPslBpaUXBjDndP.vdIcBIgqZnXB.m";
 		String p2 = "ghkdqhrud11*";
@@ -163,6 +167,13 @@ public class UserControllerTest {
 		
 		System.out.println("============================="+encoder.matches(p1, p3));
 		
+	}
+	
+	@Test
+	public void kakaoTest() {
+		UserVO vo = new UserVO();
+		vo.setUserName("2372241864");
+		System.out.println("====================================userdetailsservice: "+userDetailsService.loadUserByUsername(vo.getUsername()));
 	}
 	
 }

@@ -172,5 +172,10 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 	public String findUserIdByMail(String mail) {
 		return userDAO.findUserIdByMail(mail);
 	}
+
+	@Override
+	public int kakaoUserInsert(UserVO vo) {
+		return userDAO.kakaoUserInsert(vo);
+	}
 	
 }

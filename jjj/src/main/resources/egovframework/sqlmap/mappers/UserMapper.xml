@@ -118,4 +118,18 @@
 		 WHERE USER_MAIL = #{mail}
 	</select>
 	
+	<!-- 카카오로그인 -->
+	<insert id="kakaoUserInsert" parameterType="userVO">
+		INSERT INTO USERS(USER_NAME
+						, USER_ID
+						, USER_PWD
+						, USER_ROLE
+						, USER_MAIL)
+		VALUES(#{userName}
+			 , #{userId}
+			 , #{userPwd}
+			 , 'user'
+			 , #{userMail})
+	</insert>
+	
 </mapper>

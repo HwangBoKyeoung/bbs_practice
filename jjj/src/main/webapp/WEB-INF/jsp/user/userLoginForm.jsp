@@ -70,10 +70,14 @@
                                         <hr />
                                     </form>
                                     <hr />
-                                    	<a href="kakaoLoginForm.do">
-                                    		<img src="${path}/egovframework/kakao/kakao_login_large_narrow.png" style="width: 100%;"/>
+                                    	<a href="https://kauth.kakao.com/oauth/authorize?client_id=62bffd34275370b1c97b721d1595304f&redirect_uri=http://localhost:8080/jjj/kakaoLogin.do&response_type=code">
+                                    		<img src="${path}/egovframework/kakao/kakao_login_large_narrow.png" style="width: 100%; margin-bottom: 20px;"/>
+                                    	</a>
+                                    	<a href="#">
+                                    		<img src="${path}/egovframework/naver/naver.PNG" style="width: 100%;"/>
                                     	</a>
                                     <hr />
+                                    
                                     <div class="text-center">
                                         <a class="small" href="findUserPasswordForm.do">비밀번호 찾기</a>
                                     </div>

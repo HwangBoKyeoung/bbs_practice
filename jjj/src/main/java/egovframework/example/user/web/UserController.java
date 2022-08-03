@@ -431,4 +431,38 @@ public class UserController {
 		return "redirect:logout";
 	}
 	
+//	네이버 로그인
+	@RequestMapping("/userNaverLogin.do")
+	public String userNaverLogin() {
+
+		return "user/userNaverLogin";
+	}
+	
+	@PostMapping("/naverLogin.do")
+	public String naverLogin(UserVO vo
+						   , Model model
+						   , HttpSession session) {
+		
+		System.out.println("==============================="+vo);
+		
+		String uId = userService.findUserIdByMail(vo.getUserMail());
+		if(uId == null) {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+			String pwd = encoder.encode("");
+			vo.setUserPwd(pwd);
+			
+			vo.setIhidnum("******-*******");
+			vo.setIhIdNum2("******");
+			vo.setIhIdNum3("*******");;
+			
+			userService.userInsert(vo);
+			
+			return "redirect:userLoginForm.do";
+		}
+		
+		session.setAttribute("sessionId", vo.getUserId());
+		model.addAttribute("message", "로그인완료");
+		return "user/kakaoMessage";
+	}
+	
 }

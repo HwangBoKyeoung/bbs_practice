@@ -171,9 +171,7 @@ public class UserControllerTest {
 	
 	@Test
 	public void kakaoTest() {
-		UserVO vo = new UserVO();
-		vo.setUserName("2372241864");
-		System.out.println("====================================userdetailsservice: "+userDetailsService.loadUserByUsername(vo.getUsername()));
+		
 	}
 	
 }

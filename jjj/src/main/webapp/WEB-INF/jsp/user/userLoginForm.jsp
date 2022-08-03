@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:set value="${pageContext.request.contextPath}/images" var="path" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -7,6 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>WELCOME HOME</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type = "text/javascript" src = "https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <style>
 	* {
 		box-sizing: border-box;
@@ -73,9 +76,8 @@
                                     	<a href="https://kauth.kakao.com/oauth/authorize?client_id=62bffd34275370b1c97b721d1595304f&redirect_uri=http://localhost:8080/jjj/kakaoLogin.do&response_type=code">
                                     		<img src="${path}/egovframework/kakao/kakao_login_large_narrow.png" style="width: 100%; margin-bottom: 20px;"/>
                                     	</a>
-                                    	<a href="#">
-                                    		<img src="${path}/egovframework/naver/naver.PNG" style="width: 100%;"/>
-                                    	</a>
+                                    	<div id = "naver_id_login" style="width: 100%; text-align: center;">
+                                    	</div>
                                     <hr />
                                     
                                     <div class="text-center">
@@ -93,13 +95,41 @@
         </div>
     </div>
     <input type="hidden" value="${sessionAuth}" id="auth" />
+    
+    
+ 	<spring:eval expression="@naver['url']" var="url"/>
+ 	<input type="hidden" value="${url}" id="n1" name="n1" />
+ 	<spring:eval expression="@naver['clientId']" var="clientId"/>
+ 	<input type="hidden" value="${clientId}" id="n2" name="n2" />
+ 	<spring:eval expression="@naver['clientSecret']" var="clientSecret"/>
+ 	<input type="hidden" value="${clientSecret}" id="n3" name="n3" />
+ 	<spring:eval expression="@naver['callbackUrl']" var="callbackUrl"/>
+ 	<input type="hidden" value="${callbackUrl}" id="n4" name="n4" />
+ 	
  	
  	<script>
+ 		console.log($("#n1").val());
+ 		console.log($("#n2").val());
+ 		console.log($("#n3").val());
+ 		console.log($("#n4").val());
+ 		
 	 	/* 뒤로가기 막을 페이지 */
 		window.history.forward();
 		function noBack(){
 			window.history.forward();
 		}
+		
+		/* 네이버 로그인 : javascript로 구현 */
+		
+		naver_id_login = new naver_id_login($("#n2").val(), $("#n4").val());
+		let state = naver_id_login.getUniqState();
+		
+		naver_id_login.setButton("white", 4, 40);
+		naver_id_login.setDomain($("#n1").val());
+		naver_id_login.setState(state);
+// 		naver_id_login.setPopup();
+		naver_id_login.init_naver_id_login();
+		
  	</script>
 </body>
 </html>

@@ -20,4 +20,15 @@ public class PropertyConfig {
 		return propertiesFactoryBean;
 	}
 	
+	@Bean(name="naver")
+	public PropertiesFactoryBean propertiesFactoryBeanNaver() throws Exception {
+		PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+//		src/main/resources 아래 경로부터 기재하면 됨
+		ClassPathResource classPathResource = new ClassPathResource("properties/naver.properties");
+		
+		propertiesFactoryBean.setLocation(classPathResource);
+		
+		return propertiesFactoryBean;
+	}
+	
 }

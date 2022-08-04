@@ -275,7 +275,9 @@ public class UserController {
 		}
 		
 		model.addAttribute("user", vo);
-		model.addAttribute("addr", avo);
+		if(avo != null) {
+			model.addAttribute("addr", avo);
+		}
 		
 		return "user/userUpdateForm";
 	}
@@ -289,6 +291,8 @@ public class UserController {
 						   , @RequestParam("userPwd2") String userPwd2
 						   , @RequestParam("addr1") String addr1
 						   , @RequestParam("addr2") String addr2) {
+		
+		System.out.println("========================avo" + avo);
 		
 		vo.setUserPwd(userPwd1);
 		String emptyPwd = vo.getUserPwd();
@@ -330,7 +334,7 @@ public class UserController {
 			vo.setUserPwd(pwd);
 			
 			int update = userService.userUpdate(vo);
-			
+
 			avo.setUserId(vo.getUserId());
 			String newAddr = addr1 + ", " + addr2;
 			avo.setNewAddr(newAddr);
@@ -340,7 +344,7 @@ public class UserController {
 				model.addAttribute("message", "회원정보 수정에 실패하였습니다.");
 				return "user/message";
 			}
-			
+
 			model.addAttribute("message", "회원정보를 수정하였습니다. 다시 로그인하세요.");
 			return "redirect:logout";
 		} else {

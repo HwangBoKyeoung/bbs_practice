@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
@@ -12,7 +13,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
-	<form action="userUpdate.do" method="post" onsubmit="return updateSubmit();">
+	<form action="userUpdate.do" method="post" onsubmit="return updateSubmit();" id="addrFrm">
 		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 				<tbody>
 					<tr>
@@ -78,22 +79,26 @@
 						<th>주민등록번호</th>
 						<td><input type="text" id="userIhIdNumFront" readonly />-<input type="text" id="userIhIdNumBack" readonly /></td>
 					</tr>
-					<tr>
-						<th rowspan="4">배송지</th>
-						<td><input type="text" id="postNo" name="postNo" value="${addr.postNo}" style="width: 500px;" readonly /></td>
-					</tr>
-					<tr>
-						
-						<td><input type="text" id="addr1" name="addr1" style="width: 500px;" readonly /></td>
-					</tr>
-					<tr>
-						
-						<td><input type="text" id="addr2" name="addr2" maxlength="20" style="width: 500px;" required /></td>
-					</tr>
-					<tr>
-						
-						<td><a id="postChk" class="form-control form-control-user btn btn-primary btn-icon-split" style="align-items: center; width: 500px;">주소찾기</a></td>
-					</tr>
+					<sec:authorize access="hasRole('ROLE_USER')" var="t">
+						<tr style="border-bottom: none;">
+							<th rowspan="4">배송지</th>
+							<td><input type="text" id="postNo" name="postNo" value="${addr.postNo}" style="width: 500px;" readonly /></td>
+						</tr>
+						<tr style="border-bottom: none;">
+							<td><input type="text" id="addr1" name="addr1" style="width: 500px;" readonly /></td>
+						</tr>
+						<tr style="border-bottom: none;">
+							<td><input type="text" id="addr2" name="addr2" maxlength="20" style="width: 500px;" required /></td>
+						</tr>
+						<tr>
+							<td><a id="postChk" class="form-control form-control-user btn btn-primary btn-icon-split" style="align-items: center; width: 500px;">주소찾기</a></td>
+						</tr>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_ADMIN')" var="a">
+						<input type="hidden" id="postNo" name="postNo" style="width: 500px;" />
+						<input type="hidden" id="addr1" name="addr1" style="width: 500px;" />
+						<input type="hidden" id="addr2" name="addr2" maxlength="20" style="width: 500px;" />
+					</sec:authorize>
 				</tbody>
 			</table>
 			<input type="hidden" class="form-control form-control-user" name="oldAddr" id="oldAddr" />
@@ -105,6 +110,7 @@
 		
 		<input type="hidden" value="${user.ihidnum}" id="userihIdNum" />
 		<input type="hidden" value="${addr.newAddr}" id="addrSplit" />
+		<input type="hidden" value="${t}" id="role" />
 		
 		<script>
 			$(document).ready(function(){
@@ -117,12 +123,14 @@
 				$("#userIhIdNumFront").val(ihIdFront);
 				$("#userIhIdNumBack").val(ihIdBack+"******");
 				
-				let addrFin = $("#addrSplit").val().split(",");
-				console.log(addrFin[0]);
-				console.log(addrFin[1]);
-				
-				$("#addr1").val(addrFin[0]);
-				$("#addr2").val(addrFin[1]);
+				if($("#role").val()){
+					let addrFin = $("#addrSplit").val().split(",");
+					console.log(addrFin[0]);
+					console.log(addrFin[1]);
+					
+					$("#addr1").val(addrFin[0]);
+					$("#addr2").val(addrFin[1]);
+				}
 			});
 			
 			function updateSubmit(){

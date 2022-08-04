@@ -9,6 +9,7 @@
 	
 	<bean class="egovframework.example.user.sevice.impl.CustomLoginSuccessHandler" id="customLoginSuccessHandler" />
 	<bean class="egovframework.example.user.sevice.impl.CustomLogoutSuccessHandler" id="customLogoutSuccessHandler" />
+	
 	<bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl" id="accessDeniedHandler">
 		<property name="errorPage" value="/WEB-INF/jsp/security/error_403.jsp" />
 	</bean>
@@ -48,6 +49,11 @@
 						 success-handler-ref="customLogoutSuccessHandler" />
 		<security:access-denied-handler ref="accessDeniedHandler" />
 		<security:csrf disabled="true" />
+		<security:session-management invalid-session-url="/userLoginForm.do"
+									 session-authentication-error-url="/error_401.do" >
+			<security:concurrency-control max-sessions="1"
+										  error-if-maximum-exceeded="true" />
+		</security:session-management>
 	</security:http>
 	
 	<security:authentication-manager>

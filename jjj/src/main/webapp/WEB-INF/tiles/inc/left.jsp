@@ -58,7 +58,9 @@
 							<a class="collapse-item" href="costInsertForm.do">경비 등록</a>
 							<a class="collapse-item" href="costCalendar.do">경비 사용 일정</a>
 						</div>
-					</div></li> <!-- Nav Item - Utilities Collapse Menu -->
+					</div></li> 
+					
+					<!-- Nav Item - Utilities Collapse Menu -->
 				<li class="nav-item"><a class="nav-link collapsed" href="#"
 					data-toggle="collapse" data-target="#collapseUtilities"
 					aria-expanded="true" aria-controls="collapseUtilities"> <i
@@ -71,7 +73,22 @@
 							<a class="collapse-item" href="movieSelectList.do">영화 전체리스트</a> <a
 								class="collapse-item" href="movieInsertForm.do">영화 등록</a>
 						</div>
-					</div></li> <!-- Divider -->
+					</div></li>
+					
+					<li class="nav-item"><a class="nav-link collapsed" href="#"
+					data-toggle="collapse" data-target="#collapseUtilities-2"
+					aria-expanded="true" aria-controls="collapseUtilities-2"> <i
+						class="fas fa-fw fa-wrench"></i> <span>게시판</span>
+				</a>
+					<div id="collapseUtilities-2" class="collapse"
+						aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<h6 class="collapse-header">게시판 정보:</h6>
+							<a class="collapse-item" href="freeBulletinList.do">자유게시판</a>
+						</div>
+					</div></li>					
+					
+					 <!-- Divider -->
 				<hr class="sidebar-divider">
 
 					<!-- Heading -->
@@ -93,7 +110,9 @@
 								</sec:authorize>
 								<sec:authorize access="isAuthenticated()">
 									<a class="collapse-item" href="userMyPage.do">마이페이지</a>
-									<a class="collapse-item" href="userAddressInsertForm.do">주소등록</a>
+									<sec:authorize access="hasRole('ROLE_USER')">
+										<a class="collapse-item" href="userAddressInsertForm.do">주소등록</a>
+									</sec:authorize>
 									<a class="collapse-item" href="logout">로그아웃</a>
 								</sec:authorize>
 								<div class="collapse-divider"></div>

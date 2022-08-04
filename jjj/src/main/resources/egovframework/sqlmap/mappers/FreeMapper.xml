@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freeMapper">
+	<!-- 자유게시판 -->
+	<select id="selectListFreeBulletin" resultType="freeVO">
+		SELECT FREE_NO
+			 , FREE_TITLE
+			 , FREE_CONTENT
+			 , FREE_WRITER
+			 , FREE_DATE
+			 , FREE_HIT
+			 , FREE_REG_YN
+			 , FREE_NOTICE_YN
+		  FROM FREE_BULLETIN
+		 ORDER BY FREE_NO DESC
+	</select>
+	<select id="selectFreeBulletin" resultType="freeVO" parameterType="freeVO">
+		SELECT FREE_NO
+			 , FREE_TITLE
+			 , FREE_CONTENT
+			 , FREE_WRITER
+			 , FREE_DATE
+			 , FREE_HIT
+			 , FREE_REG_YN
+			 , FREE_NOTICE_YN
+		  FROM FREE_BULLETIN
+		 WHERE FREE_NO = #{freeNo}
+	</select>
+	<insert id="insertFreeBulletin" parameterType="freeVO">
+		INSERT INTO FREE_BULLETIN (FREE_NO
+								 , FREE_TITLE
+								 , FREE_CONTENT
+								 , FREE_WRITER
+								 , FREE_DATE
+								 , FREE_HIT
+								 , FREE_REG_YN
+								 , FREE_NOTICE_YN)
+		VALUES (FREE_SEQ.NEXTVAL
+			  , #{freeTitle}
+			  , #{freeContent}
+			  , #{freeWriter}
+			  , SYSDATE
+			  , 0
+			  , #{freeRegYn}
+			  , #{freeNoticeYn})
+	</insert>
+	<update id="updateFreeBulletin" parameterType="freeVO">
+		UPDATE FREE_BULLETIN
+		<set>
+			<if test="freeTitle != null or freeTitle != ''">
+				FREE_TITLE = #{freeTitle},
+			</if>
+			<if test="freeContent != null or freeContent != ''">
+				FREE_CONTENT = #{freeContent},
+			</if>
+			<if test="freeRegYn != null or freeRegYn != ''">
+				FREE_REG_YN = #{freeRegYn},
+			</if>
+		</set>
+		 WHERE FREE_NO = #{freeNo}
+	</update>
+	<delete id="deleteFreeBulletin" parameterType="freeVO">
+		DELETE FROM FREE_BULLETIN
+		 WHERE FREE_NO = #{freeNo}
+	</delete>
+	
+	<!-- 자유게시판:조회수 증가 -->
+	<update id="updateFreeBulletinHitUp" parameterType="freeVO">
+		UPDATE FREE_BULLETIN
+		   SET FREE_HIT = FREE_HIT + 1
+		 WHERE FREE_NO = #{freeNo}
+	</update>
+	
+	<!-- 자유게시판:댓글 -->
+	<select id="selectListFreeBulletinReply" parameterType="freeReplyVO" resultType="freeReplyVO">
+		SELECT REPLY_WRITER
+			 , REPLY_NO
+			 , REPLY_DATE
+			 , REPLY_CONTENT
+			 , FREE_NO
+		  FROM FREE_BULLETIN_REPLY
+		 WHERE FREE_NO = #{freeNo}
+		 ORDER BY REPLY_DATE DESC
+	</select>
+	<insert id="insertFreeBulletinReply" parameterType="freeReplyVO">
+		INSERT INTO FREE_BULLETIN_REPLY(REPLY_WRITER
+									  , REPLY_NO
+									  , REPLY_DATE
+									  , REPLY_CONTENT
+									  , FREE_NO)
+		VALUES (#{replyWriter}
+			  , FREE_RE_SEQ.NEXTVAL
+			  , SYSDATE
+			  , #{replyContent}
+			  , #{freeNo})
+	</insert>
+	<delete id="deleteFreeBulletinReply" parameterType="freeReplyVO">
+		DELETE FROM FREE_BULLETIN_REPLY
+		 WHERE REPLY_NO = #{replyNo}
+	</delete>
+	
+	<!-- 자유게시판:대댓글 -->
+	<select id="selectListFreeBulletinReplyReply" parameterType="freeReplyReVO" resultType="freeReplyReVO">
+		SELECT REPLY_WRITER
+			 , REPLY_RE_NO
+			 , REPLY_DATE
+			 , REPLY_CONTENT
+			 , REPLY_NO
+		  FROM FREE_BULLETIN_REPLY_REPLY
+		 WHERE REPLY_NO = #{replyNo}
+		 ORDER BY REPLY_DATE DESC
+	</select>
+	<insert id="insertFreeBulletinReplyReply" parameterType="freeReplyReVO">
+		INSERT INTO FREE_BULLETIN_REPLY_REPLY(REPLY_WRITER
+										    , REPLY_RE_NO
+										    , REPLY_DATE
+										    , REPLY_CONTENT
+										    , REPLY_NO)
+		VALUES (#{replyWriter}
+			  , FREE_RE_RE_SEQ.NEXTVAL
+			  , SYSDATE
+			  , #{replyContent}
+			  , #{replyNo})
+	</insert>
+	<delete id="deleteFreeBulletinReplyReply" parameterType="freeReplyReVO">
+		DELETE FROM FREE_BULLETIN_REPLY_REPLY
+		 WHERE REPLY_RE_NO = #{replyReNo}
+	</delete>
+</mapper>

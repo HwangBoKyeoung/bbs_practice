@@ -2,6 +2,8 @@ package egovframework.example.addr.sevice;
 
 public interface AddrService {
 	
+//	내 주소지 보기
+	AddrVO selectAddrInfo(AddrVO vo);
 //	주소지 입력
 	int insertAddrInfo(AddrVO vo);
 //	주소지 삭제

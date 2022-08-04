@@ -14,6 +14,11 @@ public class AddrServiceImpl implements AddrService {
 	private AddrDAO addrDAO;
 	
 	@Override
+	public AddrVO selectAddrInfo(AddrVO vo) {
+		return addrDAO.selectAddrInfo(vo);
+	}
+	
+	@Override
 	public int insertAddrInfo(AddrVO vo) {
 		return addrDAO.insertAddrInfo(vo);
 	}

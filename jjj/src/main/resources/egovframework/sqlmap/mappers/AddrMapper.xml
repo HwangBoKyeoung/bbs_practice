@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="addrMapper">
+	<select id="selectAddrInfo" parameterType="addrVO" resultType="addrVO">
+		SELECT ADDRESS_NO
+			 , USER_ID
+			 , POST_NO
+			 , NEW_ADDR
+			 , OLD_ADDR
+			 , ENG_ADDR
+		  FROM USER_ADDRESS_INFO
+		 WHERE USER_ID = #{userId}
+	</select>
+
 	<insert id="insertAddrInfo" parameterType="addrVO">
 		INSERT INTO USER_ADDRESS_INFO (ADDRESS_NO
 									 , USER_ID
@@ -32,11 +43,11 @@
 				ENG_ADDR = #{engAddr},
 			</if>
 		</set>
-		 WHERE ADDRESS_NO = #{addressNo}
+		 WHERE USER_ID = #{userId}
 	</update>
 	
 	<delete id="deleteAddrInfo" parameterType="addrVO">
 		DELETE FROM USER_ADDRESS_INFO
-		 WHERE ADDRESS_NO = #{addressNo}
+		 WHERE USER_ID = #{userId}
 	</delete>
 </mapper>

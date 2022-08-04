@@ -14,6 +14,11 @@ public class AddrDAO {
 	private SqlSession query;
 	
 	private static final String namespace = "addrMapper.";
+	
+//	내 주소지 보기
+	AddrVO selectAddrInfo(AddrVO vo) {
+		return query.selectOne(namespace+"selectAddrInfo", vo);
+	}
 
 //	주소지 입력
 	int insertAddrInfo(AddrVO vo) {

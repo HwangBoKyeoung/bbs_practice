@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import egovframework.example.addr.sevice.AddrService;
+import egovframework.example.addr.sevice.AddrVO;
 import egovframework.example.cost.sevice.CostService;
 import egovframework.example.cost.sevice.CostVO;
 import egovframework.example.cost.sevice.CriteriaVO;
@@ -40,8 +41,8 @@ public class UserController {
 	@Resource(name="costService")
 	private CostService costService;
 	
-	@Resource(name="userDetailsService")
-	private UserDetailsService userDetailsService;
+	@Resource(name="addrService")
+	private AddrService addrService;
 	
 //	회원로그인 양식으로 이동 (로그인 처리: CustomUserDetailsService.java에서 확인 가능)
 	@RequestMapping("/userLoginForm.do")
@@ -118,10 +119,44 @@ public class UserController {
 			return "user/message";
 		}
 		
-		vo.setIhidnum(ihidnum);
-		vo.setIhIdNum2(ihIdNum2);
-		vo.setIhIdNum3(ihIdNum3);
-		vo.setUserMail(userMail);
+		String yearihIdnum = vo.getIhIdNum2().substring(0,2);
+		int yearihid = Integer.parseInt(yearihIdnum);
+		String yearFirst = null;
+		if(yearihid >= 30) {
+			yearFirst = "19";
+		} else {
+			yearFirst = "20";
+		}
+		
+		String ihidnumFirst = vo.getIhIdNum3().substring(0,1);
+		System.out.println("주민등록번호 첫번째 자리 =========================="+ihidnumFirst);
+		System.out.println("주민등록번호 첫번째 자리 =========================="+vo.getUserGender());
+		System.out.println("주민등록번호 첫 4자리: 예)1995 =========================="+yearFirst+yearihIdnum);
+		
+		if(vo.getUserGender().equals("M") && (ihidnumFirst.equals("2") || ihidnumFirst.equals("4"))) {
+			model.addAttribute("message", "성별과 주민등록번호 뒷자리 중 첫번째 자리가 일치하지 않습니다.");
+			return "user/message";
+		} else if(vo.getUserGender().equals("W") && (ihidnumFirst.equals("1") || ihidnumFirst.equals("3"))) {
+			model.addAttribute("message", "성별과 주민등록번호 뒷자리 중 첫번째 자리가 일치하지 않습니다.");
+			return "user/message";
+		} else if(yearFirst.equals("19") && ihidnumFirst.equals("4")) {
+			model.addAttribute("message", "1900년대생은 3,4로 시작할 수 없습니다.");
+			return "user/message";
+		} else if(yearFirst.equals("19") && ihidnumFirst.equals("3")) {
+			model.addAttribute("message", "1900년대생은 3,4로 시작할 수 없습니다.");
+			return "user/message";
+		} else if(yearFirst.equals("20") && ihidnumFirst.equals("1")) {
+			model.addAttribute("message", "2000년대생은 1,2로 시작할 수 없습니다.");
+			return "user/message";
+		} else if(yearFirst.equals("20") && ihidnumFirst.equals("2")) {
+			model.addAttribute("message", "2000년대생은 1,2로 시작할 수 없습니다.");
+			return "user/message";
+		} else {
+			vo.setIhidnum(ihidnum);
+			vo.setIhIdNum2(ihIdNum2);
+			vo.setIhIdNum3(ihIdNum3);
+			vo.setUserMail(userMail);
+		}
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 		String result = encoder.encode(userPwd);
@@ -225,24 +260,35 @@ public class UserController {
 //	회원 수정 양식으로 이동
 	@PostMapping("/userUpdateForm.do")
 	public String userUpdateForm(Model model
-							   , UserVO vo) {
+							   , UserVO vo
+							   , AddrVO avo
+							   , Principal principal) {
 		
 		vo = userService.userSelectLogin(vo);
+		
+		avo.setUserId(principal.getName());
+		avo = addrService.selectAddrInfo(avo);
 		
 		if(vo==null) {
 			model.addAttribute("message", "회원수정이 불가능합니다.");
 			return "cmmn/error";
 		}
+		
 		model.addAttribute("user", vo);
+		model.addAttribute("addr", avo);
+		
 		return "user/userUpdateForm";
 	}
 	
 	@PostMapping("/userUpdate.do")
 	public String userUpdate(UserVO vo
+						   , AddrVO avo
 						   , Model model
 						   , HttpServletRequest req
 						   , @RequestParam("userPwd1") String userPwd1
-						   , @RequestParam("userPwd2") String userPwd2) {
+						   , @RequestParam("userPwd2") String userPwd2
+						   , @RequestParam("addr1") String addr1
+						   , @RequestParam("addr2") String addr2) {
 		
 		vo.setUserPwd(userPwd1);
 		String emptyPwd = vo.getUserPwd();
@@ -285,7 +331,12 @@ public class UserController {
 			
 			int update = userService.userUpdate(vo);
 			
-			if(update == 0) {
+			avo.setUserId(vo.getUserId());
+			String newAddr = addr1 + ", " + addr2;
+			avo.setNewAddr(newAddr);
+			int addrUpdate = addrService.updateAddrInfo(avo);
+			
+			if(update == 0 || addrUpdate == 0) {
 				model.addAttribute("message", "회원정보 수정에 실패하였습니다.");
 				return "user/message";
 			}
@@ -295,7 +346,12 @@ public class UserController {
 		} else {
 			int update = userService.userUpdate(vo);
 			
-			if(update == 0) {
+			avo.setUserId(vo.getUserId());
+			String newAddr = addr1 + ", " + addr2;
+			avo.setNewAddr(newAddr);
+			int addrUpdate = addrService.updateAddrInfo(avo);
+			
+			if(update == 0 || addrUpdate == 0) {
 				model.addAttribute("message", "회원정보 수정에 실패하였습니다.");
 				return "user/message";
 			}
@@ -325,7 +381,8 @@ public class UserController {
 	public String userDelete(UserVO vo
 					 	   , Model model
 					 	   , RedirectAttributes redirectAttr
-					 	   , Principal principal) {
+					 	   , Principal principal
+					 	   , AddrVO avo) {
 		
 		System.out.println("==================================="+vo);
 		String pwd = vo.getUserPwd();
@@ -342,6 +399,13 @@ public class UserController {
 		if(!a) {
 			model.addAttribute("message", "비밀번호가 올바르지 않습니다.");
 			return "user/message";
+		}
+		
+		avo.setUserId(principal.getName());
+		int addrDelete = addrService.deleteAddrInfo(avo);
+		if(addrDelete == 0 ) {
+			model.addAttribute("message", "회원탈퇴가 실패하였습니다 : 원인-배송지 제거");
+			return "cmmn/error";
 		}
 		
 		int delete = userService.userDelete(vo);
@@ -470,12 +534,6 @@ public class UserController {
 		session.setAttribute("sessionId", vo.getUserId());
 		model.addAttribute("message", "로그인완료");
 		return "user/kakaoMessage";
-	}
-	
-//	회원 주소지 등록 페이지 이동
-	@RequestMapping("/userAddressInsertForm.do")
-	public String userAddressInsertForm() {
-		return "user/userAddressInsertForm";
 	}
 	
 }

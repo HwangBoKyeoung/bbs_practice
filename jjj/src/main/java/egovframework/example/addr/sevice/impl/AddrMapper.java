@@ -6,6 +6,8 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 @Mapper("addrMapper")
 public interface AddrMapper {
 
+//	내 주소지 보기
+	AddrVO selectAddrInfo(AddrVO vo);
 //	주소지 입력
 	int insertAddrInfo(AddrVO vo);
 //	주소지 삭제

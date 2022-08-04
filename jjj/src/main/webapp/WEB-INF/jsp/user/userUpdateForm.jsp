@@ -9,6 +9,7 @@
 <title>WELCOME HOME</title>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 	<form action="userUpdate.do" method="post" onsubmit="return updateSubmit();">
@@ -77,14 +78,33 @@
 						<th>주민등록번호</th>
 						<td><input type="text" id="userIhIdNumFront" readonly />-<input type="text" id="userIhIdNumBack" readonly /></td>
 					</tr>
+					<tr>
+						<th rowspan="4">배송지</th>
+						<td><input type="text" id="postNo" name="postNo" value="${addr.postNo}" style="width: 500px;" readonly /></td>
+					</tr>
+					<tr>
+						
+						<td><input type="text" id="addr1" name="addr1" style="width: 500px;" readonly /></td>
+					</tr>
+					<tr>
+						
+						<td><input type="text" id="addr2" name="addr2" maxlength="20" style="width: 500px;" required /></td>
+					</tr>
+					<tr>
+						
+						<td><a id="postChk" class="form-control form-control-user btn btn-primary btn-icon-split" style="align-items: center; width: 500px;">주소찾기</a></td>
+					</tr>
 				</tbody>
 			</table>
+			<input type="hidden" class="form-control form-control-user" name="oldAddr" id="oldAddr" />
+            <input type="hidden" class="form-control form-control-user" name="engAddr" id="engAddr" />
 			<br/>
 			<input type="submit" value="수정하기" class="btn btn-warning btn-icon-split" />
 		</form>
 		<br />
 		
 		<input type="hidden" value="${user.ihidnum}" id="userihIdNum" />
+		<input type="hidden" value="${addr.newAddr}" id="addrSplit" />
 		
 		<script>
 			$(document).ready(function(){
@@ -96,6 +116,13 @@
 				
 				$("#userIhIdNumFront").val(ihIdFront);
 				$("#userIhIdNumBack").val(ihIdBack+"******");
+				
+				let addrFin = $("#addrSplit").val().split(",");
+				console.log(addrFin[0]);
+				console.log(addrFin[1]);
+				
+				$("#addr1").val(addrFin[0]);
+				$("#addr2").val(addrFin[1]);
 			});
 			
 			function updateSubmit(){
@@ -122,6 +149,23 @@
 				
 				return true;
 			}
+			
+    		$("#postChk").on("click", function(){
+    			new daum.Postcode({
+    				oncomplete: function(data){
+    					console.log(data);
+    					let addr1 = $("#addr1");
+    					let oldAddr = $("#oldAddr");
+    					let engAddr = $("#engAddr");
+    					let postNo = $("#postNo");
+    					
+    					addr1.val(data.address);
+    					oldAddr.val(data.jibunAddress);
+    					engAddr.val(data.addressEnglish);
+    					postNo.val(data.zonecode);
+    				}
+    			}).open();
+    		});
 		</script>
 </body>
 </html>

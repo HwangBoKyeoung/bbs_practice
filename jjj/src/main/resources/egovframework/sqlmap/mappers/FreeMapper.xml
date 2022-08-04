@@ -65,8 +65,8 @@
 			<if test="freeContent != null or freeContent != ''">
 				FREE_CONTENT = #{freeContent},
 			</if>
-			<if test="freeRegYn != null or freeRegYn != ''">
-				FREE_REG_YN = #{freeRegYn},
+			<if test="freeNoticeYn != null or freeNoticeYn != ''">
+				FREE_NOTICE_YN = #{freeNoticeYn},
 			</if>
 		</set>
 		 WHERE FREE_NO = #{freeNo}

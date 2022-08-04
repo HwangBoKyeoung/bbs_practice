@@ -39,13 +39,36 @@ public class FreeBulletinController {
 						   , Model model) {
 		
 		vo = freeService.selectFreeBulletin(vo);
+		
 		if(vo == null) {
 			model.addAttribute("message", "게시글 1건 조회가 실패했습니다.");
 			return "free/message";
 		} 
 		
+		freeService.updateFreeBulletinHitUp(vo);
 		model.addAttribute("free", vo);
 		return "free/freeSelect";
+	}
+	
+	@PostMapping("/freeUpdateForm.do")
+	public String freeUpdateForm(FreeBulletinVO vo
+				  			   , Model model) {
+		
+		model.addAttribute("free", vo);
+		return "free/freeUpdateForm";
+	}
+	
+	@PostMapping("/freeUpdate.do")
+	public String freeUpdate(FreeBulletinVO vo
+						   , Model model) {
+		
+		int update = freeService.updateFreeBulletin(vo);
+		if(update == 0) {
+			model.addAttribute("message", "게시글 수정이 실패하였습니다.");
+			return "free/message";
+		}
+		
+		return "redirect:/freeBulletinList.do";
 	}
 	
 	

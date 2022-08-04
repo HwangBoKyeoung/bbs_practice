@@ -11,40 +11,51 @@
 <body>
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
-		<c:choose>
-			<c:when test="${empty free}">
-				<h2>게시글이 존재하지 않습니다.</h2>
-			</c:when>
-			<c:otherwise>
-				<table style="text-align: center;" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-					<thead>
-						<tr>
-							<th>순번</th>
-							<th>제목</th>
-							<th>작성자</th>
-							<th>작성일</th>
-							<th>조회수</th>
-							<th>글종류</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>${free.freeNo}</td>
-							<td>${free.freeTitle}</td>
-							<td>${free.freeWriter}</td>
-							<td>${free.freeDate}</td>
-							<td>${free.freeHit}</td>
-							<td>${free.freeNoticeYn}</td>
-						</tr>
-					</tbody>
-				</table>
-			</c:otherwise>
-		</c:choose>
+		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+			<tbody>
+				<tr>
+					<th>순번</th>
+					<td>${free.freeNo}</td>
+				</tr>
+				<tr>
+					<th>제목</th>
+					<td>${free.freeTitle}</td>
+				</tr>
+				<tr>
+					<th>작성자</th>
+					<td>${free.freeWriter}</td>
+				</tr>
+				<tr>
+					<th>작성일</th>
+					<td>${free.freeDate}</td>
+				</tr>
+				<tr>
+					<th>조회수</th>
+					<td>${free.freeNoticeYn}</td>
+				</tr>
+				<tr>
+					<th>글종류</th>
+					<td>${free.freeHit}</td>
+				</tr>
+				<tr>
+					<th>내용</th>
+					<td>${free.freeContent}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
-
-	<div align="center">
-		<button onclick="location.href='home.do'" class="btn btn-primary btn-icon-split btn-lg">홈으로</button>
-	</div><br/>
-
+	
+	<form action="freeUpdateForm.do" method="post">
+		<input type="hidden" value="${free.freeNo}" name="freeNo" id="freeNo" />
+		<input type="hidden" value="${free.freeTitle}" name="freeTitle" id="freeTitle" />
+		<input type="hidden" value="${free.freeContent}" name="freeContent" id="freeContent" />
+		
+		<input type="hidden" value="${free.freeNoticeYn}" name="freeNoticeYn" id="freeNoticeYn" />
+		<input type="hidden" value="${free.freeHit}" name="freeHit" id="freeHit" />
+		<input type="hidden" value="${free.freeDate}" name="freeDate" id="freeDate" />
+		<input type="hidden" value="${free.freeWriter}" name="freeWriter" id="freeWriter" />
+		
+		<input type="submit" value="수정하기" />
+	</form>
 </body>
 </html>

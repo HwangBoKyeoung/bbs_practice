@@ -71,5 +71,9 @@ public class FreeBulletinController {
 		return "redirect:/freeBulletinList.do";
 	}
 	
+	@RequestMapping("/freeInsertForm.do")
+	public String freeInsertForm() {
+		return "free/freeInsertForm";
+	}
 	
 }

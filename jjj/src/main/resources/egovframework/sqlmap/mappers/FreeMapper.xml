@@ -3,28 +3,40 @@
 <mapper namespace="freeMapper">
 	<!-- 자유게시판 -->
 	<select id="selectListFreeBulletin" resultType="freeVO">
-		SELECT FREE_NO
-			 , FREE_TITLE
-			 , FREE_CONTENT
-			 , FREE_WRITER
-			 , FREE_DATE
-			 , FREE_HIT
-			 , FREE_REG_YN
-			 , FREE_NOTICE_YN
-		  FROM FREE_BULLETIN
+		SELECT F.FREE_NO
+			 , F.FREE_TITLE
+			 , F.FREE_CONTENT
+			 , F.FREE_WRITER
+			 , F.FREE_DATE
+			 , F.FREE_HIT
+			 , D.CODE_DTL_NM "FREE_REG_YN"
+			 , D1.CODE_DTL_NM "FREE_NOTICE_YN"
+		  FROM FREE_BULLETIN F
+		  JOIN SYS_CODE_DTL D
+		    ON F.FREE_REG_YN = D.CODE_DTL
+		  JOIN SYS_CODE_DTL D1
+		    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+		 WHERE D.CODE_MST = 'FREE_REG_YN'
+		   AND D1.CODE_MST = 'FREE_NOTICE_YN'
 		 ORDER BY FREE_NO DESC
 	</select>
 	<select id="selectFreeBulletin" resultType="freeVO" parameterType="freeVO">
-		SELECT FREE_NO
-			 , FREE_TITLE
-			 , FREE_CONTENT
-			 , FREE_WRITER
-			 , FREE_DATE
-			 , FREE_HIT
-			 , FREE_REG_YN
-			 , FREE_NOTICE_YN
-		  FROM FREE_BULLETIN
-		 WHERE FREE_NO = #{freeNo}
+		SELECT F.FREE_NO
+			 , F.FREE_TITLE
+			 , F.FREE_CONTENT
+			 , F.FREE_WRITER
+			 , F.FREE_DATE
+			 , F.FREE_HIT
+			 , D.CODE_DTL_NM "FREE_REG_YN"
+			 , D1.CODE_DTL_NM "FREE_NOTICE_YN"
+		  FROM FREE_BULLETIN F
+		  JOIN SYS_CODE_DTL D
+		    ON F.FREE_REG_YN = D.CODE_DTL
+		  JOIN SYS_CODE_DTL D1
+		    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+		 WHERE D.CODE_MST = 'FREE_REG_YN'
+		   AND D1.CODE_MST = 'FREE_NOTICE_YN'
+		   AND FREE_NO = #{freeNo}
 	</select>
 	<insert id="insertFreeBulletin" parameterType="freeVO">
 		INSERT INTO FREE_BULLETIN (FREE_NO
@@ -126,4 +138,88 @@
 		DELETE FROM FREE_BULLETIN_REPLY_REPLY
 		 WHERE REPLY_RE_NO = #{replyReNo}
 	</delete>
+	
+	<!-- 페이징처리 -->
+	<select id="getList" resultType="freeVO">
+		<![CDATA[
+		SELECT FREE_NO
+			 , FREE_TITLE
+			 , FREE_CONTENT
+			 , FREE_WRITER
+			 , FREE_DATE
+			 , FREE_HIT
+			 , FREE_REG_YN
+			 , FREE_NOTICE_YN
+		  FROM (
+			  SELECT ROWNUM RN
+			  	   , A.FREE_NO
+			  	   , A.FREE_TITLE
+			  	   , A.FREE_CONTENT
+			  	   , A.FREE_WRITER
+			  	   , A.FREE_DATE
+			  	   , A.FREE_HIT
+			  	   , A.FREE_REG_YN
+			  	   , A.FREE_NOTICE_YN
+			    FROM (
+			  		SELECT F.FREE_NO
+						 , F.FREE_TITLE
+						 , F.FREE_CONTENT
+						 , F.FREE_WRITER
+						 , F.FREE_DATE
+						 , F.FREE_HIT
+						 , D.CODE_DTL_NM "FREE_REG_YN"
+						 , D1.CODE_DTL_NM "FREE_NOTICE_YN"
+					  FROM FREE_BULLETIN F
+					  JOIN SYS_CODE_DTL D
+					    ON F.FREE_REG_YN = D.CODE_DTL
+					  JOIN SYS_CODE_DTL D1
+					    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+					 WHERE D.CODE_MST = 'FREE_REG_YN'
+					   AND D1.CODE_MST = 'FREE_NOTICE_YN'
+				       AND
+					]]>
+						<if test="searchType == 'all'">
+							(F.FREE_TITLE LIKE '%'||#{searchName}||'%' 
+							 OR F.FREE_CONTENT LIKE '%'||#{searchName}||'%')
+						</if>
+						<if test="searchType == 'title'">
+							F.FREE_TITLE LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == 'content'">
+							F.FREE_CONTENT LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == '' or searchType == null">
+							1=1
+						</if>
+		<![CDATA[
+					ORDER BY F.FREE_NO DESC
+				)A
+			)
+		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+    	]]>
+	</select>
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_BULLETIN F
+		  JOIN SYS_CODE_DTL D
+		    ON F.FREE_REG_YN = D.CODE_DTL
+		  JOIN SYS_CODE_DTL D1
+		    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+		 WHERE D.CODE_MST = 'FREE_REG_YN'
+		   AND D1.CODE_MST = 'FREE_NOTICE_YN'
+	       AND
+			<if test="searchType == 'all'">
+				(F.FREE_TITLE LIKE '%'||#{searchName}||'%' 
+				 OR F.FREE_CONTENT LIKE '%'||#{searchName}||'%')
+			</if>
+			<if test="searchType == 'title'">
+				F.FREE_TITLE LIKE '%'||#{searchName}||'%'
+			</if>
+			<if test="searchType == 'content'">
+				F.FREE_CONTENT LIKE '%'||#{searchName}||'%'
+			</if>
+			<if test="searchType == '' or searchType == null">
+				1=1
+			</if>
+	</select>
 </mapper>

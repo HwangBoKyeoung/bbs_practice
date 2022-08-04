@@ -2,6 +2,8 @@ package egovframework.example.free.sevice;
 
 import java.util.List;
 
+import egovframework.example.cost.sevice.CriteriaVO;
+
 public interface FreeBulletinService {
 	
 //	자유게시판
@@ -23,5 +25,9 @@ public interface FreeBulletinService {
 	List<FreeBulletinReplyReplyVO> selectListFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
 	int insertFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
 	int deleteFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
+	
+//	자유게시판 페이징처리
+	List<FreeBulletinVO> getList(CriteriaVO cri);
+	int getTotal(CriteriaVO cri);
 	
 }

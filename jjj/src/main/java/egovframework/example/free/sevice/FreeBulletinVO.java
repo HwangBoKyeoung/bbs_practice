@@ -8,8 +8,8 @@ public class FreeBulletinVO {
 	private String freeWriter;
 	private String freeDate;
 	private int freeHit;
-	private int freeRegYn;
-	private int freeNoticeYn;
+	private String freeRegYn;
+	private String freeNoticeYn;
 
 	public int getFreeNo() {
 		return freeNo;
@@ -59,19 +59,19 @@ public class FreeBulletinVO {
 		this.freeHit = freeHit;
 	}
 
-	public int getFreeRegYn() {
+	public String getFreeRegYn() {
 		return freeRegYn;
 	}
 
-	public void setFreeRegYn(int freeRegYn) {
+	public void setFreeRegYn(String freeRegYn) {
 		this.freeRegYn = freeRegYn;
 	}
 
-	public int getFreeNoticeYn() {
+	public String getFreeNoticeYn() {
 		return freeNoticeYn;
 	}
 
-	public void setFreeNoticeYn(int freeNoticeYn) {
+	public void setFreeNoticeYn(String freeNoticeYn) {
 		this.freeNoticeYn = freeNoticeYn;
 	}
 

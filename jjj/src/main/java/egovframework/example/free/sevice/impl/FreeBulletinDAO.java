@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.example.free.sevice.FreeBulletinReplyReplyVO;
 import egovframework.example.free.sevice.FreeBulletinReplyVO;
 import egovframework.example.free.sevice.FreeBulletinVO;
@@ -69,5 +70,14 @@ public class FreeBulletinDAO {
 
 	int deleteFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo) {
 		return query.delete(namespace + "deleteFreeBulletinReplyReply", rrvo);
+	}
+	
+//	자유게시판 페이징처리
+	List<FreeBulletinVO> getList(CriteriaVO cri) {
+		return query.selectList(namespace + "getList", cri);
+	}
+	
+	int getTotal(CriteriaVO cri) {
+		return query.selectOne(namespace + "getTotal", cri);
 	}
 }

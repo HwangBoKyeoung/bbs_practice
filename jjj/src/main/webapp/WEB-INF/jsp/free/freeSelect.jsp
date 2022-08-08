@@ -126,6 +126,11 @@
 											</td>
 										</c:if>
 									</tr>
+									<tr id="showTr2" style="display: none;">
+										<td colspan="6">
+											<textarea rows="5" cols="100" id="contents">입력</textarea>
+										</td>
+									</tr>
 								</c:if>
 								<c:if test="${reply.commentLevel eq 1}">
 									<tr>
@@ -142,12 +147,12 @@
 											</td>
 										</c:if>
 									</tr>
+									<tr id="showTr" style="display: none;">
+										<td colspan="6">
+											<textarea rows="5" cols="100" id="contents">입력</textarea>
+										</td>
+									</tr>
 								</c:if>
-								<tr id="showTr" style="display:none;">
-									<td colspan="6">
-										<textarea rows="5" cols="120" id="contents"></textarea>
-									</td>
-								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -216,24 +221,36 @@
 		}
 		
 		function insertReReply(no){
-			/* let tbd = $(event.target).parent().parent().parent();
-			let tr = $("<tr>");
-			let td = $("<td>");
+			if($("#updateReplyFrm").css("display") == "block"){
+				$("#updateReplyFrm").css("display", "none");
+				$("#inserReplyFrm").css("display", "block");
+			} else {
+				$("#inserReplyFrm").css("display", "block");
+			}
 			
-			td.append($("#inserReplyFrm"));
-			tr.append(td);
-			tbd.append(tr); */
-
-			/* $("#inserReplyFrm").css("display", "block"); */
-			let tr = $(event.target).parent().parent().next();
-			$("#showTr").css("display", "block");
+// 			let tr = $(event.target).parent().parent().next();
+			/* $("#showTr").css("display", "block"); */
+// 			tr.css("display", "show");
 			/* tr.append($("#showTr")); */
-			$("#cont").val($("#contents").val());
+			
+			/* $(event.target).toggle("slow", function(){
+				
+			}); */
+			
+			/* $("#cont").val($("#contents").val()); */
 			$("#parentNo").val(no);
-			alert($("#parentNo").val())
 		}
-		
+
 		function updateReReply(no){
+			if($("#inserReplyFrm").css("display") == "block"){
+				$("#inserReplyFrm").css("display", "none");
+				$("#updateReplyFrm").css("display", "block");
+			} else {
+				$("#updateReplyFrm").css("display", "block");
+			}
+			
+			alert(str);
+			
 			$("#updateReplyFrm").css("display", "block");
 			$("#reno").val(no);
 		}

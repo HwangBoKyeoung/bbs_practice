@@ -249,8 +249,6 @@
 				$("#updateReplyFrm").css("display", "block");
 			}
 			
-			alert(str);
-			
 			$("#updateReplyFrm").css("display", "block");
 			$("#reno").val(no);
 		}

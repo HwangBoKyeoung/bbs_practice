@@ -57,6 +57,8 @@ public class FreeBulletinController {
 		rvo.setFreeNo(vo.getFreeNo());
 		List<FreeBulletinReplyVO> list = freeService.selectListFreeBulletinReply(rvo);
 		
+		System.out.println("========================================="+list);
+		
 //		조회수 증가
 		freeService.updateFreeBulletinHitUp(vo);
 		
@@ -117,6 +119,33 @@ public class FreeBulletinController {
 		}
 		
 		return "redirect:/freeBulletinList.do";
+	}
+	
+	@PostMapping("/insertReReply.do")
+	public String insertReReply(FreeBulletinReplyVO rvo
+							  , Model model) {
+		
+		System.out.println("--------------------------------------------"+rvo);
+		int insertResult = freeService.insertFreeBulletinReply(rvo);
+		if(insertResult == 0) {
+			model.addAttribute("message", "대댓글 입력이 실패했습니다.");
+			return "free/message";
+		}
+		
+		return "redirect:freeBulletinList.do";
+	}
+	
+	@PostMapping("/updateReReply.do")
+	public String updateReReply(FreeBulletinReplyVO rvo
+							  , Model model) {
+		
+		int update = freeService.updateFreeBulletinReply(rvo);
+		if(update == 0 ) {
+			model.addAttribute("message", "댓글 수정이 실패했습니다.");
+			return "free/message";
+		}
+		
+		return "redirect:freeBulletinList.do";
 	}
 	
 }

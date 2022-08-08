@@ -79,8 +79,7 @@
 						<td><div id="editor"></div></td>
 					</tr>
 					<tr style="display: none;">
-						<td><textarea cols="100" rows="10" maxlength="500"
-								name="freeContent" id="freeContent"></textarea></td>
+						<td><textarea cols="100" rows="10" maxlength="500" name="freeContent" id="freeContent"></textarea></td>
 					</tr>
 				</tbody>
 			</table>
@@ -104,13 +103,22 @@
         function submitPre(){
         	let text = editor.getMarkdown();
             let content = document.querySelector("#freeContent");
-            let inner = content.innerText;
-            inner = text;
             
-            alert(inner)
-            return true;
+            content.innerText = text;
+            content.value = text;
+            
+        	let c1 = document.querySelector("#freeContent");
+        	
+        	if(c1.value == null || c1.value == ""){
+        		alert('1')
+        		return false;
+        	}
+        	if(c1.innerText == null || c1.innerText == ""){
+        		alert('2')
+        		return false;
+        	}
+        	return true;
         }
-        
     </script>
 </body>
 </html>

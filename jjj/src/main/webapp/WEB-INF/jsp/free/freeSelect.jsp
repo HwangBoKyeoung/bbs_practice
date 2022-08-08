@@ -9,6 +9,22 @@
 <title>WELCOME HOME</title>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+	#dataTable2 {
+		border: 1px grey solid;
+		height: 190px;
+	}
+	
+	#dataTable2 th {
+/* 		text-align: center; */
+		font-weight: bold;
+		font-size: 25px;
+	}
+	
+	#dataTable2 tr {
+		border-bottom: 1px grey solid;
+	}
+</style>
 </head>
 <body>
 	<h5>
@@ -20,7 +36,7 @@
 			<tbody>
 				<tr>
 					<th>순번</th>
-					<td>${free.freeNo}</td>
+					<td><input type="hidden" value="${free.freeNo}" id="freeNo1"/>${free.freeNo}</td>
 				</tr>
 				<tr>
 					<th>제목</th>
@@ -49,7 +65,19 @@
 			</tbody>
 		</table>
 		<br />
-		
+		<form action="freeUpdateForm.do" method="post">
+			<input type="hidden" value="${free.freeNo}" name="freeNo" id="freeNo" />
+			<input type="hidden" value="${free.freeTitle}" name="freeTitle" id="freeTitle" />
+			<input type="hidden" value="${free.freeContent}" name="freeContent" id="freeContent" />
+			
+			<input type="hidden" value="${free.freeNoticeYn}" name="freeNoticeYn" id="freeNoticeYn" />
+			<input type="hidden" value="${free.freeHit}" name="freeHit" id="freeHit" />
+			<input type="hidden" value="${free.freeDate}" name="freeDate" id="freeDate" />
+			<input type="hidden" value="${free.freeWriter}" name="freeWriter" id="freeWriter" />
+			
+			<input type="submit" value="수정하기" />
+		</form>
+	
 		<div align="center">
 		<hr />
 		<h2>=============댓글=============</h2>
@@ -57,6 +85,7 @@
 			<textarea rows="30" cols="50" placeholder="댓글작성해주세요" name="replyContent" id="replyContent"></textarea>
 			<input type="submit" value="입력" onclick="insertReply();" class="btn btn-success btn-circle btn-lg" />
 		</div>
+		<input type="hidden" value="N" id="nVal" />
 		<hr />
 		<c:choose>
 			<c:when test="${empty replys}">
@@ -64,58 +93,62 @@
 			</c:when>
 			<c:otherwise>
 				<div id="replyShow">
-					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-						<tbody id="replyTbody" style="text-align:center;">
+					<table id="dataTable2" width="100%" cellspacing="0">
+						<thead>
 							<tr>
-								<td>작 성  자&nbsp;&nbsp;</td>
-								<td>댓글내용&nbsp;&nbsp;</td>
-								<td>작성일자&nbsp;&nbsp;</td>
-								<td>삭      제&nbsp;</td>
+								<th>내용</th>
+								<th>작성자</th>
+								<th>작성날짜</th>
+								<th>수정날짜</th>
+								<th>삭제날짜</th>
+								<th>입력/수정/삭제버튼</th>
 							</tr>
-							<c:if test="${not empty replys}">
-								<c:forEach items="${replys}" var="reply">
-									<c:if test="${reply.replyReplyNo == 0}">
-										${reply.replyNo}
-									</c:if>
-									<c:choose>
-										<c:when test="${reply.replyReplyNo == 0}">
-											<tr>
-												<td>${reply.replyUpdateWriter}</td>
-												<td>${reply.replyContent}</td>
-												<td>${reply.replyUpdateDate}</td>
-												<td><input type="button" value="답변" class="btn btn-danger btn-circle btn-lg"
-														onclick="deleteReply('${reply.replyReplyNo}', '${reply.freeNo}');" />
-												<c:if test="${user.userId eq reply.replyUpdateWriter}">
-													<input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg"
-														onclick="deleteReply('${reply.replyReplyNo}', '${reply.freeNo}');" />
-												</c:if>
-												<c:if test="${user.userId ne reply.replyUpdateWriter}">
-													<input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg" onclick="noneDeleteReply()" />
-												</c:if>
-												</td>
-											</tr>
-										</c:when>
-										<c:otherwise>
-											<c:if test="${reply.replyNo}"></c:if>
-												<tr style="text-align: right;">
-													<td><h2>${reply.replyNo}</h2>${reply.replyUpdateWriter}</td>
-													<td>${reply.replyContent}</td>
-													<td>${reply.replyUpdateDate}</td>
-													<td>
-														<c:if test="${user.userId eq reply.replyUpdateWriter}">
-															<input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg"
-																onclick="deleteReply('${reply.replyReplyNo}', '${reply.freeNo}');" />
-														</c:if>
-														<c:if test="${user.userId ne reply.replyUpdateWriter}">
-															<input type="button" value="삭제" class="btn btn-danger btn-circle btn-lg" onclick="noneDeleteReply()" />
-														</c:if>
-													</td>
-												</tr>
-											
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-							</c:if>
+						</thead>
+						<tbody>
+							<c:forEach items="${replys}" var="reply">
+								<c:if test="${reply.commentLevel ne 1}">
+									<tr>
+										<td>
+											<c:forEach begin="4" end="${reply.commentLevel*4}">
+												&nbsp;
+											</c:forEach>
+											${reply.replyContent}
+										</td>
+										<td>${reply.replyWriter}</td>
+										<td>${reply.replyDate}</td>
+										<td>${reply.replyUpdateDate}</td>
+										<td>${reply.replyDeleteDate}</td>
+										<c:if test="${reply.replyDeleteAt eq 'N'}">
+											<td>
+												<input type="button" value="댓글입력" onclick="insertReReply(${reply.replyNo});" />
+												<input type="button" value="댓글수정" onclick="updateReReply(${reply.replyNo});" />
+												<input type="button" value="댓글삭제" onclick="deleteReReply(${reply.replyNo});" />
+											</td>
+										</c:if>
+									</tr>
+								</c:if>
+								<c:if test="${reply.commentLevel eq 1}">
+									<tr>
+										<td>${reply.replyContent}</td>
+										<td>${reply.replyWriter}</td>
+										<td>${reply.replyDate}</td>
+										<td>${reply.replyUpdateDate}</td>
+										<td>${reply.replyDeleteDate}</td>
+										<c:if test="${reply.replyDeleteAt eq 'N'}">
+											<td>
+												<input type="button" value="댓글입력" onclick="insertReReply(${reply.replyNo});" />
+												<input type="button" value="댓글수정" onclick="updateReReply(${reply.replyNo});" />
+												<input type="button" value="댓글삭제" onclick="deleteReReply(${reply.replyNo});" />
+											</td>
+										</c:if>
+									</tr>
+								</c:if>
+								<tr id="showTr" style="display:none;">
+									<td colspan="6">
+										<textarea rows="5" cols="120" id="contents"></textarea>
+									</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -124,35 +157,141 @@
 	</div>
 		
 	</div>
+	<br/>
+	<br/>
 	
-	<form action="freeUpdateForm.do" method="post">
-		<input type="hidden" value="${free.freeNo}" name="freeNo" id="freeNo" />
-		<input type="hidden" value="${free.freeTitle}" name="freeTitle" id="freeTitle" />
-		<input type="hidden" value="${free.freeContent}" name="freeContent" id="freeContent" />
-		
-		<input type="hidden" value="${free.freeNoticeYn}" name="freeNoticeYn" id="freeNoticeYn" />
-		<input type="hidden" value="${free.freeHit}" name="freeHit" id="freeHit" />
-		<input type="hidden" value="${free.freeDate}" name="freeDate" id="freeDate" />
-		<input type="hidden" value="${free.freeWriter}" name="freeWriter" id="freeWriter" />
-		
-		<input type="submit" value="수정하기" />
+	<input type="hidden" value="${userId}" id="userId" />
+	
+	<form action="insertReReply.do" method="post" id="inserReplyFrm" style="display: none;">
+		<input type="hidden" name="freeNo" value="${free.freeNo}" />
+		<textarea rows="5" cols="120" name="replyContent" id="cont"></textarea>
+		<input type="hidden" value="${userId}" name="replyWriter" />
+		<input type="hidden" name="replyParentNo" id="parentNo" />
+		<input type="submit" value="댓글등록" />
+	</form>
+	
+	<form action="updateReReply.do" method="post" id="updateReplyFrm" style="display: none;">
+		<textarea rows="5" cols="120" name="replyContent" id="cont2"></textarea>
+		<input type="hidden" name="replyNo" id="reno" />
+		<input type="submit" value="댓글수정" />
 	</form>
 	
 	<script>
-		function insertReply() {
-			
-		}
-		
-		function deleteReply(id) {
-			
-		}
-		
 		function noneDeleteReply() {
 			Swal.fire('타인의 댓글은 지울 수 없습니다.');
 			$(".swal2-confirm").on("click", function() {
 				/* location.reload(); */
 			});
 		}
+		
+		function insertReply(){
+			$.ajax({
+				url : "ajaxInsertBulletinReply.do",
+				dataType : "json",
+				type : "post",
+				data : {
+					"freeNo" : $("#freeNo1").val(),
+					"replyParentNo" : 0,
+					"replyContent" : $("#replyContent").val(),
+					"replyWriter" : $("#userId").val()
+				},
+				success : function(result) {
+					console.log(result);
+					if(result=="success"){
+						ajaxReplyView(result);
+					}
+				},
+				error : function(err) {
+					console.log(err);
+				}
+			});
+
+			function ajaxReplyView(data) {
+				Swal.fire('댓글 등록이 완료되었습니다.');
+				$(".swal2-confirm").on("click", function() {
+					location.reload();
+				});
+			}
+			
+		}
+		
+		function insertReReply(no){
+			/* let tbd = $(event.target).parent().parent().parent();
+			let tr = $("<tr>");
+			let td = $("<td>");
+			
+			td.append($("#inserReplyFrm"));
+			tr.append(td);
+			tbd.append(tr); */
+
+			/* $("#inserReplyFrm").css("display", "block"); */
+			let tr = $(event.target).parent().parent().next();
+			$("#showTr").css("display", "block");
+			/* tr.append($("#showTr")); */
+			$("#cont").val($("#contents").val());
+			$("#parentNo").val(no);
+			alert($("#parentNo").val())
+		}
+		
+		function updateReReply(no){
+			$("#updateReplyFrm").css("display", "block");
+			$("#reno").val(no);
+		}
+		
+		/* 삭제처리 => 화면에서 보이지않게 하고 데이터는 가지고 있기 */
+		function deleteReReply(no){
+			let confirms = confirm("정말 댓글을 삭제하시겠습니까?");
+			if(confirms){
+				$.ajax({
+					url : "ajaxUpdateDeleteBulletinReply.do",
+					dataType : "text",
+					type : "post",
+					data : {
+						"replyDeleteAt":"Y",
+						"replyNo":no
+					},
+					success : function(result) {
+						console.log(result);
+						if(result=="success"){
+							Swal.fire('댓글 삭제가 완료되었습니다.');
+							$(".swal2-confirm").on("click", function() {
+								location.reload();
+							});
+						}
+					},
+					error : function(err) {
+						console.log(err);
+					}
+				});
+			}
+		}
+		
+		/* 완전삭제 */
+		/* function deleteReReply(no){
+			let confirms = confirm("정말 댓글을 삭제하시겠습니까?");
+			if(confirms){
+				$.ajax({
+					url : "ajaxDeleteBulletinReply.do",
+					dataType : "text",
+					type : "post",
+					data : {
+						"replyNo":no
+					},
+					success : function(result) {
+						console.log(result);
+						if(result=="success"){
+							Swal.fire('댓글 삭제가 완료되었습니다.');
+							$(".swal2-confirm").on("click", function() {
+								location.reload();
+							});
+						}
+					},
+					error : function(err) {
+						console.log(err);
+					}
+				});
+			}
+		} */
 	</script>
 </body>
 </html>

@@ -95,36 +95,76 @@
 	
 	<!-- 자유게시판:댓글 -->
 	<select id="selectListFreeBulletinReply" parameterType="freeReplyVO" resultType="freeReplyVO">
-		SELECT DISTINCT R.REPLY_REPLY_NO
-					  , R.FREE_NO
-					  , R.REPLY_NO
-					  , R.REPLY_CONTENT
-					  , R.REPLY_DATE
-					  , R.REPLY_UPDATE_WRITER
-					  , R.REPLY_UPDATE_DATE
-		  FROM FREE_BULLETIN_REPLY R
-		  JOIN FREE_BULLETIN_REPLY RR
-		    ON R.REPLY_NO = RR.REPLY_REPLY_NO
-		 WHERE R.FREE_NO = #{freeNo}
-		 ORDER BY R.REPLY_DATE DESC
+		SELECT FREE_NO
+			 , LEVEL "COMMENTLEVEL"
+			 , REPLY_NO
+			 , REPLY_PARENT_NO
+			 , CASE WHEN LEVEL = 1
+			 		THEN ''
+			 		ELSE LPAD(' ㄴ', LEVEL*4, ' ')
+			 		 END
+			   ||
+			   CASE WHEN REPLY_DELETE_AT = 'Y'
+			   		THEN '***삭제된 댓글입니다.***'
+			   		ELSE REPLY_CONTENT
+			   		 END REPLY_CONTENT
+			 , REPLY_WRITER
+			 , REPLY_DELETE_AT
+			 , REPLY_DATE
+			 , REPLY_UPDATE_DATE
+			 , REPLY_DELETE_DATE
+		  FROM (SELECT FREE_NO
+		  			 , REPLY_NO
+		  			 , REPLY_PARENT_NO
+		  			 , REPLY_CONTENT
+		  			 , REPLY_WRITER
+		  			 , REPLY_DELETE_AT
+		  			 , REPLY_DATE
+		  			 , REPLY_UPDATE_DATE
+		  			 , REPLY_DELETE_DATE
+		  		  FROM FREE_BULLETIN_REPLY
+		  		 WHERE FREE_NO = #{freeNo})
+		 START WITH REPLY_PARENT_NO = 0
+		 CONNECT BY PRIOR REPLY_NO = REPLY_PARENT_NO
 	</select>
 	<insert id="insertFreeBulletinReply" parameterType="freeReplyVO">
-		INSERT INTO FREE_BULLETIN_REPLY(REPLY_WRITER
-									  , REPLY_NO
-									  , REPLY_DATE
-									  , REPLY_CONTENT
-									  , FREE_NO)
-		VALUES (#{replyWriter}
+		INSERT INTO FREE_BULLETIN_REPLY(FREE_NO
+						  			  , REPLY_NO
+						  			  , REPLY_PARENT_NO
+						  			  , REPLY_CONTENT
+						  			  , REPLY_WRITER
+)
+		VALUES (#{freeNo}
 			  , FREE_RE_SEQ.NEXTVAL
-			  , SYSDATE
+			  , #{replyParentNo}
 			  , #{replyContent}
-			  , #{freeNo})
+			  , #{replyWriter})
 	</insert>
 	<delete id="deleteFreeBulletinReply" parameterType="freeReplyVO">
 		DELETE FROM FREE_BULLETIN_REPLY
 		 WHERE REPLY_NO = #{replyNo}
 	</delete>
-	
+	<update id="updateFreeBulletinReply" parameterType="freeReplyVO">
+		UPDATE FREE_BULLETIN_REPLY
+		<set>
+			<if test="replyContent != null or replyContent != ''">
+				REPLY_CONTENT = #{replyContent},
+				REPLY_UPDATE_DATE = SYSDATE,
+			</if>
+		</set>
+		 WHERE REPLY_NO = #{replyNo}
+	</update>
+	<update id="updateDeleteFreeBulletinReply" parameterType="freeReplyVO">
+		UPDATE FREE_BULLETIN_REPLY
+		<set>
+			<if test="replyDeleteAt != null or replyDeleteAt != ''">
+				REPLY_DELETE_AT = #{replyDeleteAt},
+				REPLY_DELETE_DATE = SYSDATE,
+			</if>
+		</set>
+		 WHERE REPLY_NO = #{replyNo}
+	</update>
+
 	<!-- 페이징처리 -->
 	<select id="getList" resultType="freeVO">
 		<![CDATA[

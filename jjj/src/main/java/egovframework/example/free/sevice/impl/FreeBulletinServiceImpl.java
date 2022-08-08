@@ -72,4 +72,14 @@ public class FreeBulletinServiceImpl implements FreeBulletinService {
 		return freeDAO.getTotal(cri);
 	}
 
+	@Override
+	public int updateFreeBulletinReply(FreeBulletinReplyVO rvo) {
+		return freeDAO.updateFreeBulletinReply(rvo);
+	}
+
+	@Override
+	public int updateDeleteFreeBulletinReply(FreeBulletinReplyVO rvo) {
+		return freeDAO.updateDeleteFreeBulletinReply(rvo);
+	}
+
 }

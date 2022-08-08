@@ -1,5 +1,6 @@
 package egovframework.example.free.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.example.cost.sevice.CriteriaVO;
 import egovframework.example.cost.sevice.PageVO;
+import egovframework.example.free.sevice.FreeBulletinReplyVO;
 import egovframework.example.free.sevice.FreeBulletinService;
 import egovframework.example.free.sevice.FreeBulletinVO;
+import egovframework.example.user.sevice.UserVO;
 
 @Controller
 public class FreeBulletinController {
@@ -36,17 +39,32 @@ public class FreeBulletinController {
 	
 	@PostMapping("/freeSelect.do")
 	public String freeSelect(FreeBulletinVO vo
-						   , Model model) {
+						   , Model model
+						   , FreeBulletinReplyVO rvo
+						   , Principal p
+						   , UserVO uvo) {
 		
+//		회원정보 가져가기
+		String id = null;
+		if(p != null) {
+			id = p.getName();
+		}
+		
+//		게시글 1건 조회
 		vo = freeService.selectFreeBulletin(vo);
 		
-		if(vo == null) {
-			model.addAttribute("message", "게시글 1건 조회가 실패했습니다.");
-			return "free/message";
-		} 
+//		게시글에 대한 댓글 전체 조회
+		rvo.setFreeNo(vo.getFreeNo());
+		List<FreeBulletinReplyVO> list = freeService.selectListFreeBulletinReply(rvo);
 		
+//		조회수 증가
 		freeService.updateFreeBulletinHitUp(vo);
+		
 		model.addAttribute("free", vo);
+		model.addAttribute("replys", list);
+		
+		model.addAttribute("userId", id);
+		
 		return "free/freeSelect";
 	}
 	
@@ -72,8 +90,33 @@ public class FreeBulletinController {
 	}
 	
 	@RequestMapping("/freeInsertForm.do")
-	public String freeInsertForm() {
+	public String freeInsertForm(Principal p
+							   , Model model) {
+		
+		System.out.println("=================================="+p);
+		String id = null;
+		
+		if(p != null) {
+			id = p.getName();
+		}
+		
+		model.addAttribute("userId", id);
+		
 		return "free/freeInsertForm";
+	}
+	
+	@PostMapping("/freeInsert.do")
+	public String freeInsert(FreeBulletinVO vo
+						   , Model model) {
+		
+		int insert = freeService.insertFreeBulletin(vo);
+		
+		if(insert == 0) {
+			model.addAttribute("message", "게시글 등록이 실패했습니다.");
+			return "free/message";
+		}
+		
+		return "redirect:/freeBulletinList.do";
 	}
 	
 }

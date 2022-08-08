@@ -1,19 +1,39 @@
 package egovframework.example.free.sevice;
 
+import java.sql.Date;
+
 public class FreeBulletinReplyVO {
 
-	private String replyWriter;
+	private int replyReplyNo;
+	private String replyUpdateWriter;
+	private Date replyUpdateDate;
 	private int replyNo;
-	private String replyDate;
+	private Date replyDate;
 	private String replyContent;
 	private int freeNo;
 
-	public String getReplyWriter() {
-		return replyWriter;
+	public int getReplyReplyNo() {
+		return replyReplyNo;
 	}
 
-	public void setReplyWriter(String replyWriter) {
-		this.replyWriter = replyWriter;
+	public void setReplyReplyNo(int replyReplyNo) {
+		this.replyReplyNo = replyReplyNo;
+	}
+
+	public String getReplyUpdateWriter() {
+		return replyUpdateWriter;
+	}
+
+	public void setReplyUpdateWriter(String replyUpdateWriter) {
+		this.replyUpdateWriter = replyUpdateWriter;
+	}
+
+	public Date getReplyUpdateDate() {
+		return replyUpdateDate;
+	}
+
+	public void setReplyUpdateDate(Date replyUpdateDate) {
+		this.replyUpdateDate = replyUpdateDate;
 	}
 
 	public int getReplyNo() {
@@ -24,11 +44,11 @@ public class FreeBulletinReplyVO {
 		this.replyNo = replyNo;
 	}
 
-	public String getReplyDate() {
+	public Date getReplyDate() {
 		return replyDate;
 	}
 
-	public void setReplyDate(String replyDate) {
+	public void setReplyDate(Date replyDate) {
 		this.replyDate = replyDate;
 	}
 
@@ -50,7 +70,8 @@ public class FreeBulletinReplyVO {
 
 	@Override
 	public String toString() {
-		return "FreeBulletinReplyVO [replyWriter=" + replyWriter + ", replyNo=" + replyNo + ", replyDate=" + replyDate
+		return "FreeBulletinReplyVO [replyReplyNo=" + replyReplyNo + ", replyUpdateWriter=" + replyUpdateWriter
+				+ ", replyUpdateDate=" + replyUpdateDate + ", replyNo=" + replyNo + ", replyDate=" + replyDate
 				+ ", replyContent=" + replyContent + ", freeNo=" + freeNo + "]";
 	}
 

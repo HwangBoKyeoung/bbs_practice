@@ -138,6 +138,13 @@
 					<li class="nav-item"><a class="nav-link" href="companyMap.do">
 							<i class="fas fa-fw fa-chart-area"></i> <span>오시는길</span>
 					</a></li> 
+					
+						<!-- Divider -->
+					<hr class="sidebar-divider d-none d-md-block">
+					<!-- nav item - map -->
+					<li class="nav-item"><a class="nav-link" href="blank.do">
+							<i class="fas fa-fw fa-chart-area"></i> <span>에디터 연습</span>
+					</a></li> 
 
 						<!-- Divider -->
 					<hr class="sidebar-divider d-none d-md-block">

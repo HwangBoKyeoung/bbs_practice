@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="freeMapper">
+	
+	<resultMap type="freeReplyVO" id="freeReplyMap">
+		<id property="replyNo" column="reply_no" />
+		<result property="replyWriter" column="reply_writer" />
+		<result property="replyDate" column="reply_date" />
+		<result property="replyContent" column="reply_content" />
+		<result property="freeNo" column="free_no" />
+		<collection property="freeReplyReVO" resultMap="freeReplyReMap" />
+	</resultMap>
+
 	<!-- 자유게시판 -->
 	<select id="selectListFreeBulletin" resultType="freeVO">
 		SELECT F.FREE_NO
@@ -85,14 +95,18 @@
 	
 	<!-- 자유게시판:댓글 -->
 	<select id="selectListFreeBulletinReply" parameterType="freeReplyVO" resultType="freeReplyVO">
-		SELECT REPLY_WRITER
-			 , REPLY_NO
-			 , REPLY_DATE
-			 , REPLY_CONTENT
-			 , FREE_NO
-		  FROM FREE_BULLETIN_REPLY
-		 WHERE FREE_NO = #{freeNo}
-		 ORDER BY REPLY_DATE DESC
+		SELECT DISTINCT R.REPLY_REPLY_NO
+					  , R.FREE_NO
+					  , R.REPLY_NO
+					  , R.REPLY_CONTENT
+					  , R.REPLY_DATE
+					  , R.REPLY_UPDATE_WRITER
+					  , R.REPLY_UPDATE_DATE
+		  FROM FREE_BULLETIN_REPLY R
+		  JOIN FREE_BULLETIN_REPLY RR
+		    ON R.REPLY_NO = RR.REPLY_REPLY_NO
+		 WHERE R.FREE_NO = #{freeNo}
+		 ORDER BY R.REPLY_DATE DESC
 	</select>
 	<insert id="insertFreeBulletinReply" parameterType="freeReplyVO">
 		INSERT INTO FREE_BULLETIN_REPLY(REPLY_WRITER
@@ -109,34 +123,6 @@
 	<delete id="deleteFreeBulletinReply" parameterType="freeReplyVO">
 		DELETE FROM FREE_BULLETIN_REPLY
 		 WHERE REPLY_NO = #{replyNo}
-	</delete>
-	
-	<!-- 자유게시판:대댓글 -->
-	<select id="selectListFreeBulletinReplyReply" parameterType="freeReplyReVO" resultType="freeReplyReVO">
-		SELECT REPLY_WRITER
-			 , REPLY_RE_NO
-			 , REPLY_DATE
-			 , REPLY_CONTENT
-			 , REPLY_NO
-		  FROM FREE_BULLETIN_REPLY_REPLY
-		 WHERE REPLY_NO = #{replyNo}
-		 ORDER BY REPLY_DATE DESC
-	</select>
-	<insert id="insertFreeBulletinReplyReply" parameterType="freeReplyReVO">
-		INSERT INTO FREE_BULLETIN_REPLY_REPLY(REPLY_WRITER
-										    , REPLY_RE_NO
-										    , REPLY_DATE
-										    , REPLY_CONTENT
-										    , REPLY_NO)
-		VALUES (#{replyWriter}
-			  , FREE_RE_RE_SEQ.NEXTVAL
-			  , SYSDATE
-			  , #{replyContent}
-			  , #{replyNo})
-	</insert>
-	<delete id="deleteFreeBulletinReplyReply" parameterType="freeReplyReVO">
-		DELETE FROM FREE_BULLETIN_REPLY_REPLY
-		 WHERE REPLY_RE_NO = #{replyReNo}
 	</delete>
 	
 	<!-- 페이징처리 -->

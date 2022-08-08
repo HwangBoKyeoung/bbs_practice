@@ -21,11 +21,6 @@ public interface FreeBulletinService {
 	int insertFreeBulletinReply(FreeBulletinReplyVO rvo);
 	int deleteFreeBulletinReply(FreeBulletinReplyVO rvo);
 	
-//	댓글의 대댓글
-	List<FreeBulletinReplyReplyVO> selectListFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
-	int insertFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
-	int deleteFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
-	
 //	자유게시판 페이징처리
 	List<FreeBulletinVO> getList(CriteriaVO cri);
 	int getTotal(CriteriaVO cri);

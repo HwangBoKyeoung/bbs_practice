@@ -31,4 +31,10 @@ public class HomeController {
 		return "cmmn/todoList";
 	}
 	
+//	에디터 사용 예시
+	@RequestMapping("/blank.do")
+	public String blank() {
+		return "home/blank";
+	}
+	
 }

@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.cost.sevice.CriteriaVO;
-import egovframework.example.free.sevice.FreeBulletinReplyReplyVO;
 import egovframework.example.free.sevice.FreeBulletinReplyVO;
 import egovframework.example.free.sevice.FreeBulletinVO;
 
@@ -57,19 +56,6 @@ public class FreeBulletinDAO {
 
 	int deleteFreeBulletinReply(FreeBulletinReplyVO rvo) {
 		return query.delete(namespace + "deleteFreeBulletinReply", rvo);
-	}
-
-	// 댓글의 대댓글
-	List<FreeBulletinReplyReplyVO> selectListFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo) {
-		return query.selectList(namespace + "selectListFreeBulletinReplyReply", rrvo);
-	}
-
-	int insertFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo) {
-		return query.insert(namespace + "insertFreeBulletinReplyReply", rrvo);
-	}
-
-	int deleteFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo) {
-		return query.delete(namespace + "deleteFreeBulletinReplyReply", rrvo);
 	}
 	
 //	자유게시판 페이징처리

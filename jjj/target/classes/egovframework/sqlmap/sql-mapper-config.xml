@@ -18,6 +18,5 @@
 		<typeAlias alias="addrVO" type="egovframework.example.addr.sevice.AddrVO" />
 		<typeAlias alias="freeVO" type="egovframework.example.free.sevice.FreeBulletinVO" />
 		<typeAlias alias="freeReplyVO" type="egovframework.example.free.sevice.FreeBulletinReplyVO" />
-		<typeAlias alias="freeReplyReVO" type="egovframework.example.free.sevice.FreeBulletinReplyReplyVO" />
     </typeAliases>
 </configuration>

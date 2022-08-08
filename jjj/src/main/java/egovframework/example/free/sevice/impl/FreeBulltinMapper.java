@@ -3,7 +3,6 @@ package egovframework.example.free.sevice.impl;
 import java.util.List;
 
 import egovframework.example.cost.sevice.CriteriaVO;
-import egovframework.example.free.sevice.FreeBulletinReplyReplyVO;
 import egovframework.example.free.sevice.FreeBulletinReplyVO;
 import egovframework.example.free.sevice.FreeBulletinVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -25,11 +24,6 @@ public interface FreeBulltinMapper {
 	List<FreeBulletinReplyVO> selectListFreeBulletinReply(FreeBulletinReplyVO rvo);
 	int insertFreeBulletinReply(FreeBulletinReplyVO rvo);
 	int deleteFreeBulletinReply(FreeBulletinReplyVO rvo);
-	
-//	댓글의 대댓글
-	List<FreeBulletinReplyReplyVO> selectListFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
-	int insertFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
-	int deleteFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo);
 	
 //	자유게시판 페이징처리
 	List<FreeBulletinVO> getList(CriteriaVO cri);

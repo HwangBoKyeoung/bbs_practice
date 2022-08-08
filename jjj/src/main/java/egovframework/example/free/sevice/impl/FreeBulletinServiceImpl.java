@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import egovframework.example.cost.sevice.CriteriaVO;
-import egovframework.example.free.sevice.FreeBulletinReplyReplyVO;
 import egovframework.example.free.sevice.FreeBulletinReplyVO;
 import egovframework.example.free.sevice.FreeBulletinService;
 import egovframework.example.free.sevice.FreeBulletinVO;
@@ -61,21 +60,6 @@ public class FreeBulletinServiceImpl implements FreeBulletinService {
 	@Override
 	public int deleteFreeBulletinReply(FreeBulletinReplyVO rvo) {
 		return freeDAO.deleteFreeBulletinReply(rvo);
-	}
-
-	@Override
-	public List<FreeBulletinReplyReplyVO> selectListFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo) {
-		return freeDAO.selectListFreeBulletinReplyReply(rrvo);
-	}
-
-	@Override
-	public int insertFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo) {
-		return freeDAO.insertFreeBulletinReplyReply(rrvo);
-	}
-
-	@Override
-	public int deleteFreeBulletinReplyReply(FreeBulletinReplyReplyVO rrvo) {
-		return freeDAO.deleteFreeBulletinReplyReply(rrvo);
 	}
 
 	@Override

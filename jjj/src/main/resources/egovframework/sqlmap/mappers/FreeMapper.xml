@@ -93,6 +93,13 @@
 		 WHERE FREE_NO = #{freeNo}
 	</update>
 	
+	<!-- 자유게시판:조회수 감소 -->
+	<update id="updateFreeBulletinHitDown" parameterType="freeVO">
+		UPDATE FREE_BULLETIN
+		   SET FREE_HIT = FREE_HIT - 1
+		 WHERE FREE_NO = #{freeNo}
+	</update>
+	
 	<!-- 자유게시판:댓글 -->
 	<select id="selectListFreeBulletinReply" parameterType="freeReplyVO" resultType="freeReplyVO">
 		SELECT FREE_NO
@@ -132,8 +139,7 @@
 						  			  , REPLY_NO
 						  			  , REPLY_PARENT_NO
 						  			  , REPLY_CONTENT
-						  			  , REPLY_WRITER
-)
+						  			  , REPLY_WRITER)
 		VALUES (#{freeNo}
 			  , FREE_RE_SEQ.NEXTVAL
 			  , #{replyParentNo}

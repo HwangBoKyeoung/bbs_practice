@@ -150,10 +150,19 @@ public class MovieController {
 //	영화 1건 삭제
 	@PostMapping("/movieDelete.do")
 	public String movieDelete(MovieVO vo
-							, Model model) {
+							, Model model
+							, MovieReplyVO rvo) {
 		
-		int delete = movieService.deleteMovie(vo);
+		int deleteRe = movieService.deleteReplyMovie(rvo);
+		
+		if(deleteRe == 0) {
+			model.addAttribute("message", "삭제가 실패했습니다.");
+			return "cmmn/error";
+		}
+		
 		int deleteCd = movieService.deleteMovieCode(vo);
+		int delete = movieService.deleteMovie(vo);
+		
 		if(delete == 0 || deleteCd == 0) {
 			model.addAttribute("message", "삭제가 실패했습니다.");
 			return "cmmn/error";

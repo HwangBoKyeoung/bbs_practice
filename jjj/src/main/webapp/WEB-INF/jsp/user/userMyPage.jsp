@@ -87,10 +87,11 @@
 			</c:if>
 		</div>
 		
-		<form action="costSelect.do" method="post" name="frm" id="frm">
-			<input type="hidden" name="pageNum" value="${pageVO.pageNum }" /> 
-			<input type="hidden" name="amount" value="${pageVO.amount }" />
-		</form>
+		<!-- 페이지 클릭할 때마다 유지되길 원하는 값 -->
+	<form id="actionForm" action="userMyPage.do" method="get">
+		<input type="hidden" name="pageNum" value="${pageVO.pageNum }" /> 
+		<input type="hidden" name="amount" value="${pageVO.amount }" />
+	</form>
 		
 		<!-- 회원수정양식 -->
 		<form action="userUpdateForm.do" method="post" id="updateFrm">
@@ -114,6 +115,15 @@
 			});
 		});
 		
+		let actionForm = $("#actionForm");
+		$("#content a").on("click", function(e) {
+			e.preventDefault();
+			console.log("click");
+			console.log($(this).attr("href"));
+			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+
+			actionForm.submit();
+		});
 	</script>
 </body>
 </html>

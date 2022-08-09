@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -31,15 +33,34 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		
 		HttpSession session = req.getSession();
 		
-		if(roleNames.contains("ROLE_USER")) {
-			resp.sendRedirect("userMyPage.do");
-			session.setAttribute("sessionAuth", "user");
-			return;
-		}
-		if(roleNames.contains("ROLE_ADMIN")) {
-			resp.sendRedirect("costSelectList.do");
-			session.setAttribute("sessionAuth", "admin");
-			return;
+//		원래 사용자가 가고자 했던 정보 참조
+		HttpSessionRequestCache cache = new HttpSessionRequestCache();
+		SavedRequest saved = cache.getRequest(req, resp);
+		
+		String redirectUrl;
+		if(saved != null) {
+			redirectUrl = saved.getRedirectUrl();
+			if(roleNames.contains("ROLE_USER")) {
+				resp.sendRedirect(redirectUrl);
+				session.setAttribute("sessionAuth", "user");
+				return;
+			}
+			if(roleNames.contains("ROLE_ADMIN")) {
+				resp.sendRedirect(redirectUrl);
+				session.setAttribute("sessionAuth", "admin");
+				return;
+			}
+		} else {
+			if(roleNames.contains("ROLE_USER")) {
+				resp.sendRedirect("userMyPage.do");
+				session.setAttribute("sessionAuth", "user");
+				return;
+			}
+			if(roleNames.contains("ROLE_ADMIN")) {
+				resp.sendRedirect("costSelectList.do");
+				session.setAttribute("sessionAuth", "admin");
+				return;
+			}
 		}
 		
 		resp.sendRedirect("/");

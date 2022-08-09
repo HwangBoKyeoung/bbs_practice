@@ -44,6 +44,11 @@ public class FreeBulletinDAO {
 	void updateFreeBulletinHitUp(FreeBulletinVO vo) {
 		query.update(namespace + "updateFreeBulletinHitUp", vo);
 	}
+	
+//	자유게시판 조회수 감소
+	void updateFreeBulletinHitDown(FreeBulletinVO vo) {
+		query.update(namespace + "updateFreeBulletinHitDown", vo);
+	}
 
 	// 자유게시판 댓글
 	List<FreeBulletinReplyVO> selectListFreeBulletinReply(FreeBulletinReplyVO rvo) {

@@ -81,20 +81,25 @@ public class MovieDAO {
 	
 //	영화댓글 기능
 	List<MovieReplyVO> selectListReply(MovieVO vo){
-		return query.selectList("selectListReply", vo);
+		return query.selectList(namespace+"selectListReply", vo);
 	}
 	
 	int deleteReply(MovieReplyVO rvo) {
-		return query.delete("deleteReply", rvo);
+		return query.delete(namespace+"deleteReply", rvo);
 	}
 	
 	int insertReply(MovieReplyVO rvo) {
-		return query.insert("insertReply", rvo);
+		return query.insert(namespace+"insertReply", rvo);
 	}
 	
 //	별점 평균 구하기 (영화)
 	float avgReplyStar(MovieVO vo) {
-		return query.selectOne("avgReplyStar", vo);
+		return query.selectOne(namespace+"avgReplyStar", vo);
+	}
+	
+//	영화 삭제 => 영화댓글 삭제
+	int deleteReplyMovie(MovieReplyVO rvo) {
+		return query.delete(namespace + "deleteReplyMovie", rvo);
 	}
 
 }

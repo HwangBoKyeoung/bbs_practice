@@ -176,6 +176,7 @@
 	</form>
 	
 	<form action="updateReReply.do" method="post" id="updateReplyFrm" style="display: none;">
+		<input type="hidden" name="freeNo" value="${free.freeNo}" />
 		<textarea rows="5" cols="120" name="replyContent" id="cont2"></textarea>
 		<input type="hidden" name="replyNo" id="reno" />
 		<input type="submit" value="댓글수정" />
@@ -239,6 +240,8 @@
 			
 			/* $("#cont").val($("#contents").val()); */
 			$("#parentNo").val(no);
+			
+			
 		}
 
 		function updateReReply(no){
@@ -263,7 +266,8 @@
 					type : "post",
 					data : {
 						"replyDeleteAt":"Y",
-						"replyNo":no
+						"replyNo":no,
+						"freeNo":$("#freeNo1").val()
 					},
 					success : function(result) {
 						console.log(result);

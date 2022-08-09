@@ -82,4 +82,9 @@ public class FreeBulletinServiceImpl implements FreeBulletinService {
 		return freeDAO.updateDeleteFreeBulletinReply(rvo);
 	}
 
+	@Override
+	public void updateFreeBulletinHitDown(FreeBulletinVO vo) {
+		freeDAO.updateFreeBulletinHitDown(vo);
+	}
+
 }

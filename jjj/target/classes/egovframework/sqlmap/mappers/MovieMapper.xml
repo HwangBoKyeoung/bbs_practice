@@ -255,4 +255,10 @@
 		 WHERE MOVIE_NO = #{movieNo}
 	</select>
 	
+	<!-- 영화삭제=> 영화댓글 삭제 -->
+	<delete id="deleteReplyMovie" parameterType="movieReplyVO">
+		DELETE FROM MOVIE_REPLY
+		 WHERE MOVIE_NO = #{movieNo}
+	</delete>
+	
 </mapper>

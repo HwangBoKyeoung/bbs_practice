@@ -9,7 +9,7 @@ public class CriteriaVO {
 	private String searchName; // 검색할 이름
 
 	public CriteriaVO() {
-		this(1, 10);
+		this(1, 5);
 	}
 
 	public CriteriaVO(int pageNum, int amount) {

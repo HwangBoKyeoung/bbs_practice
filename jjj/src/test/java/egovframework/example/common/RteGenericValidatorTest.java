@@ -19,7 +19,7 @@ public class RteGenericValidatorTest implements Serializable {
 	public static boolean isValidIdIhNum(String value) {
 //		값의 길이가 13자리, 7번째 자리가 1,2,3,4 중 하나인지 체크
 //		String regex = "\\d{6}[1234]\\d{6}"; // egov document
-		String regex = "^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))-[1-4][0-9]{6}$"; // java regex
+//		String regex = "^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))-[1-4][0-9]{6}$"; // java regex
 		
 		/*if(!value.matches(regex)) {
 			return false;

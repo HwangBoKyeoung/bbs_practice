@@ -108,4 +108,9 @@ public class MovieServiceImpl extends EgovAbstractServiceImpl implements MovieSe
 		return movieDAO.avgReplyStar(vo);
 	}
 
+	@Override
+	public int deleteReplyMovie(MovieReplyVO rvo) {
+		return movieDAO.deleteReplyMovie(rvo);
+	}
+
 }

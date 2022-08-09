@@ -179,6 +179,19 @@
 		});
 		
 		function insertReply() {
+			let content = $("#movieReplyConent").val();
+			let star = $("#movieReplyStar").val();
+			
+			if(content == null || content == ''){
+				alert("내용 작성을 부탁드립니다.");
+				return;
+			}
+			
+			if(star == null || content == ''){
+				alert("별점을 부탁드립니다.");
+				return;
+			}
+			
 			$.ajax({
 				url : "ajaxInsertMovieReply.do",
 				dataType : "json",

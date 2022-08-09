@@ -251,6 +251,9 @@ public class UserController {
 		PageVO pageVO = new PageVO(cri, costService.getTotalByUser(myPageMap));
 		List<CostVO> costs = costService.getListByUser(myPageMap);
 		
+		System.out.println("====================================="+pageVO);
+		System.out.println("====================================="+costs);
+		
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("costList", costs);
 		

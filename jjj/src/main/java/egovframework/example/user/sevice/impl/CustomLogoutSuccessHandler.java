@@ -26,6 +26,14 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 			}
 		}
 		
+		/*Cookie[] cookies = req.getCookies();	//모든 쿠키의 정보를 cookies에 저장
+		if(cookies != null) {
+			for(int i=0; i<cookies.length; i++) {
+				cookies[i].setMaxAge(0);		//유효시간을 0으로 설정
+				resp.addCookie(cookies[i]);		//응답에 추가하여 만료시키기
+			}
+		}*/
+		
 		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.sendRedirect("userLogout.do");
 		

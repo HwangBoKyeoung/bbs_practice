@@ -41,6 +41,7 @@
 								access="permitAll" />
 		<security:form-login login-page="/userLoginForm.do"
 							 default-target-url="/"
+							 login-processing-url="/login"
 							 authentication-success-handler-ref="customLoginSuccessHandler" />
 		<!-- <security:remember-me  /> -->
 		<security:logout invalidate-session="false"
@@ -51,8 +52,8 @@
 		<security:csrf disabled="true" />
 		<security:session-management invalid-session-url="/userLoginForm.do"
 									 session-authentication-error-url="/error_401.do" >
-			<security:concurrency-control max-sessions="1"
-										  error-if-maximum-exceeded="true" />
+			<!-- <security:concurrency-control max-sessions="1"
+										  error-if-maximum-exceeded="true" /> -->
 		</security:session-management>
 	</security:http>
 	

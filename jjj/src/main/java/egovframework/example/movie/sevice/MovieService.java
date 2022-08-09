@@ -39,4 +39,7 @@ public interface MovieService {
 //	별점 평균 구하기 (영화)
 	float avgReplyStar(MovieVO vo);
 	
+//	영화 삭제 => 영화댓글 삭제
+	int deleteReplyMovie(MovieReplyVO rvo);
+	
 }

@@ -20,6 +20,9 @@ public interface FreeBulltinMapper {
 //	자유게시판 조회수 증가
 	void updateFreeBulletinHitUp(FreeBulletinVO vo);
 	
+//	자유게시판 조회수 감소
+	void updateFreeBulletinHitDown(FreeBulletinVO vo);
+	
 //	자유게시판 댓글
 	List<FreeBulletinReplyVO> selectListFreeBulletinReply(FreeBulletinReplyVO rvo);
 	int insertFreeBulletinReply(FreeBulletinReplyVO rvo);

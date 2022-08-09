@@ -10,10 +10,12 @@
 <title>WELCOME HOME</title>
 </head>
 <body>
+	<input type="hidden" value="${message}" id="msg" />
+
 	<script>
-		Swal.fire("접근권한이 없습니다.");
+		Swal.fire($("#msg").val());
 		$(".swal2-confirm").on("click", function() {
-			location.href="home.do";
+			location.href="freeBulletinList.do";
 		});
 	</script>
 </body>

@@ -241,7 +241,7 @@
 	        ON (F.COST_CATEGORY = D1.CODE_DTL)
 	     WHERE D.CODE_MST = 'COST_METHOD'
 	       AND D1.CODE_MST = 'COST_CATEGORY'
-	       AND F.USER_ID = #{cvo.userId}
+	       AND F.USER_ID = #{userId}
 	</select>
 	
 	<!-- 경비 등록: cost_no(primary key)는 sequence말고 selectkey로 생성 -->

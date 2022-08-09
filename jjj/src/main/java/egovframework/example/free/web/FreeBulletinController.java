@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,7 +124,9 @@ public class FreeBulletinController {
 	
 	@PostMapping("/insertReReply.do")
 	public String insertReReply(FreeBulletinReplyVO rvo
-							  , Model model) {
+							  , Model model
+							  , HttpServletRequest req
+							  , FreeBulletinVO vo) {
 		
 		System.out.println("--------------------------------------------"+rvo);
 		int insertResult = freeService.insertFreeBulletinReply(rvo);
@@ -132,12 +135,18 @@ public class FreeBulletinController {
 			return "free/message";
 		}
 		
-		return "redirect:freeBulletinList.do";
+//		vo.setFreeNo(rvo.getFreeNo());
+//		freeService.updateFreeBulletinHitDown(vo);
+		
+		model.addAttribute("message", "댓글 입력에 성공하였습니다.");
+		return "free/success";
 	}
 	
 	@PostMapping("/updateReReply.do")
 	public String updateReReply(FreeBulletinReplyVO rvo
-							  , Model model) {
+							  , Model model
+							  , HttpServletRequest req
+							  , FreeBulletinVO vo) {
 		
 		int update = freeService.updateFreeBulletinReply(rvo);
 		if(update == 0 ) {
@@ -145,7 +154,11 @@ public class FreeBulletinController {
 			return "free/message";
 		}
 		
-		return "redirect:freeBulletinList.do";
+//		vo.setFreeNo(rvo.getFreeNo());
+//		freeService.updateFreeBulletinHitDown(vo);
+		
+		model.addAttribute("message", "댓글 수정이 성공하였습니다.");
+		return "free/success";
 	}
 	
 }

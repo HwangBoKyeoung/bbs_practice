@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freeMapper">
+	
+	<resultMap type="freeReplyVO" id="freeReplyMap">
+		<id property="replyNo" column="reply_no" />
+		<result property="replyWriter" column="reply_writer" />
+		<result property="replyDate" column="reply_date" />
+		<result property="replyContent" column="reply_content" />
+		<result property="freeNo" column="free_no" />
+		<collection property="freeReplyReVO" resultMap="freeReplyReMap" />
+	</resultMap>
+
+	<!-- 자유게시판 -->
+	<select id="selectListFreeBulletin" resultType="freeVO">
+		SELECT F.FREE_NO
+			 , F.FREE_TITLE
+			 , F.FREE_CONTENT
+			 , F.FREE_WRITER
+			 , F.FREE_DATE
+			 , F.FREE_HIT
+			 , D.CODE_DTL_NM "FREE_REG_YN"
+			 , D1.CODE_DTL_NM "FREE_NOTICE_YN"
+		  FROM FREE_BULLETIN F
+		  JOIN SYS_CODE_DTL D
+		    ON F.FREE_REG_YN = D.CODE_DTL
+		  JOIN SYS_CODE_DTL D1
+		    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+		 WHERE D.CODE_MST = 'FREE_REG_YN'
+		   AND D1.CODE_MST = 'FREE_NOTICE_YN'
+		 ORDER BY FREE_NO DESC
+	</select>
+	<select id="selectFreeBulletin" resultType="freeVO" parameterType="freeVO">
+		SELECT F.FREE_NO
+			 , F.FREE_TITLE
+			 , F.FREE_CONTENT
+			 , F.FREE_WRITER
+			 , F.FREE_DATE
+			 , F.FREE_HIT
+			 , D.CODE_DTL_NM "FREE_REG_YN"
+			 , D1.CODE_DTL_NM "FREE_NOTICE_YN"
+		  FROM FREE_BULLETIN F
+		  JOIN SYS_CODE_DTL D
+		    ON F.FREE_REG_YN = D.CODE_DTL
+		  JOIN SYS_CODE_DTL D1
+		    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+		 WHERE D.CODE_MST = 'FREE_REG_YN'
+		   AND D1.CODE_MST = 'FREE_NOTICE_YN'
+		   AND FREE_NO = #{freeNo}
+	</select>
+	<insert id="insertFreeBulletin" parameterType="freeVO">
+		INSERT INTO FREE_BULLETIN (FREE_NO
+								 , FREE_TITLE
+								 , FREE_CONTENT
+								 , FREE_WRITER
+								 , FREE_DATE
+								 , FREE_HIT
+								 , FREE_REG_YN
+								 , FREE_NOTICE_YN)
+		VALUES (FREE_SEQ.NEXTVAL
+			  , #{freeTitle}
+			  , #{freeContent}
+			  , #{freeWriter}
+			  , SYSDATE
+			  , 0
+			  , #{freeRegYn}
+			  , #{freeNoticeYn})
+	</insert>
+	<update id="updateFreeBulletin" parameterType="freeVO">
+		UPDATE FREE_BULLETIN
+		<set>
+			<if test="freeTitle != null or freeTitle != ''">
+				FREE_TITLE = #{freeTitle},
+			</if>
+			<if test="freeContent != null or freeContent != ''">
+				FREE_CONTENT = #{freeContent},
+			</if>
+			<if test="freeNoticeYn != null or freeNoticeYn != ''">
+				FREE_NOTICE_YN = #{freeNoticeYn},
+			</if>
+		</set>
+		 WHERE FREE_NO = #{freeNo}
+	</update>
+	<delete id="deleteFreeBulletin" parameterType="freeVO">
+		DELETE FROM FREE_BULLETIN
+		 WHERE FREE_NO = #{freeNo}
+	</delete>
+	
+	<!-- 자유게시판:조회수 증가 -->
+	<update id="updateFreeBulletinHitUp" parameterType="freeVO">
+		UPDATE FREE_BULLETIN
+		   SET FREE_HIT = FREE_HIT + 1
+		 WHERE FREE_NO = #{freeNo}
+	</update>
+	
+	<!-- 자유게시판:조회수 감소 -->
+	<update id="updateFreeBulletinHitDown" parameterType="freeVO">
+		UPDATE FREE_BULLETIN
+		   SET FREE_HIT = FREE_HIT - 1
+		 WHERE FREE_NO = #{freeNo}
+	</update>
+	
+	<!-- 자유게시판:댓글 -->
+	<select id="selectListFreeBulletinReply" parameterType="freeReplyVO" resultType="freeReplyVO">
+		SELECT FREE_NO
+			 , LEVEL "COMMENTLEVEL"
+			 , REPLY_NO
+			 , REPLY_PARENT_NO
+			 , CASE WHEN LEVEL = 1
+			 		THEN ''
+			 		ELSE LPAD(' ㄴ', LEVEL*4, ' ')
+			 		 END
+			   ||
+			   CASE WHEN REPLY_DELETE_AT = 'Y'
+			   		THEN '***삭제된 댓글입니다.***'
+			   		ELSE REPLY_CONTENT
+			   		 END REPLY_CONTENT
+			 , REPLY_WRITER
+			 , REPLY_DELETE_AT
+			 , REPLY_DATE
+			 , REPLY_UPDATE_DATE
+			 , REPLY_DELETE_DATE
+		  FROM (SELECT FREE_NO
+		  			 , REPLY_NO
+		  			 , REPLY_PARENT_NO
+		  			 , REPLY_CONTENT
+		  			 , REPLY_WRITER
+		  			 , REPLY_DELETE_AT
+		  			 , REPLY_DATE
+		  			 , REPLY_UPDATE_DATE
+		  			 , REPLY_DELETE_DATE
+		  		  FROM FREE_BULLETIN_REPLY
+		  		 WHERE FREE_NO = #{freeNo})
+		 START WITH REPLY_PARENT_NO = 0
+		 CONNECT BY PRIOR REPLY_NO = REPLY_PARENT_NO
+	</select>
+	<insert id="insertFreeBulletinReply" parameterType="freeReplyVO">
+		INSERT INTO FREE_BULLETIN_REPLY(FREE_NO
+						  			  , REPLY_NO
+						  			  , REPLY_PARENT_NO
+						  			  , REPLY_CONTENT
+						  			  , REPLY_WRITER)
+		VALUES (#{freeNo}
+			  , FREE_RE_SEQ.NEXTVAL
+			  , #{replyParentNo}
+			  , #{replyContent}
+			  , #{replyWriter})
+	</insert>
+	<delete id="deleteFreeBulletinReply" parameterType="freeReplyVO">
+		DELETE FROM FREE_BULLETIN_REPLY
+		 WHERE REPLY_NO = #{replyNo}
+	</delete>
+	<update id="updateFreeBulletinReply" parameterType="freeReplyVO">
+		UPDATE FREE_BULLETIN_REPLY
+		<set>
+			<if test="replyContent != null or replyContent != ''">
+				REPLY_CONTENT = #{replyContent},
+				REPLY_UPDATE_DATE = SYSDATE,
+			</if>
+		</set>
+		 WHERE REPLY_NO = #{replyNo}
+	</update>
+	<update id="updateDeleteFreeBulletinReply" parameterType="freeReplyVO">
+		UPDATE FREE_BULLETIN_REPLY
+		<set>
+			<if test="replyDeleteAt != null or replyDeleteAt != ''">
+				REPLY_DELETE_AT = #{replyDeleteAt},
+				REPLY_DELETE_DATE = SYSDATE,
+			</if>
+		</set>
+		 WHERE REPLY_NO = #{replyNo}
+	</update>
+
+	<!-- 페이징처리 -->
+	<select id="getList" resultType="freeVO">
+		<![CDATA[
+		SELECT FREE_NO
+			 , FREE_TITLE
+			 , FREE_CONTENT
+			 , FREE_WRITER
+			 , FREE_DATE
+			 , FREE_HIT
+			 , FREE_REG_YN
+			 , FREE_NOTICE_YN
+		  FROM (
+			  SELECT ROWNUM RN
+			  	   , A.FREE_NO
+			  	   , A.FREE_TITLE
+			  	   , A.FREE_CONTENT
+			  	   , A.FREE_WRITER
+			  	   , A.FREE_DATE
+			  	   , A.FREE_HIT
+			  	   , A.FREE_REG_YN
+			  	   , A.FREE_NOTICE_YN
+			    FROM (
+			  		SELECT F.FREE_NO
+						 , F.FREE_TITLE
+						 , F.FREE_CONTENT
+						 , F.FREE_WRITER
+						 , F.FREE_DATE
+						 , F.FREE_HIT
+						 , D.CODE_DTL_NM "FREE_REG_YN"
+						 , D1.CODE_DTL_NM "FREE_NOTICE_YN"
+					  FROM FREE_BULLETIN F
+					  JOIN SYS_CODE_DTL D
+					    ON F.FREE_REG_YN = D.CODE_DTL
+					  JOIN SYS_CODE_DTL D1
+					    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+					 WHERE D.CODE_MST = 'FREE_REG_YN'
+					   AND D1.CODE_MST = 'FREE_NOTICE_YN'
+				       AND
+					]]>
+						<if test="searchType == 'all'">
+							(F.FREE_TITLE LIKE '%'||#{searchName}||'%' 
+							 OR F.FREE_CONTENT LIKE '%'||#{searchName}||'%')
+						</if>
+						<if test="searchType == 'title'">
+							F.FREE_TITLE LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == 'content'">
+							F.FREE_CONTENT LIKE '%'||#{searchName}||'%'
+						</if>
+						<if test="searchType == '' or searchType == null">
+							1=1
+						</if>
+		<![CDATA[
+					ORDER BY F.FREE_NO DESC
+				)A
+			)
+		WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+    	]]>
+	</select>
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_BULLETIN F
+		  JOIN SYS_CODE_DTL D
+		    ON F.FREE_REG_YN = D.CODE_DTL
+		  JOIN SYS_CODE_DTL D1
+		    ON F.FREE_NOTICE_YN = D1.CODE_DTL
+		 WHERE D.CODE_MST = 'FREE_REG_YN'
+		   AND D1.CODE_MST = 'FREE_NOTICE_YN'
+	       AND
+			<if test="searchType == 'all'">
+				(F.FREE_TITLE LIKE '%'||#{searchName}||'%' 
+				 OR F.FREE_CONTENT LIKE '%'||#{searchName}||'%')
+			</if>
+			<if test="searchType == 'title'">
+				F.FREE_TITLE LIKE '%'||#{searchName}||'%'
+			</if>
+			<if test="searchType == 'content'">
+				F.FREE_CONTENT LIKE '%'||#{searchName}||'%'
+			</if>
+			<if test="searchType == '' or searchType == null">
+				1=1
+			</if>
+	</select>
+</mapper>

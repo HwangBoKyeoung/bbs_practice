@@ -12,6 +12,7 @@ import egovframework.example.user.service.UserService;
 import egovframework.example.user.service.UserVO;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 	
 	@Resource(name="userService")
@@ -24,5 +25,20 @@ public class UserController {
 		
 		return "user/userSelectList";
 	}
+	
+	@RequestMapping("/userSelect.do")
+	public String userSelect(UserVO vo
+						   , Model model) {
+		
+		vo = userService.userSelect(vo);
+		if(vo == null) {
+			model.addAttribute("message", "회원 한 건 조회가 실패했습니다.");
+			return "user/message";
+		}
+		
+		model.addAttribute("user", vo);
+		return "user/userSelect";
+	}
+	
 	
 }

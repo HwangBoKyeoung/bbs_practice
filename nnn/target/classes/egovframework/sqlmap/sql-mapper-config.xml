@@ -9,5 +9,7 @@
     <typeAliases>
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 		<typeAlias alias="userVO"  type="egovframework.example.user.service.UserVO"/>
+		<typeAlias alias="freeVO"  type="egovframework.example.free.service.FreeBulletinVO"/>
+		<typeAlias alias="freeReplyVO"  type="egovframework.example.free.service.FreeBulletinReplyVO"/>
     </typeAliases>
 </configuration>

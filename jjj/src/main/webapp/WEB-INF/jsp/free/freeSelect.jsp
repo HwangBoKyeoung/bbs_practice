@@ -30,6 +30,7 @@
 	<h5>
 		${replys}<br/>
 	</h5>
+	<input type="hidden" value="${userId}" id="userId" />
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
 		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -65,19 +66,20 @@
 			</tbody>
 		</table>
 		<br />
-		<form action="freeUpdateForm.do" method="post">
-			<input type="hidden" value="${free.freeNo}" name="freeNo" id="freeNo" />
-			<input type="hidden" value="${free.freeTitle}" name="freeTitle" id="freeTitle" />
-			<input type="hidden" value="${free.freeContent}" name="freeContent" id="freeContent" />
-			
-			<input type="hidden" value="${free.freeNoticeYn}" name="freeNoticeYn" id="freeNoticeYn" />
-			<input type="hidden" value="${free.freeHit}" name="freeHit" id="freeHit" />
-			<input type="hidden" value="${free.freeDate}" name="freeDate" id="freeDate" />
-			<input type="hidden" value="${free.freeWriter}" name="freeWriter" id="freeWriter" />
-			
-			<input type="submit" value="수정하기" />
-		</form>
-	
+		<c:if test="${free.freeWriter eq userId}">
+			<form action="freeUpdateForm.do" method="post">
+				<input type="hidden" value="${free.freeNo}" name="freeNo" id="freeNo" />
+				<input type="hidden" value="${free.freeTitle}" name="freeTitle" id="freeTitle" />
+				<input type="hidden" value="${free.freeContent}" name="freeContent" id="freeContent" />
+				
+				<input type="hidden" value="${free.freeNoticeYn}" name="freeNoticeYn" id="freeNoticeYn" />
+				<input type="hidden" value="${free.freeHit}" name="freeHit" id="freeHit" />
+				<input type="hidden" value="${free.freeDate}" name="freeDate" id="freeDate" />
+				<input type="hidden" value="${free.freeWriter}" name="freeWriter" id="freeWriter" />
+				
+				<input type="submit" value="수정하기" />
+			</form>
+		</c:if>
 		<div align="center">
 		<hr />
 		<h2>=============댓글=============</h2>
@@ -86,6 +88,7 @@
 			<input type="submit" value="입력" onclick="insertReply();" class="btn btn-success btn-circle btn-lg" />
 		</div>
 		<input type="hidden" value="N" id="nVal" />
+		
 		<hr />
 		<c:choose>
 			<c:when test="${empty replys}">
@@ -121,8 +124,10 @@
 										<c:if test="${reply.replyDeleteAt eq 'N'}">
 											<td>
 												<input type="button" value="댓글입력" onclick="insertReReply(${reply.replyNo});" />
-												<input type="button" value="댓글수정" onclick="updateReReply(${reply.replyNo});" />
-												<input type="button" value="댓글삭제" onclick="deleteReReply(${reply.replyNo});" />
+												<c:if test="${reply.replyWriter eq userId}">
+													<input type="button" value="댓글수정" onclick="updateReReply(${reply.replyNo});" />
+													<input type="button" value="댓글삭제" onclick="deleteReReply(${reply.replyNo});" />
+												</c:if>
 											</td>
 										</c:if>
 									</tr>
@@ -142,8 +147,10 @@
 										<c:if test="${reply.replyDeleteAt eq 'N'}">
 											<td>
 												<input type="button" value="댓글입력" onclick="insertReReply(${reply.replyNo});" />
-												<input type="button" value="댓글수정" onclick="updateReReply(${reply.replyNo});" />
-												<input type="button" value="댓글삭제" onclick="deleteReReply(${reply.replyNo});" />
+												<c:if test="${reply.replyWriter eq userId}">
+													<input type="button" value="댓글수정" onclick="updateReReply(${reply.replyNo});" />
+													<input type="button" value="댓글삭제" onclick="deleteReReply(${reply.replyNo});" />
+												</c:if>
 											</td>
 										</c:if>
 									</tr>
@@ -165,7 +172,7 @@
 	<br/>
 	<br/>
 	
-	<input type="hidden" value="${userId}" id="userId" />
+	
 	
 	<form action="insertReReply.do" method="post" id="inserReplyFrm" style="display: none;">
 		<input type="hidden" name="freeNo" value="${free.freeNo}" />

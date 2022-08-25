@@ -1,6 +1,8 @@
 package egovframework.example.common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,9 +71,15 @@ public class RteGenericValidatorTest implements Serializable {
 	
 	@Test
 	public void test() {
-		if(isValidIdIhNum("9504052691419")) {
-			System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^성공!");
-		}
+		List<String> list = new ArrayList<String>();
+		list.add("1");
+		list.add("2");
+		list.add("-");
+		
+		String st = "010-2222-3333";
+		
+		String str = String.join("", st.split("-"));
+		System.out.println("=======================================str : "+str);
 		
 	}
 	

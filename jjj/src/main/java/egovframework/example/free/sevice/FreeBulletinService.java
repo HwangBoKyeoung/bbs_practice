@@ -22,6 +22,7 @@ public interface FreeBulletinService {
 //	자유게시판 댓글
 	List<FreeBulletinReplyVO> selectListFreeBulletinReply(FreeBulletinReplyVO rvo);
 	int insertFreeBulletinReply(FreeBulletinReplyVO rvo);
+//	자유게시판 댓글 삭제처리 => 완전 삭제
 	int deleteFreeBulletinReply(FreeBulletinReplyVO rvo);
 	int updateFreeBulletinReply(FreeBulletinReplyVO rvo);
 	

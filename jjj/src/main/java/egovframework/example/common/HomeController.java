@@ -1,5 +1,8 @@
 package egovframework.example.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,13 @@ public class HomeController {
 	// 나중에 지울 예정 : 해야할 것 작성
 	@RequestMapping("/todoList.do")
 	public String todoList() {
+		List<String> list = new ArrayList<String>();
+		list.add("가");
+		list.add("나");
+		list.add("다");
+		
+		String str = String.join("|", list);
+		System.out.println("=======================================str : "+str);
 		return "cmmn/todoList";
 	}
 

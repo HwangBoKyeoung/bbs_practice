@@ -27,9 +27,6 @@
 </style>
 </head>
 <body>
-	<h5>
-		${replys}<br/>
-	</h5>
 	<input type="hidden" value="${userId}" id="userId" />
 	<div align="center">
 		<h1>=====WELCOME=====</h1>
@@ -171,8 +168,6 @@
 	</div>
 	<br/>
 	<br/>
-	
-	
 	
 	<form action="insertReReply.do" method="post" id="inserReplyFrm" style="display: none;">
 		<input type="hidden" name="freeNo" value="${free.freeNo}" />

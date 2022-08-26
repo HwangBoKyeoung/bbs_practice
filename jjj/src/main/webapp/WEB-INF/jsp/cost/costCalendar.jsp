@@ -42,7 +42,7 @@
 					center : 'title',
 					right : 'dayGridMonth,timeGridWeek,timeGridDay'
 				},
-				defaultDate : '2022-07-07',
+				defaultDate : '2022-08-25',
 				navLinks : true, // can click day/week names to navigate views
 				selectable : false,
 				selectMirror : true,

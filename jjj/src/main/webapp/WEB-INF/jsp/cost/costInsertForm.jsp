@@ -92,7 +92,7 @@
 				img.setAttribute("src", e.target.result);
 				document.querySelector("div#imageView").appendChild(img);
 			};
-			if($("#imageView").children() != null || $("#imageView").children() == ''){
+			if($("#imageView").children() != null || $("#imageView").children() != ''){
 				$("#imageView").children().remove();
 			}
 			reader.readAsDataURL(e.target.files[0]);
